@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Environment & secrets
+.env
+.env.local
+.env.production
+*.pem
+*.key
+
+# Build output / runtime
+dist/
+build/
+.cache/
+.vite/
+
+# Editor / OS noise
+.DS_Store
+.idea/
+.vscode/
+*.swp
+Thumbs.db
+
+# Logs
+logs/
+*.log
+pids/
+*.pid
+*.seed
+
+# Generated artifacts
+product-categories-report.json
+seeder.js

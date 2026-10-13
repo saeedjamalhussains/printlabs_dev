@@ -1,0 +1,81 @@
+.cloudinary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.cloudinary-card {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--box-shadow);
+  transition: var(--transition-smooth);
+}
+
+.cloudinary-card:hover {
+  border-color: var(--primary-color);
+}
+
+.cloudinary-thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: var(--bg-color);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cloudinary-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cloudinary-meta {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.cloudinary-id {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cloudinary-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.cloudinary-stats span {
+  padding: 0.15rem 0.4rem;
+  background: var(--bg-color);
+  border: 1px solid var(--border-light);
+}
+
+.cloudinary-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.cloudinary-actions .btn-outline,
+.cloudinary-actions .btn-danger {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.65rem;
+  flex: 1;
+}

@@ -1,0 +1,197 @@
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€  SIDEBAR â€” EDITORIAL B/W  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  /* The sidebar is a fixed full-height rail; at 100vh its last nav item
+     and the sign-out control fall below the visible area on a phone. */
+  height: 100vh;
+  height: 100dvh;
+  background: var(--bg-color);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  padding: 2rem 0;
+}
+
+/* â”€â”€ Logo â”€â”€ */
+.sidebar-header {
+  padding: 0 2rem 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+  color: var(--primary-color);
+  line-height: 1;
+}
+
+.sidebar-logo-img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
+
+.sidebar-logo-text {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  white-space: nowrap;
+}
+
+/* â”€â”€ Navigation â”€â”€ */
+.sidebar-nav {
+  flex: 1;
+  padding: 2rem 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow-y: auto;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  text-decoration: none;
+  opacity: 0.55;
+  transition: opacity var(--dur-2) var(--ease-out), padding-left var(--dur-2) var(--ease-out), border-color var(--dur-2) var(--ease-out);
+}
+
+.sidebar-link:hover {
+  opacity: 0.85;
+  padding-left: 6px;
+}
+
+.sidebar-link.active {
+  opacity: 1;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  padding-left: 8px;
+  border-left: 2px solid var(--primary-color);
+}
+
+.sidebar-link.active svg { opacity: 1; }
+.sidebar-link svg { opacity: 0.7; }
+
+/* ── Footer ── */
+.sidebar-footer {
+  padding: 1.5rem 2rem 0;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sidebar-user {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.sidebar-user-name {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  color: var(--primary-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-user-role {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  opacity: 0.5;
+}
+
+.sidebar-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.sidebar-action-btn {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--primary-color);
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: var(--transition-fast);
+  opacity: 0.7;
+}
+
+.sidebar-action-btn:hover {
+  opacity: 1;
+  border-color: var(--primary-color);
+}
+
+/* ── Mobile ── */
+@media (max-width: 900px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform var(--dur-3) var(--ease-out);
+  }
+
+  .sidebar.open { transform: translateX(0); }
+
+  .sidebar {
+    z-index: 1100;
+  }
+}
+
+/* ── Signed-in identity in the sidebar footer ───────────────────────── */
+.sidebar-user {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0 0.25rem 0.6rem;
+  min-width: 0;
+}
+
+.sidebar-user-name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sidebar-user-email {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  opacity: 0.7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

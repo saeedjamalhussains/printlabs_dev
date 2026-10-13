@@ -1,0 +1,132 @@
+/* Dual-handle price slider.
+   Proportions follow the reference: a rounded rail with a filled span,
+   and large round handles with a ring border and a shadow. Colours come
+   from the storefront's black-and-white tokens rather than a brand hue. */
+
+.price-slider {
+  --rail-height: 6px;
+  --thumb-size: 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.price-slider-values {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--primary-color);
+}
+
+.price-slider-bounds {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  opacity: 0.45;
+}
+
+/* The wrap is the full hit area; it is taller than the rail so the
+   handles have somewhere to sit and the track is easy to click. */
+.price-slider-track-wrap {
+  position: relative;
+  height: var(--thumb-size);
+  /* Inset by half a thumb so a handle at either extreme sits fully
+     inside the control instead of hanging over its edge. */
+  margin-inline: calc(var(--thumb-size) / 2);
+  cursor: pointer;
+  touch-action: none; /* let the pointer handlers own the gesture */
+}
+
+.price-slider-rail,
+.price-slider-fill {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: var(--rail-height);
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.price-slider-rail {
+  left: 0;
+  right: 0;
+  background: var(--border-color);
+  opacity: 0.35;
+}
+
+.price-slider-fill {
+  background: var(--primary-color);
+}
+
+.price-slider-thumb {
+  position: absolute;
+  top: 50%;
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  /* `left` is the handle's value position, so pull back by half its own
+     width to centre it on that point. */
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--bg-color);
+  /* `box-shadow` rather than `border`, so the ring does not add to the
+     element's size and shift the centring. */
+  box-shadow: 0 0 0 2px var(--primary-color), 0 1px 4px rgba(0, 0, 0, 0.25);
+  cursor: grab;
+  touch-action: none;
+  transition: transform var(--dur-1) var(--ease-out),
+              box-shadow var(--dur-1) var(--ease-out);
+}
+
+.price-slider-thumb:hover {
+  box-shadow: 0 0 0 3px var(--primary-color), 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.price-slider-thumb:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 3px;
+}
+
+/* The handle under the pointer rises above its neighbour, so the two
+   never trade places mid-drag when they are close together. */
+.price-slider-thumb.is-dragging {
+  cursor: grabbing;
+  z-index: 2;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* ── Value bubble ──
+   Floats above the handle while it is being dragged or focused. Hidden
+   otherwise: the current values are already printed above the track, and
+   two permanent bubbles would crowd a 200px-wide sidebar control. */
+.price-slider-bubble {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.25rem 0.45rem;
+  border-radius: 6px;
+  background: var(--primary-color);
+  color: var(--bg-color);
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-1) var(--ease-out);
+}
+
+.price-slider-thumb.is-dragging .price-slider-bubble,
+.price-slider-thumb:hover .price-slider-bubble,
+.price-slider-thumb:focus-visible .price-slider-bubble {
+  opacity: 1;
+}

@@ -1,0 +1,21 @@
+# Dependencies are installed once at the workspace root and hoisted.
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Environment — every clone supplies its own .env.example files
+**/.env
+.env.local
+.env.*.local
+
+# Python (assistant)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Editor / OS
+.DS_Store
+*.swp

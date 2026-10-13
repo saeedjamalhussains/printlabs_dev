@@ -1,0 +1,906 @@
+/* Tailwind + the shadcn component layer. Imported first, on purpose:
+   the Tailwind Preflight layer and utilities land in @layer base / @layer
+   utilities, and unlayered CSS always beats layered CSS — so every
+   hand-written rule below and in the per-page stylesheets keeps
+   winning, and adopting Tailwind resets nothing that already worked.
+   The design tokens live in @printlabs/ui, which both this app and the
+   other front-end share, so the palette cannot drift between them.
+
+   @source is required, not optional: the shared components resolve
+   through node_modules via the workspace symlink, and Tailwind does not
+   scan node_modules by default — without this every utility class used
+   inside @printlabs/ui would be absent from the generated stylesheet. */
+@import "tailwindcss";
+@import "@printlabs/ui/theme.css";
+@source "../../shared/packages/ui/src";
+
+/* ── Apple System Typography ──────────────────────────────────────────
+   Mirrors the client so admin and storefront stay visually unified.
+   Drop the variable font files into /public/fonts/ (see README). */
+/* local() only — see client/src/index.css. There is no /public/fonts
+   directory, so every url() here fetched index.html and failed to parse
+   as a font on each page load. */
+@font-face {
+  font-family: 'SF Pro';
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  src: local('SF Pro'),
+       local('SFPro-Regular');
+}
+@font-face {
+  font-family: 'New York';
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  src: local('New York'),
+       local('NewYork-Regular');
+}
+@font-face {
+  font-family: 'SF Mono';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: local('SF Mono'),
+       local('SFMono-Regular');
+}
+
+:root {
+  /* ── Typography ───────────────────────────────────────────────────
+     Apple system fonts.
+       --font-sans   SF Pro    (UI / body / labels / buttons / nav)
+       --font-serif  New York  (h1-h3 display)
+       --font-mono   SF Mono   (codes / order ids)
+     Native system fallbacks end each chain. */
+  --font-sans:  'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-serif: 'New York', 'Iowan Old Style', Charter, Cambria, Georgia, serif;
+  --font-mono:  'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  /* Strict B/W Palette - Light Mode. NO GRAYS.
+     Hierarchy comes from typography only. The only chromatic values
+     allowed in the project live in the badge variables below â€” they
+     identify status labels (the user-stated exception). */
+  /* Tell the browser to render native form controls (the <select>
+     option panel, date pickers, scrollbar thumbs, etc.) in the matching
+     scheme so they don't flash white inside a dark UI. */
+  /* Both schemes are supported, so the browser renders native controls
+     (the select popup, date pickers, scrollbars, spellcheck underlines)
+     to match the system setting on its own. */
+  color-scheme: light dark;
+  --bg-color: #faf8f5;
+  --surface-color: #faf8f5;
+  --primary-color: #000000;
+  --primary-hover: #000000;
+  --accent-color: #000000;
+  --text-primary: #000000;
+  --text-secondary: #000000;
+  --text-muted: #000000;
+  --border-color: #000000;
+  --border-light: #000000;
+  --danger-color: #c8102e;
+  --danger-hover: #a30c25;
+  --danger-bg: transparent;
+  --success-color: #000000;
+  --warning-color: #000000;
+  --code-bg: rgba(0, 0, 0, 0.04);
+  --error-bg: transparent;
+  --error-color: #000000;
+
+  /* ─── Motion ──────────────────────────────────────────────────────
+     One scale for the whole app. Previously three easing curves
+     (`ease`, and two different cubic-beziers) and eight durations
+     between 0.15s and 0.6s were mixed at random, so no two components
+     moved alike — which is what reads as "unpolished" rather than any
+     single animation being wrong.
+
+     Durations: pick by how far the thing travels, not by importance.
+     A colour swap wants --dur-1; a panel sliding in wants --dur-4. */
+  --dur-1: 120ms;   /* instant feedback: colour, opacity, borders */
+  --dur-2: 200ms;   /* small moves: buttons, icons, table rows */
+  --dur-3: 320ms;   /* cards, dropdowns, accordion panels */
+  --dur-4: 480ms;   /* full-width panels, page and modal entries */
+
+  /* Decelerating. Fast start, soft landing — the default for anything
+     entering or responding to a click. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Gentler cousin for larger travel, where full expo overshoots the
+     eye and looks like it stops short. */
+  --ease-out-soft: cubic-bezier(0.23, 1, 0.32, 1);
+  /* Symmetric, for things that move both ways (toggles, reversible
+     hovers) so the return trip mirrors the outbound. */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Composite shorthands. These name the properties they animate
+     rather than using `all`: `all` also transitions layout properties
+     like width and padding, which forces reflow on every frame and is
+     the main source of stutter on hover. */
+  --transition-fast: color var(--dur-2) var(--ease-out),
+                     background-color var(--dur-2) var(--ease-out),
+                     border-color var(--dur-2) var(--ease-out),
+                     opacity var(--dur-2) var(--ease-out),
+                     transform var(--dur-2) var(--ease-out);
+  --transition-smooth: color var(--dur-3) var(--ease-out),
+                       background-color var(--dur-3) var(--ease-out),
+                       border-color var(--dur-3) var(--ease-out),
+                       opacity var(--dur-3) var(--ease-out),
+                       box-shadow var(--dur-3) var(--ease-out),
+                       transform var(--dur-3) var(--ease-out);
+
+  /* Badge colors — EXCEPTION. These are status labels and are allowed
+     to use chromatic values to distinguish order/user state. */
+  --badge-placed-bg: #f3f4f6; --badge-placed-color: #374151;
+  --badge-confirmed-bg: #dbeafe; --badge-confirmed-color: #1d4ed8;
+  --badge-processing-bg: #fef3c7; --badge-processing-color: #92400e;
+  --badge-shipped-bg: #e0e7ff; --badge-shipped-color: #3730a3;
+  --badge-delivered-bg: #d1fae5; --badge-delivered-color: #065f46;
+  --badge-cancelled-bg: #fee2e2; --badge-cancelled-color: #991b1b;
+  --badge-active-bg: #d1fae5; --badge-active-color: #065f46;
+  --badge-inactive-bg: #fee2e2; --badge-inactive-color: #991b1b;
+
+  /* Admin Layout */
+  --sidebar-width: 260px;
+  --sidebar-collapsed: 72px;
+  --topbar-height: 72px;
+
+  /* Overlays */
+  --modal-overlay: rgba(0, 0, 0, 0.4);
+  --scrollbar-track: #faf8f5;
+  --scrollbar-thumb: #000000;
+  --scrollbar-hover: #000000;
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), 0 1px 8px rgba(0, 0, 0, 0.02);
+}
+
+/* Force color-scheme onto form controls themselves â€” Chromium on Windows
+   sometimes renders the native <select> dropdown popup using the OS theme
+   instead of the page's inherited color-scheme. Setting it explicitly on
+   the element overrides that quirk. */
+select,
+input,
+textarea,
+option {
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  select,
+  input,
+  textarea,
+  option {
+    color-scheme: dark;
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg-color: #000000;
+    --surface-color: #000000;
+    --primary-color: #ffffff;
+    --primary-hover: #ffffff;
+    --accent-color: #ffffff;
+    --text-primary: #ffffff;
+    --text-secondary: #ffffff;
+    --text-muted: #ffffff;
+    --border-color: #ffffff;
+    --border-light: #ffffff;
+    --danger-color: #ff5566;
+    --danger-hover: #ff8090;
+    --danger-bg: transparent;
+    --success-color: #ffffff;
+    --warning-color: #ffffff;
+    --code-bg: rgba(255, 255, 255, 0.06);
+    --error-bg: transparent;
+    --error-color: #ffffff;
+    --modal-overlay: rgba(0, 0, 0, 0.6);
+    --scrollbar-track: #000000;
+    --scrollbar-thumb: #ffffff;
+    --scrollbar-hover: #ffffff;
+
+    /* Badge label exceptions stay chromatic for status legibility. */
+    --badge-placed-bg: #1f2937; --badge-placed-color: #d1d5db;
+    --badge-confirmed-bg: #1e3a5f; --badge-confirmed-color: #93c5fd;
+    --badge-processing-bg: #451a03; --badge-processing-color: #fcd34d;
+    --badge-shipped-bg: #1e1b4b; --badge-shipped-color: #a5b4fc;
+    --badge-delivered-bg: #052e16; --badge-delivered-color: #6ee7b7;
+    --badge-cancelled-bg: #450a0a; --badge-cancelled-color: #fca5a5;
+    --badge-active-bg: #052e16; --badge-active-color: #6ee7b7;
+    --badge-inactive-bg: #450a0a; --badge-inactive-color: #fca5a5;
+    --box-shadow: none;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+html, body, #root, header, footer, aside, .sidebar, .admin-main, .admin-content, .stats-grid, .admin-table-wrapper, .admin-table th, .admin-table td, input, select, textarea {
+  transition: background-color var(--dur-3) var(--ease-out), color var(--dur-3) var(--ease-out), border-color var(--dur-3) var(--ease-out), box-shadow var(--dur-3) var(--ease-out);
+}
+
+html {
+  background-color: var(--bg-color);
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  /* See the storefront index.css: 100vh is the largest mobile viewport,
+     so a 100vh shell hides its last strip behind the address bar. */
+  min-height: 100vh;
+  min-height: 100dvh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  background-color: var(--bg-color);
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* â”€â”€ Buttons (editorial) â”€â”€ */
+button, .btn-primary, .btn-outline, .btn-danger {
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  transition: var(--transition-smooth);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: var(--bg-color);
+  padding: 0.85rem 1.5rem;
+}
+.btn-primary:hover {
+  opacity: 0.85;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary-color);
+  padding: 0.85rem 1.5rem;
+  border: 1px solid var(--border-color);
+}
+.btn-outline:hover {
+  border-color: var(--primary-color);
+}
+
+.btn-danger {
+  background: transparent;
+  color: var(--danger-color);
+  padding: 0.85rem 1.5rem;
+  border: 1px solid var(--danger-color);
+}
+.btn-danger:hover {
+  background: var(--danger-color);
+  color: var(--bg-color);
+  border-color: var(--danger-color);
+}
+
+.btn-sm {
+  padding: 0.55rem 1rem;
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+}
+
+/* Cancel = destructive escape; mirror .btn-danger styling. Applied as
+   .btn-outline.btn-cancel so non-cancel outline buttons stay neutral. */
+.btn-cancel {
+  color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+.btn-cancel:hover {
+  background: var(--danger-color);
+  color: var(--bg-color);
+  border-color: var(--danger-color);
+}
+
+/* Minimalist Inputs */
+input, select, textarea {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 0;
+  color: var(--text-primary);
+  outline: none;
+  width: 100%;
+  transition: var(--transition-smooth);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-bottom-color: var(--primary-color);
+  box-shadow: 0 1px 0 0 var(--primary-color);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+  transition: var(--transition-fast);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-hover);
+}
+
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Admin Layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.admin-layout {
+  display: flex;
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.admin-mobile-toggle {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1300;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-color);
+  color: var(--primary-color);
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-overlay {
+  display: none;
+}
+
+.admin-main {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  transition: margin-left var(--dur-3) var(--ease-out);
+  min-width: 0;
+}
+
+.admin-content {
+  padding: 2rem 4rem;
+  max-width: none;
+}
+
+@media (max-width: 1200px) {
+  .admin-content {
+    padding: 2rem 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-content {
+    padding: 1.5rem 1.25rem;
+  }
+}
+
+/* Loading */
+.loading-screen {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-color);
+  color: var(--text-primary);
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+}
+
+/* Stat Cards â€” see Dashboard.css for editorial overrides */
+
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Tables (boxed) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.admin-table-wrapper {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  overflow-x: auto;
+  /* Keeps a sideways flick inside the table instead of handing it to the
+     browser as a back-navigation gesture, which on a touchpad or phone
+     meant scrolling to the last column could leave the page entirely. */
+  overscroll-behavior-x: contain;
+  box-shadow: var(--box-shadow);
+  transition: box-shadow var(--dur-3) var(--ease-out-soft);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+  /* One fluid density for both, so headers and cells stay aligned:
+     roomy on a desktop, tight enough on a phone that a column of real
+     data still fits beside the label. */
+  padding-inline: clamp(0.6rem, 1.6vw, 1.25rem);
+  padding-block: clamp(0.7rem, 1.4vw, 1.1rem);
+}
+
+.admin-table th {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  /* 0.35em of tracking on a column head is most of its width. It holds
+     the letterspaced look on a roomy screen and gives the space back to
+     the data on a narrow one. */
+  letter-spacing: clamp(0.12em, 0.06em + 0.35vw, 0.35em);
+  text-transform: uppercase;
+  color: var(--primary-color);
+  opacity: 0.55;
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.admin-table td {
+  border-bottom: 1px solid var(--border-color);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--primary-color);
+  vertical-align: middle;
+}
+
+.admin-table tr:last-child td { border-bottom: 0; }
+
+.admin-table tr:hover td { background: var(--skeleton-color); }
+
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Badges â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: var(--font-sans);
+}
+
+.badge-placed { background: var(--badge-placed-bg); color: var(--badge-placed-color); }
+.badge-confirmed { background: var(--badge-confirmed-bg); color: var(--badge-confirmed-color); }
+.badge-processing { background: var(--badge-processing-bg); color: var(--badge-processing-color); }
+.badge-shipped { background: var(--badge-shipped-bg); color: var(--badge-shipped-color); }
+.badge-delivered { background: var(--badge-delivered-bg); color: var(--badge-delivered-color); }
+.badge-cancelled { background: var(--badge-cancelled-bg); color: var(--badge-cancelled-color); }
+.badge-active { background: var(--badge-active-bg); color: var(--badge-active-color); }
+.badge-inactive { background: var(--badge-inactive-bg); color: var(--badge-inactive-color); }
+
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Page Headers (editorial) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.page-header h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  margin: 0;
+}
+
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Forms (Admin-specific) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Modals â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--modal-overlay);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+}
+
+/* Radix renders the overlay and the panel as siblings rather than nesting
+   the panel inside the overlay, so the panel now centres itself instead of
+   being centred by the flexbox on the overlay. */
+.modal-content {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2001;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  width: calc(100vw - 2rem);
+  max-width: 600px;
+  max-height: 90dvh;
+  overflow-y: auto;
+  padding: 2.5rem;
+  box-shadow: var(--box-shadow);
+}
+
+/* Entry and exit, driven by the state Radix puts on the element. The exit
+   matters as much as the entry: a panel that vanishes on the frame it is
+   dismissed reads as a glitch, where a 200ms fade reads as closing. */
+.modal-overlay[data-state='open']   { animation: modal-overlay-in var(--dur-3) var(--ease-out); }
+.modal-overlay[data-state='closed'] { animation: modal-overlay-out var(--dur-2) var(--ease-out); }
+.modal-content[data-state='open']   { animation: modal-panel-in var(--dur-3) var(--ease-out); }
+.modal-content[data-state='closed'] { animation: modal-panel-out var(--dur-2) var(--ease-out); }
+
+@keyframes modal-overlay-in  { from { opacity: 0 } to { opacity: 1 } }
+@keyframes modal-overlay-out { from { opacity: 1 } to { opacity: 0 } }
+@keyframes modal-panel-in {
+  from { opacity: 0; transform: translate(-50%, calc(-50% + 8px)) scale(0.985) }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1) }
+}
+@keyframes modal-panel-out {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(1) }
+  to   { opacity: 0; transform: translate(-50%, calc(-50% + 4px)) scale(0.99) }
+}
+
+.modal-content h2,
+.modal-title {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  padding-right: 2.5rem;
+}
+
+.modal-content h2 {
+  margin-bottom: 2rem;
+}
+
+.modal-description {
+  color: var(--text-muted);
+  opacity: 0.7;
+  font-size: 0.7rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+/* Every modal now carries a dismiss control in the same corner. Before
+   this, some panels could only be left by clicking the backdrop, which is
+   invisible as an affordance and unavailable from a keyboard. */
+.modal-close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  opacity: 0.55;
+  cursor: pointer;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+
+.modal-close:hover { opacity: 1; }
+
+.confirm-modal {
+  max-width: 420px;
+  padding: 2rem;
+}
+
+.confirm-message {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+/* On a phone the two actions go full width and stack, with the confirming
+   action on top — thumb reach, and it stops Cancel and Confirm from
+   becoming two narrow targets side by side. */
+@media (max-width: 480px) {
+  .modal-content { padding: 1.5rem; }
+  .confirm-actions { flex-direction: column-reverse; }
+  .confirm-actions > button { width: 100%; }
+}
+
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Image Upload â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.image-upload-zone {
+  border: 2px dashed var(--border-color);
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.image-upload-zone:hover {
+  border-color: var(--primary-color);
+}
+
+.image-preview-grid {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.image-preview-grid .preview-item {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.image-preview-grid .preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-preview-grid .preview-item .remove-img {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  background: var(--primary-color);
+  color: var(--bg-color);
+  border: none;
+  font-size: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Empty States â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-muted);
+}
+
+.empty-state svg {
+  margin-bottom: 1rem;
+  opacity: 0.4;
+}
+
+.empty-state h3 {
+  margin-bottom: 0.5rem;
+}
+
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+@media (max-width: 768px) {
+  .admin-main {
+    margin-left: 0;
+  }
+
+  .admin-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .admin-mobile-toggle {
+    display: inline-flex;
+  }
+
+  .admin-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1050;
+    background: var(--modal-overlay);
+  }
+
+  .admin-main {
+    margin-left: 0;
+  }
+
+  .admin-content {
+    padding-top: 5rem;
+  }
+
+  .page-header,
+  .products-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .products-toolbar {
+    justify-content: flex-start;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Suspense fallback for lazily-loaded dashboard routes. */
+.admin-route-loading {
+  padding: 3rem 1rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+/* ─── Reduced motion ────────────────────────────────────────────────
+   Honour the OS setting globally. What remains after the decorative
+   pass is mostly status motion — spinners, the typing indicator, the
+   skeleton pulse — plus the mobile drawer. This still flattens all of
+   it, since a spinner is exactly the kind of loop that triggers
+   vestibular symptoms.
+
+   Motion is near-eliminated rather than set to 0s: `animation: none`
+   can strand an element on the from-state of a `both` fill, leaving it
+   invisible. A 1ms run reaches the end state immediately instead. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+
+
+/* ─────────── Table cell roles ───────────
+   These replace per-cell inline styles, so the same kind of value is
+   presented the same way in every table rather than being restyled at
+   each call site. */
+
+/* Figures: right-aligned on a shared decimal edge, and tabular so the
+   digits line up column-wise instead of drifting with glyph widths. */
+.admin-table .cell-numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Identifiers — order ids, payment references. Monospace because these
+   are read character by character and compared against another screen. */
+.cell-id {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+/* The second line of a two-line cell: an email under a name. Quieter than
+   the value above it, and allowed to truncate rather than widen the
+   column. */
+.cell-sub {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  opacity: 0.65;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 22ch;
+}
+
+/* A button whose content is a single icon. Square, and never narrower
+   than a fingertip. */
+.btn-icon {
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── No italics ─────────────────────────────────────────────────────
+   Italic has been removed from the product entirely: the italic cuts of
+   the two families are no longer declared, and no rule sets font-style
+   any more.
+
+   These elements are the remaining source of it, because the browser
+   italicises them by default rather than any stylesheet asking for it.
+   <em> keeps its meaning for assistive technology — it is still emphasis
+   to a screen reader — it simply stops being slanted, and the places
+   that used it for a visual distinction carry that with weight or
+   opacity instead.
+
+   font-synthesis-style: none is the backstop: without it a browser asked
+   for an italic face that does not exist will slant the roman one
+   mechanically, which is the artificial oblique this is meant to end. */
+em, i, cite, dfn, var, address, blockquote, q {
+  font-style: normal;
+}
+
+html {
+  font-synthesis-style: none;
+}

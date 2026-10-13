@@ -1,0 +1,164 @@
+/* ──────────  NEWSLETTER — EDITORIAL B/W  ────────── */
+
+.newsletter-page {
+  padding-bottom: 6rem;
+}
+
+/* ── Full-bleed inverted page-header bar ── */
+.nl-page-header {
+  width: 100%;
+  background: var(--primary-color);
+  border-bottom: 1px solid var(--primary-color);
+  margin-bottom: 5rem;
+}
+
+.nl-page-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--bg-color);
+}
+
+.nl-header-sep {
+  opacity: 0.45;
+}
+
+
+.newsletter-feed {
+  width: 100%;
+}
+
+.newsletter-empty {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  opacity: 0.7;
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.newsletter-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+}
+
+/* ── Alternating Cards Layout ── */
+.newsletter-item-card {
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+.newsletter-item-card.layout-left {
+  flex-direction: row;
+}
+
+.newsletter-item-card.layout-right {
+  flex-direction: row-reverse;
+}
+
+.newsletter-card-image {
+  flex: 1;
+  max-width: 48%;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.newsletter-card-image img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+  border: 1px solid var(--border-color);
+  transition: transform var(--dur-4) var(--ease-out), filter var(--dur-3) var(--ease-out);
+}
+
+/* Alternating aspects for editorial variation */
+.newsletter-item-card.layout-right .newsletter-card-image img {
+  aspect-ratio: 4 / 3;
+}
+
+
+.newsletter-card-content {
+  flex: 1;
+  max-width: 48%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.newsletter-card-date {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  opacity: 0.5;
+  margin-bottom: 0.85rem;
+}
+
+.newsletter-card-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 2.5vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--primary-color);
+  margin: 0 0 1.25rem 0;
+  letter-spacing: -0.01em;
+}
+
+.newsletter-card-body {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--primary-color);
+  opacity: 0.8;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* ── Responsive ── */
+@media (max-width: 860px) {
+  .newsletter-page {
+    padding-bottom: 4rem;
+  }
+
+  .nl-page-header {
+    margin-bottom: 3rem;
+  }
+
+  .newsletter-list {
+    gap: 4rem;
+  }
+
+  .newsletter-item-card,
+  .newsletter-item-card.layout-right {
+    flex-direction: column;
+    gap: 2.25rem;
+    align-items: flex-start;
+  }
+
+  .newsletter-card-image,
+  .newsletter-card-content {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .newsletter-card-image img,
+  .newsletter-item-card.layout-right .newsletter-card-image img {
+    aspect-ratio: 16 / 10;
+  }
+}

@@ -1,0 +1,113 @@
+.newsletter-page { display: flex; flex-direction: column; gap: 2rem; }
+
+.newsletter-composer,
+.newsletter-list-section {
+  border: 1px solid var(--border-color);
+  padding: 1.5rem 1.75rem;
+  background: var(--surface-color);
+}
+
+.newsletter-composer-title,
+.newsletter-list-title {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  margin: 0 0 1.25rem;
+}
+
+.newsletter-composer textarea,
+.newsletter-composer input {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.5rem 0;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--primary-color);
+  outline: none;
+  resize: vertical;
+}
+
+.newsletter-composer input:focus,
+.newsletter-composer textarea:focus {
+  border-bottom-color: var(--primary-color);
+}
+
+.newsletter-composer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.newsletter-composer-count {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.newsletter-feedback {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.newsletter-feedback.ok  { color: var(--primary-color); opacity: 0.7; }
+.newsletter-feedback.err { color: var(--danger-color); }
+
+.newsletter-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.newsletter-item {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+.newsletter-item:last-child { border-bottom: 0; }
+
+.newsletter-item-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.newsletter-item-date {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.65;
+}
+
+.newsletter-item-heading {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  margin: 0 0 0.5rem;
+}
+
+.newsletter-item-body {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--primary-color);
+  margin: 0;
+  white-space: pre-wrap;
+  opacity: 0.85;
+}

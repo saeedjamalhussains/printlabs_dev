@@ -1,0 +1,31 @@
+{
+  "name": "the-print-labs-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ThePrintLabs \u2014 poster store, admin dashboard, backend and Fabi assistant.",
+  "workspaces": [
+    "apps/*",
+    "shared/packages/*"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "concurrently -n server,store,admin -c blue,green,magenta \"npm:dev:server\" \"npm:dev:store\" \"npm:dev:admin\"",
+    "dev:server": "npm run dev -w @printlabs/server",
+    "dev:store": "npm run dev -w @printlabs/store",
+    "dev:admin": "npm run dev -w @printlabs/admin",
+    "build": "npm run build --workspaces --if-present",
+    "build:store": "npm run build -w @printlabs/store",
+    "build:admin": "npm run build -w @printlabs/admin",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "start:server": "npm run start -w @printlabs/server",
+    "create-admin": "npm run create-admin -w @printlabs/server",
+    "audit:log": "npm run audit -w @printlabs/server",
+    "test:security": "npm run test:security -w @printlabs/server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

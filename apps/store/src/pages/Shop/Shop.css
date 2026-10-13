@@ -1,0 +1,521 @@
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€  SHOP â€” EDITORIAL B/W  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+
+.shop-page {
+  padding-top: 2rem;
+  padding-bottom: 8rem;
+}
+
+/* â”€â”€ Header â”€â”€ */
+.shop-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.shop-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.shop-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  margin: 0;
+}
+
+.shop-title em {
+  font-weight: 400;
+  text-transform: none;
+  opacity: 0.85;
+}
+
+.shop-subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  opacity: 0.7;
+  margin-top: 0.5rem;
+}
+
+.shop-rule {
+  border: 0;
+  border-top: 1px solid var(--border-color);
+  margin: 0 0 3rem;
+}
+
+/* â”€â”€ Body Layout â”€â”€ */
+.shop-body {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 3rem;
+}
+
+/* â”€â”€ Sidebar â”€â”€ */
+.shop-sidebar {
+  position: sticky;
+  top: 140px;
+  align-self: start;
+  /* Wrap the filters in a thin-bordered panel so the controls read as
+     a distinct module rather than loose text floating beside the
+     product grid. Mirrors the Featured-box frame on Home. */
+  border: 1px solid var(--border-color);
+  background: var(--bg-color);
+  padding: 1.75rem 1.5rem;
+}
+
+/* Small eyebrow label above the first filter group. */
+.shop-sidebar::before {
+  content: 'Refine';
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  opacity: 0.45;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.shop-sidebar-label {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  opacity: 0.55;
+  margin-bottom: 1rem;
+}
+
+.shop-sidebar-hint {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: none;
+  opacity: 0.8;
+}
+
+.shop-filter-group + .shop-filter-group {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* ── Paper-size chip row ── */
+.shop-chip-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.shop-chip {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  padding: 0.45rem 0.85rem;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: background var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out);
+}
+
+/* Hover used to use --bg-secondary, which collapses to the same colour
+   as the sidebar in both modes (white-on-white in light, black-on-black
+   in dark). Use the skeleton-color overlay so the hover state is
+   actually visible in both themes. */
+.shop-chip:hover { background: var(--skeleton-color); }
+
+.shop-chip.is-active {
+  background: var(--primary-color);
+  color: var(--bg-color);
+  border-color: var(--primary-color);
+}
+
+/* The min thumb has to sit above the max thumb when they're at the
+   same position, otherwise the user can't drag it back. */
+/* Stacking order is set inline in Shop.jsx, from handle position — a
+   fixed order buries the same handle every time and makes it impossible
+   to grab once the two meet. */
+
+/* ── Sort dropdown ──
+   Explicit bg + colour (not transparent + opacity tricks) so the
+   native <option> popup renders readable in both light and dark mode.
+   Without this the browser inherits the page color-scheme and the
+   options can render white-on-white in light mode. */
+.shop-sort {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  height: auto;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  padding: 0.55rem 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--primary-color);
+  cursor: pointer;
+  outline: none;
+}
+
+/* The trigger keeps the boxed look it always had, so overrule the shared
+   underline styling the Select trigger carries by default. */
+.shop-sort:hover { border-color: var(--border-color); }
+.shop-sort[data-state='open'] { border-color: var(--border-color); }
+
+/* Chevron follows the panel state, so the control says whether it is
+   open rather than looking identical either way. */
+.shop-sort[data-state='open'] svg { transform: rotate(180deg); }
+
+/* ── Clear all ── */
+.shop-clear-filters {
+  margin-top: 2rem;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--danger-color);
+  cursor: pointer;
+  border-bottom: 1px solid var(--danger-color);
+  padding-bottom: 0.2rem;
+  opacity: 0.85;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+.shop-clear-filters:hover { opacity: 1; }
+
+.shop-category-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.shop-category-list button {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: var(--primary-color);
+  opacity: 0.6;
+  cursor: pointer;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+
+.shop-category-list button:hover { opacity: 1; }
+
+.shop-category-list button.is-active {
+  opacity: 1;
+  font-weight: 700;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+}
+
+/* â”€â”€ Main â”€â”€ */
+.shop-search {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.6rem 0;
+  /* Just enough to clear the rule. The result count below supplies the
+     rest of the gap, so the two are spaced by real layout instead of a
+     negative margin that only held at one font size. */
+  margin-bottom: 0.85rem;
+}
+
+.shop-search-icon { color: var(--primary-color); opacity: 0.55; }
+
+.shop-search input {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  padding: 0.5rem 0;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: var(--primary-color);
+  outline: none;
+}
+
+/* type="search" makes the field clearable by the Escape key and announces
+   itself correctly, but WebKit also draws its own clear button — which,
+   next to the one below, left two X controls side by side. The native one
+   is suppressed; the styled one is the single affordance. */
+.shop-search input[type='search']::-webkit-search-cancel-button,
+.shop-search input[type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Clear-search and the refetch indicator sit inside the search rule, at
+   the trailing edge, so the row keeps its single-line shape. */
+.shop-search-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: var(--primary-color);
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+
+.shop-search-clear:hover { opacity: 1; }
+
+.shop-search-status {
+  flex-shrink: 0;
+  color: var(--primary-color);
+  opacity: 0.5;
+}
+
+/* Sits between the search rule and the grid. Small and quiet — it is
+   orientation, not a headline. */
+.shop-result-count {
+  margin: 0 0 1.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  opacity: 0.5;
+  min-height: 1rem;
+}
+
+/* A filter change dims the grid it is about to replace instead of
+   clearing it. The results stay readable, the page does not collapse to
+   skeletons and back, and nothing moves — only opacity changes, so this
+   costs no layout. Pointer events stay on: a card is still clickable. */
+.product-grid.is-refreshing {
+  opacity: 0.45;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+
+.shop-search input::placeholder {
+  color: var(--text-primary);
+  opacity: 0.35;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+}
+
+/* â”€â”€ Grid â”€â”€ */
+/* Masonry. Cards are as tall as their own artwork, so a landscape poster
+   no longer leaves a column of dead space under it waiting for the
+   tallest card in its row. `grid-auto-rows` is the unit each card spans a
+   whole number of (see useMasonrySpan); 8px is fine enough that the
+   rounding is invisible and coarse enough to stay cheap.
+
+   auto-fill, not auto-fit: with few results auto-fit stretches the
+   survivors to fill the row, so three posters would render enormous. */
+.product-grid {
+  display: grid;
+  /* min(…, 100%) rather than a bare minimum: when the container is
+     narrower than the minimum track — a very small phone, or the grid
+     nested in a narrow panel — a fixed minimum makes the track wider
+     than its own container and the row overflows sideways.
+
+     180px, not 200px. At a 1024px tablet the content area is 638px wide,
+     and three 200px tracks plus their gaps need 648px — so the grid fell
+     back to two 307px cards and a tablet showed a third fewer posters
+     than it had room for, at a size no poster needed. 180px clears that
+     threshold; below ~215px the card switches its own footer to a stack
+     via its container query, so the narrower track stays usable. */
+  grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
+  /* Gap scales with the viewport too, so a phone is not paying desktop
+     gutters out of a screen that has none to spare. */
+  column-gap: clamp(0.85rem, 1.6vw, 1.5rem);
+  /* Zero, deliberately. A row gap applies between every one of these 8px
+     tracks, not just between cards, which would quantise card heights to
+     the gap size and put the dead space straight back. The vertical
+     rhythm comes from the card's own margin instead. */
+  row-gap: 0;
+  grid-auto-rows: 8px;
+  align-items: start;
+}
+
+.product-grid > * {
+  grid-row: span var(--row-span, 40);
+  margin-bottom: 2rem;
+}
+
+.skeleton-card {
+  aspect-ratio: 3/4;
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-color) 25%,
+    rgba(0, 0, 0, 0.05) 37%,
+    var(--skeleton-color) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s var(--ease-in-out) infinite;
+}
+
+@media (prefers-color-scheme: dark) {
+  .skeleton-card {
+    background: linear-gradient(
+      90deg,
+      var(--skeleton-color) 25%,
+      rgba(255, 255, 255, 0.08) 37%,
+      var(--skeleton-color) 63%
+    );
+    background-size: 400% 100%;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* â”€â”€ Empty â”€â”€ */
+.shop-empty {
+  padding: 6rem 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.shop-empty-title {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  color: var(--primary-color);
+}
+
+.shop-empty-sub {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  opacity: 0.6;
+}
+
+/* ── Mobile filter toggle (hidden on desktop) ── */
+.shop-filter-toggle { display: none; }
+
+.shop-filter-toggle-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--danger-color);
+  margin-left: 0.4rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .shop-body { grid-template-columns: 1fr; gap: 1.5rem; }
+  .shop-sidebar {
+    position: static;
+    padding: 1rem 1.25rem;
+  }
+  /* Replace the always-on 'Refine' eyebrow with the toggle button. */
+  .shop-sidebar::before { display: none; }
+
+  .shop-filter-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    cursor: pointer;
+  }
+
+  /* Collapse the filter panel by default; expand only when is-open. */
+  .shop-filter-panel { display: none; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border-color); }
+  .shop-sidebar.is-open .shop-filter-panel { display: block; }
+
+  .shop-category-list { flex-direction: row; flex-wrap: wrap; gap: 1.25rem; }
+}
+
+@media (max-width: 600px) {
+  .shop-page { padding-top: 1.25rem; padding-bottom: 4rem; }
+  .shop-header { gap: 0.5rem; margin-bottom: 1.5rem; }
+  .shop-title { font-size: clamp(2rem, 9vw, 3rem); letter-spacing: 0; line-height: 1.05; }
+  .shop-subtitle { font-size: 0.7rem; letter-spacing: 0.25em; margin-top: 0.25rem; }
+  .shop-rule { margin: 0 0 1.75rem; }
+  .shop-search { margin-bottom: 1.75rem; }
+  .shop-search input { font-size: 0.85rem; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); column-gap: 0.85rem; }
+  .product-grid > * { margin-bottom: 1.5rem; }
+}
+
+@media (max-width: 380px) {
+  /* Single column: nothing to interleave, so give the rows back. */
+  .product-grid { grid-template-columns: 1fr; grid-auto-rows: auto; row-gap: 1.25rem; }
+  .product-grid > * { grid-row: auto; margin-bottom: 0; }
+  .shop-sidebar { padding: 1rem; }
+  .shop-title { font-size: 1.85rem; }
+}
+
+/* Load-more. The catalogue is paginated server-side, so the grid only
+   ever rendered the first page of results. */
+.shop-load-more {
+  display: block;
+  margin: 3rem auto 0;
+  padding: 0.9rem 2.5rem;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: background var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out);
+}
+
+.shop-load-more:hover:not(:disabled) {
+  background: var(--primary-color);
+  color: var(--bg-color);
+}
+
+.shop-load-more:disabled { opacity: 0.5; cursor: not-allowed; }

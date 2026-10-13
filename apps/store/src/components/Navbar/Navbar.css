@@ -1,0 +1,399 @@
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€  NAVBAR â€” EDITORIAL B/W  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--bg-color);
+  border-bottom: 1px solid var(--border-color);
+  transition: background var(--dur-3) var(--ease-out), border-color var(--dur-3) var(--ease-out), box-shadow var(--dur-3) var(--ease-out);
+}
+
+.navbar.scrolled {
+  background: var(--bg-color);
+  border-bottom-color: var(--border-color);
+  box-shadow: 0 1px 0 var(--border-color);
+}
+
+/* Declared as a container so the wordmark rule below can be written in
+   ch. A media query in ch would resolve against the initial font size and
+   so would ignore a reader who has scaled text up — which is precisely
+   the case that causes the collision. A container query in ch resolves
+   against this element, so it reacts to both causes. */
+.nav-content {
+  container-type: inline-size;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 76px;
+}
+
+
+/* â”€â”€ Logo (compact variant â€” shared spec with admin sidebar) â”€â”€ */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+  color: var(--primary-color);
+  line-height: 1;
+  /* Without min-width:0 a flex item refuses to shrink below its content,
+     so the nowrap wordmark pushed straight through the sign-in button
+     once text was scaled up. The mark itself never shrinks; the wordmark
+     beside it yields first. */
+  min-width: 0;
+}
+
+.nav-logo-img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
+
+.logo-text {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  white-space: nowrap;
+}
+
+/* â”€â”€ Links â”€â”€ */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  /* Positioning context for the single sliding underline. */
+  position: relative;
+}
+
+.nav-links a {
+  /* Positioning context for the shared underline. */
+  position: relative;
+  padding-bottom: 0.2rem;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--primary-color);
+  opacity: 0.7;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+
+.nav-links a:hover { opacity: 1; }
+
+/* Active route — the same subtle 1px underline as before, so the current
+   page still reads as "stamped" rather than highlighted. It is now drawn
+   by a single shared element that slides between tabs instead of a
+   border-bottom that blinks off one link and on to another. */
+.nav-links a.active {
+  opacity: 1;
+}
+
+/* 1px wide and scaled horizontally to the width of the active tab, so
+   both position and size are carried by transform alone and moving it
+   never triggers layout. transform-origin is the left edge, which is what
+   makes scaleX behave as a width. */
+.nav-active-indicator {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  transform-origin: left center;
+  background: var(--primary-color);
+  /* Left of the strip until measured, so it never flashes at x=0. */
+  will-change: transform;
+}
+
+.mobile-cart-link { display: none; }
+
+/* â”€â”€ Actions â”€â”€ */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  /* The actions are the functional half of the bar — they hold their
+     size and the wordmark gives way instead. */
+  flex-shrink: 0;
+}
+
+.user-dropdown-container { position: relative; min-width: 0; }
+
+.user-name-toggle {
+  /* Reset the global `button` defaults from index.css. */
+  background: transparent;
+  border: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Square, and never smaller than a fingertip — it sits beside the cart
+     and the menu button and should match them. */
+  width: 44px;
+  height: 44px;
+  /* The enlarged box is centred on the glyph rather than adding width to
+     the row, so removing the name genuinely gives the space back. */
+  margin-inline: -0.5rem;
+  color: var(--primary-color);
+  cursor: pointer;
+  max-width: 200px;
+  min-width: 0;
+}
+
+/* The identity block at the top of the account menu — the one place the
+   name is shown, with room to be read. Quieter than the actions beneath
+   it: this is a label, not a control. */
+.dropdown-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  /* Long names and addresses wrap here rather than widening the panel or
+     being cut off, which is the whole reason they left the bar. */
+  max-width: 15rem;
+}
+
+.dropdown-identity-name {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  overflow-wrap: anywhere;
+}
+
+.dropdown-identity-email {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--text-primary);
+  opacity: 0.55;
+  /* break-word, not anywhere: an address that does not fit breaks at a
+     sensible point instead of splitting a word wherever it runs out. */
+  overflow-wrap: break-word;
+}
+
+.user-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 1.25rem);
+  right: 0;
+  /* Wide enough for an ordinary email address to sit on one line — at
+     160px the identity block broke addresses mid-word, which looks like
+     a rendering fault rather than a wrap. */
+  min-width: 14rem;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out), display var(--dur-2);
+  transition-behavior: allow-discrete;
+}
+
+@starting-style {
+  .user-dropdown-menu {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+.dropdown-link,
+.dropdown-item {
+  background: transparent;
+  border: 0;
+  padding: 0.85rem 1.25rem;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  /* Override the global `button { display: inline-flex; justify-content: center }`
+     rule from index.css so LOGOUT lines up with the ACCOUNT link above it. */
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.dropdown-link + .dropdown-item,
+.dropdown-link + .dropdown-link {
+  border-top: 1px solid var(--border-color);
+}
+
+.dropdown-link:hover,
+.dropdown-item:hover { background: var(--skeleton-color); }
+
+/* LOGOUT is a destructive action — colour it red while leaving the
+   ACCOUNT link (.dropdown-link) in the default primary colour. */
+.dropdown-item { color: var(--danger-color); }
+.dropdown-item:hover { background: var(--danger-color); color: var(--bg-color); }
+
+.btn-primary {
+  background: var(--primary-color);
+  color: var(--bg-color);
+  padding: 0.7rem 1.4rem;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.cart-icon {
+  position: relative;
+  color: var(--primary-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background: var(--primary-color);
+  color: var(--bg-color);
+  font-family: var(--font-sans);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+
+
+
+
+.menu-toggle {
+  background: transparent;
+  border: 0;
+  /* The icon is 24px, and with padding:0 that was the entire hit area —
+     for the control that opens navigation on every phone. The glyph stays
+     24px; the target around it is now a comfortable 44px square, which is
+     the size a fingertip actually needs. Negative margin keeps the
+     enlarged box from shifting the row it sits in. */
+  padding: 0;
+  min-width: 44px;
+  min-height: 44px;
+  margin-inline: -0.5rem;
+  color: var(--primary-color);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-toggle { display: none; }
+
+/* â”€â”€ Responsive â”€â”€ */
+@media (max-width: 1100px) {
+  .nav-links { gap: 2rem; }
+  .nav-actions { gap: 1.25rem; }
+}
+
+/* Switch to mobile drawer BEFORE the desktop layout starts to squish */
+@media (max-width: 960px) {
+  .nav-content { height: 76px; }
+  .nav-logo-img { width: 46px; height: 46px; }
+  .logo-text { font-size: 0.85rem; }
+  .menu-toggle { display: inline-flex; }
+  .cart-icon { display: none; }
+  .mobile-cart-link { display: block; }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 2rem 1.5rem;
+    background: var(--bg-color);
+    border-bottom: 1px solid var(--border-color);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+  }
+
+  .nav-links.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  /* The drawer stacks the links vertically, where a horizontally sliding
+     underline is the wrong idea: it would travel diagonally across a
+     panel that closes the moment a link is tapped, so the movement would
+     never actually be seen. The marker reverts to the stamped underline
+     on the current row — same visual language, no travel. */
+  .nav-active-indicator {
+    display: none;
+  }
+
+  .nav-links a.active {
+    border-bottom: 1px solid var(--primary-color);
+    padding-bottom: 0.2rem;
+  }
+
+  .nav-actions { gap: 1rem; }
+  .user-name-toggle { max-width: 120px; }
+}
+
+/* â”€â”€ Smaller screens: emphasise the logo, swap the name for an icon â”€â”€ */
+@media (max-width: 600px) {
+  .nav-actions { gap: 0.75rem; }
+  .nav-logo-img { width: 44px; height: 44px; }
+  .logo-text { font-size: 0.8rem; letter-spacing: 0.04em; }
+  /* Was 0.55rem — 8.8px, small enough to be genuinely hard to read, on
+     the primary call to action. Held at a legible floor, and given a
+     height that works as a touch target. */
+  .btn-primary {
+    padding: 0.6rem 1rem;
+    font-size: 0.65rem;
+    min-height: 38px;
+  }
+}
+
+@media (max-width: 380px) {
+  .nav-logo-img { width: 40px; height: 40px; }
+  .logo-text { font-size: 0.72rem; }
+}
+
+/* Below this the wordmark and the actions genuinely cannot share the
+   row. The logotype image stays — it carries the brand on its own — and
+   the words step aside rather than colliding with the sign-in button.
+   Expressed in ch so it also triggers when the collision is caused by
+   the reader scaling text up rather than by a narrow screen. */
+@container (max-width: 30ch) {
+  .logo-text { display: none; }
+}
+
+@media (max-width: 340px) {
+  .logo-text { display: none; }
+}

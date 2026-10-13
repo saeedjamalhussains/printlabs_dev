@@ -1,0 +1,11 @@
+{
+  "name": "@printlabs/categories",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Category vocabulary shared by the ThePrintLabs API and admin dashboard.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": ["src"]
+}

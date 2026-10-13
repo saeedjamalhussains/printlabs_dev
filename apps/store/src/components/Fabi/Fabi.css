@@ -1,0 +1,549 @@
+/* ── The Fabi AI Assistant Styling ───────────────────────────────────── */
+
+.fabi-container {
+  position: fixed;
+  /* Clear of the home indicator on a gesture-navigation phone. env()
+     falls back to 0px on every device without an inset, so this adds no
+     padding where none is needed. */
+  bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+  right: calc(2rem + env(safe-area-inset-right, 0px));
+  z-index: 9999;
+  font-family: var(--font-sans);
+}
+
+/* ── Trigger Button ─────────────────────────────────────────────────────── */
+.fabi-trigger-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* A circle, now that the label is gone. The old pill padding was
+     tuned around the text and left the mark lopsided without it. */
+  width: 62px;
+  height: 62px;
+  padding: 0;
+  background-color: var(--primary-color);
+  color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: var(--transition-smooth);
+  position: relative;
+}
+
+.fabi-trigger-btn:hover {
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.25);
+}
+
+
+/* Same clip as the header avatar, sized for the 62px button. */
+.fabi-trigger-logo {
+  width: 33px;
+  height: 33px;
+  border-radius: 50%;
+  object-fit: cover;
+  transform: scale(1.02);
+  display: block;
+}
+
+/* ── Floating Window ────────────────────────────────────────────────────── */
+.fabi-window {
+  /* 380px wrapped body text to ~6 words a line and pushed the openers
+     onto four rows. The extra 44px buys a readable measure. */
+  width: 424px;
+  height: 600px;
+  max-height: calc(100vh - 4rem);
+  max-height: calc(100dvh - 4rem);
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.fabi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background-color: var(--bg-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.fabi-header-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* The mark is a circle drawn inside a square PNG, so clipping at 50%
+   lands on that circle and the artwork's own background fills the disc.
+   The previous background-color is gone deliberately: it would show as a
+   ring of the wrong colour between the artwork's edge and the clip. */
+.fabi-avatar {
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+  object-fit: cover;
+  /* The PNG's own square is slightly larger than its circle; scaling up
+     a touch pushes that margin under the clip. */
+  transform: scale(1.02);
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Set to match the logo mark. The name was uppercase serif with wide
+   tracking, so the word sat beside its own mark looking like a different
+   brand: rigid, letter-spaced capitals against a flowing glyph. Sentence
+   case and tight tracking keep the two reading as one thing. This is the
+   only place the name is shown — the closed launcher is the mark alone. */
+.fabi-name {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  /* Near-zero: tracking pulls letters apart, and the name should stay
+     joined up the way the mark does. */
+  letter-spacing: 0.01em;
+  text-transform: none;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.fabi-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.fabi-icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  opacity: 0.6;
+  padding: 0.4rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-fast);
+}
+
+.fabi-icon-btn:hover {
+  opacity: 1;
+  background-color: var(--skeleton-color);
+}
+
+/* ── Body & Scroll Area ─────────────────────────────────────────────────── */
+.fabi-body {
+  flex: 1;
+  overflow-y: auto;
+  /* Generous vertical padding: the thread should feel like it sits in
+     the panel rather than being pressed against its edges. */
+  padding: 1.5rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background-color: var(--surface-color);
+}
+
+/* ── Welcome Component ─────────────────────────────────────────────────── */
+.fabi-welcome {
+  display: flex;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.fabi-welcome-icon-wrap {
+  color: var(--text-primary);
+  display: flex;
+  align-items: flex-start;
+  padding-top: 0.15rem;
+}
+
+.fabi-welcome-content h4 {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+}
+
+.fabi-welcome-content p {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.fabi-restriction-note {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--border-color);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+
+/* ── Prompts Chips ──────────────────────────────────────────────────────── */
+.fabi-prompts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.fabi-prompts-label {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  /* Was an uppercase serif "SUGGESTED QUESTIONS" heading — a section
+     title for four buttons. Sentence case reads as an offer. */
+}
+
+.fabi-prompts-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.fabi-chip-btn {
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 500;
+  padding: 0.45rem 0.85rem;
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.fabi-chip-btn:hover:not(:disabled) {
+  background-color: var(--primary-color);
+  color: var(--bg-color);
+}
+
+.fabi-chip-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Messages Stream ────────────────────────────────────────────────────── */
+.fabi-messages-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.fabi-message-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 85%;
+}
+
+.fabi-message-wrapper.is-user {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.fabi-message-wrapper.is-bot {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.fabi-message-bubble {
+  padding: 0.85rem 1.05rem;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+/* The scope note under the greeting. */
+.fabi-message-note {
+  margin-top: 0.6rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.fabi-message-wrapper.is-user .fabi-message-bubble {
+  background-color: var(--primary-color);
+  color: var(--bg-color);
+  border-bottom-right-radius: 2px;
+}
+
+.fabi-message-wrapper.is-bot .fabi-message-bubble {
+  /* Fill instead of outline. A border on every bubble, card and chip
+     turned the panel into a grid of boxes; separation by tone is quieter
+     and reads faster. */
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  border: 0;
+  border-bottom-left-radius: 2px;
+}
+
+.fabi-message-time {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+  padding: 0 0.2rem;
+  opacity: 0.7;
+}
+
+/* Payment Refusal Button */
+.fabi-refusal-action {
+  margin-top: 0.75rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--border-color);
+}
+
+.fabi-refusal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  background-color: var(--primary-color);
+  color: var(--bg-color);
+  border-radius: 6px;
+  font-family: var(--font-serif);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.fabi-refusal-btn:hover {
+  opacity: 0.9;
+}
+
+/* Embedded Mini Product Cards */
+.fabi-product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.fabi-mini-card {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+}
+
+.fabi-mini-card:hover {
+  border-color: var(--primary-color);
+}
+
+.fabi-mini-card-img {
+  width: 100%;
+  height: 90px;
+  background-color: var(--bg-secondary);
+  overflow: hidden;
+}
+
+.fabi-mini-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fabi-mini-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.fabi-mini-card-details {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.fabi-mini-card-title {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fabi-mini-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fabi-mini-card-price {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.fabi-mini-card-action {
+  font-family: var(--font-serif);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  color: var(--text-primary);
+}
+
+/* Typing indicator dots */
+.fabi-typing-bubble {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.75rem 1rem !important;
+}
+
+.fabi-typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--text-primary);
+  animation: typingDot 1.4s infinite ease-in-out both;
+}
+
+.fabi-typing-dot:nth-child(1) { animation-delay: 0s; }
+.fabi-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.fabi-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingDot {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1.1); opacity: 1; }
+}
+
+/* ── Input Area ─────────────────────────────────────────────────────────── */
+/* Full-screen on a phone, this form sits on the very bottom edge, where
+   the home indicator would otherwise cross the text field and the send
+   button. The inset is added to the existing padding rather than
+   replacing it. */
+.fabi-input-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.25rem;
+  /* After the shorthand, or the shorthand resets it. */
+  padding-bottom: calc(0.85rem + env(safe-area-inset-bottom, 0px));
+  background-color: var(--bg-color);
+  border-top: 1px solid var(--border-color);
+}
+
+.fabi-input-field {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.5rem 0;
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  outline: none;
+  border-radius: 0;
+}
+
+.fabi-input-field:focus {
+  border-bottom-color: var(--primary-color);
+}
+
+.fabi-send-btn {
+  background-color: var(--primary-color);
+  color: var(--bg-color);
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.fabi-send-btn:hover:not(:disabled) {
+  opacity: 0.8;
+}
+
+.fabi-send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Mobile Responsive Overlay ─────────────────────────────────────────── */
+@media (max-width: 550px) {
+  .fabi-container {
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    right: calc(1rem + env(safe-area-inset-right, 0px));
+  }
+
+  .fabi-window {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    /* The full-screen assistant is the sharpest case for dvh in the app:
+       it is a chat with its composer pinned to the bottom edge, so a
+       100vh panel puts the text field underneath the address bar and the
+       thing being typed into cannot be seen. */
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    border: none;
+    z-index: 10000;
+  }
+
+  .fabi-product-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Follow-up chips under the latest reply. Left-aligned with the bot
+   bubble so they read as a continuation of it rather than a new block. */
+.fabi-followups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.55rem;
+  align-self: flex-start;
+  max-width: 100%;
+}

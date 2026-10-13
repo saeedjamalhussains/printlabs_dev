@@ -1,0 +1,202 @@
+.products-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 2rem;
+}
+
+.products-page .table-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.products-page .table-actions button {
+  min-width: unset;
+  padding: 0.4rem 0.6rem;
+}
+
+.modal-image-section {
+  border-top: 1px solid var(--border-color);
+  padding-top: 1rem;
+}
+
+/* Four actions per row. Keep them on one line — the wider
+   "Discontinued" badge otherwise squeezes this column enough to wrap the
+   delete button onto a second row, which reads as a separate control.
+   .admin-table-wrapper already scrolls horizontally if it comes to it. */
+.products-page .table-actions {
+  flex-wrap: nowrap;
+}
+
+.products-page .table-actions button {
+  flex: 0 0 auto;
+}
+
+/* The active/discontinued toggle. Colour carries the current state, not
+   the action, matching the Power toggle on the coupons table. */
+.products-page .table-actions .is-on {
+  color: var(--badge-active-color);
+  border-color: var(--badge-active-color);
+}
+
+.products-page .table-actions .is-off {
+  color: var(--text-muted);
+  opacity: 0.75;
+}
+
+.products-page .table-actions button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ─── Stock column ──────────────────────────────────────────────── */
+
+.stock-level {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.stock-level.is-out { color: var(--badge-inactive-color); }
+.stock-level.is-low { color: var(--badge-processing-color); }
+
+.stock-note {
+  display: block;
+  white-space: nowrap;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+/* ─── Feedback banner ───────────────────────────────────────────── */
+
+.products-feedback {
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  border: 1px solid transparent;
+}
+
+.products-feedback-ok {
+  background: var(--badge-active-bg);
+  color: var(--badge-active-color);
+  border-color: var(--badge-active-color);
+}
+
+.products-feedback-err {
+  background: var(--badge-inactive-bg);
+  color: var(--badge-inactive-color);
+  border-color: var(--badge-inactive-color);
+}
+
+/* ─── Restock dialog ────────────────────────────────────────────── */
+
+.restock-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.restock-head h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.restock-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: inherit;
+}
+
+.restock-product {
+  margin: 0.35rem 0 1.25rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.restock-modes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.restock-mode {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+/* Filled, not just outlined. An outline-only selected state was
+   indistinguishable from the unselected one against a dark panel, which
+   matters here because the two modes do very different things. */
+.restock-mode.is-selected {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--surface-color);
+  font-weight: 600;
+}
+
+.restock-form-actions .btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.restock-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.6rem 0 1.25rem;
+}
+
+.restock-preset {
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.restock-preset:hover { border-color: var(--text-primary); }
+.restock-preset.is-clear { color: var(--text-muted); }
+
+.restock-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.restock-summary strong {
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.restock-summary strong.is-up { color: var(--badge-active-color); }
+.restock-summary strong.is-down { color: var(--badge-processing-color); }
+.restock-summary-label { margin-left: 0.2rem; }
+
+.restock-hint {
+  margin: 0.85rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}

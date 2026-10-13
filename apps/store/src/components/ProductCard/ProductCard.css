@@ -1,0 +1,169 @@
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€  PRODUCT CARD â€” EDITORIAL B/W (BOXED)  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+
+/* The card sizes itself against its own grid column, not the viewport.
+   That distinction matters here: the grid is auto-fill, so a card can be
+   210px wide on a 1440px monitor and 320px wide on a phone. A media query
+   would style those two identically and get both wrong, because the thing
+   under pressure is the column, not the screen. */
+.product-card {
+  container-type: inline-size;
+  container-name: card;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+  /* Only the border colour moves. The card used to lift 6px and deepen
+     its shadow, which made a grid of them ripple as the pointer crossed
+     it without telling the customer anything the border does not. */
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+
+.product-card:hover {
+  border-color: var(--primary-color);
+}
+
+.card-image {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  background: var(--skeleton-color);
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  opacity: 0.4;
+}
+
+/* â”€â”€ Info (inside the box) â”€â”€ */
+.card-info {
+  padding: 1.25rem 1.25rem 1.4rem;
+  /* Padding tracks the card, so a narrow card does not spend a third of
+     its width on gutters. */
+  padding-inline: clamp(0.85rem, 6cqi, 1.25rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.card-info h3 {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  margin: 0;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.price {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--primary-color);
+}
+
+.add-to-cart-btn {
+  background: transparent;
+  border: 0;
+  padding: 0.35rem 0;
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  cursor: pointer;
+  border-bottom: 1px solid var(--primary-color);
+  opacity: 0.8;
+  transition: opacity var(--dur-2) var(--ease-out);
+  white-space: nowrap;
+}
+
+.add-to-cart-btn:hover:not(:disabled) { opacity: 1; }
+
+/* Below ~215px the price and the action stop fitting on one line, and
+   the action is squeezed until its letterspaced label wraps mid-phrase.
+   Stacking them keeps both readable and gives the button the full width
+   of the card as a touch target. */
+@container card (max-width: 215px) {
+  .card-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .add-to-cart-btn {
+    text-align: left;
+    letter-spacing: 0.2em;
+    min-height: 32px;
+  }
+}
+
+.add-to-cart-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.view-btn {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  border-bottom: 1px solid var(--primary-color);
+  opacity: 0.8;
+  padding: 0.35rem 0;
+  transition: opacity var(--dur-2) var(--ease-out);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.product-card:hover .view-btn {
+  opacity: 1;
+}
+
+/* Already in the cart. Full opacity because it is now the live next
+   action ("Go to Cart"), not the muted default state. */
+.add-to-cart-btn.is-in-cart {
+  opacity: 1;
+  border-bottom-width: 2px;
+}

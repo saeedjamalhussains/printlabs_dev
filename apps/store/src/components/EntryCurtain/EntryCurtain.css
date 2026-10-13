@@ -1,0 +1,43 @@
+/* The curtain sits above everything except nothing — it is purely
+   decorative, so it is hidden from assistive technology and, critically,
+   never takes a pointer event. The home page underneath is interactive
+   from the first frame; the animation is something that happens over the
+   top of a page that is already usable. */
+.entry-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.entry-curtain-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50.5%; /* the half-pixel overlap stops a hairline of page
+                    showing along the seam on fractional-DPR screens */
+  background: var(--bg-color);
+  will-change: transform;
+}
+
+.entry-curtain-panel-top { top: 0; }
+.entry-curtain-panel-bottom { bottom: 0; }
+
+/* The parting line, in the same ink as every other rule in the product. */
+.entry-curtain-seam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--primary-color);
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+/* Belt and braces alongside the useReducedMotion check in the component:
+   if the preference is set, nothing here is visible at all. */
+@media (prefers-reduced-motion: reduce) {
+  .entry-curtain { display: none; }
+}

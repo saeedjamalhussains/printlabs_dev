@@ -1,0 +1,398 @@
+.coupons-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.coupons-grid-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 992px) {
+  .coupons-grid-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.coupon-composer,
+.coupons-list-section {
+  border: 1px solid var(--border-color);
+  padding: 1.5rem 1.75rem;
+  background: var(--surface-color);
+}
+
+.coupon-composer-title,
+.coupons-list-title {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  margin: 0 0 1.25rem;
+}
+
+.coupons-feedback {
+  padding: 0.85rem 1.25rem;
+  border: 1px solid var(--border-color);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--primary-color);
+}
+
+.coupons-feedback-err {
+  border-color: var(--danger-color);
+  color: var(--danger-color);
+}
+
+/* Form Styles */
+.coupon-composer form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.coupon-composer .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.coupon-composer label {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  opacity: 0.5;
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.coupon-composer input,
+.coupon-composer select {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.5rem 0;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--primary-color);
+  outline: none;
+}
+
+.coupon-composer input:focus,
+.coupon-composer select:focus {
+  border-bottom-color: var(--primary-color);
+}
+
+.admin-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--primary-color);
+  color: var(--bg-color);
+  border: 1px solid var(--primary-color);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity var(--dur-2) var(--ease-out);
+  margin-top: 1rem;
+}
+
+.admin-btn-primary:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.admin-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Coupons Table List */
+.coupons-loading,
+.coupons-empty {
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.coupons-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  opacity: 0.55;
+}
+
+.coupons-empty p {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── Table cell content ──
+   The table sits in the narrow right-hand column of the page grid, so
+   cells are sized to fit rather than left to negotiate for space. It
+   previously rendered inside a `.admin-table-container` — a class that
+   exists in no stylesheet — so the 927px table escaped its 576px panel
+   and stretched the whole dashboard sideways. */
+
+.coupon-code-cell {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  /* Long promo codes truncate instead of widening the column; the full
+     value is available on hover via the title attribute. */
+  max-width: 14ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.coupon-discount-cell { white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* "10% off" / "₹500 flat" replaces a separate Type column that only ever
+   restated what the % or ₹ sign already said. */
+.coupon-discount-kind {
+  margin-left: 0.35rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.45;
+}
+
+.coupon-usage-cell,
+.coupon-expiry-cell {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Status chip ──
+   Read-only and truthful. Toggling moved to the actions column, so the
+   chip can state what the checkout endpoint would actually do rather
+   than doubling as a button. */
+.coupon-state {
+  display: inline-block;
+  padding: 0.28rem 0.55rem;
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1px solid currentColor;
+}
+
+.coupon-state-on { color: var(--badge-delivered-color); }
+.coupon-state-off { color: var(--text-muted); opacity: 0.6; }
+.coupon-state-dead { color: var(--danger-color); }
+
+/* ── Row actions ── */
+.col-actions { text-align: right; white-space: nowrap; }
+
+.coupon-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  justify-content: flex-end;
+}
+
+.coupon-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: 0;
+  color: var(--text-primary);
+  opacity: 0.4;
+  cursor: pointer;
+  transition: opacity var(--dur-2) var(--ease-out), color var(--dur-2) var(--ease-out);
+}
+
+.coupon-icon-btn:hover { opacity: 1; }
+.coupon-icon-btn.is-on { opacity: 0.85; color: var(--badge-delivered-color); }
+.coupon-icon-btn.is-danger:hover { color: var(--danger-color); opacity: 1; }
+
+/* ── Composer hint ── */
+.coupon-field-hint {
+  display: block;
+  margin-top: 0.3rem;
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+/* ── Empty state ── */
+.coupons-empty span {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
+/* Six columns in a ~570px panel: trim the generous default cell padding
+   that the full-width tables on other pages can afford. */
+.coupons-list-section .admin-table th,
+.coupons-list-section .admin-table td {
+  padding-inline: 0.6rem;
+  font-size: 0.78rem;
+}
+
+.coupons-list-section .admin-table th {
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+}
+
+/* The wrapper already scrolls horizontally as a fallback; without a
+   min-width the table would instead squeeze cells into unreadable
+   slivers on a narrow window. */
+.coupons-list-section .admin-table { min-width: 34rem; }
+
+/* ── Rework additions ── */
+
+/* Secondary line inside a cell: per-customer limit, min spend, start date. */
+.coupon-sub {
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  opacity: 0.5;
+  margin-top: 0.15rem;
+  white-space: nowrap;
+}
+
+/* "first order only" marker on the code. */
+.coupon-tag {
+  display: inline-block;
+  margin-left: 0.35rem;
+  padding: 0.05rem 0.28rem;
+  font-family: var(--font-sans);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border: 1px solid currentColor;
+  opacity: 0.6;
+  vertical-align: middle;
+}
+
+/* A scheduled coupon is valid but not yet live — distinct from both
+   active and dead. */
+.coupon-state-pending { color: var(--badge-processing-color); }
+
+.coupon-checks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 2rem;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  /* Separates the toggles from the field grid above, so they read as a
+     group of settings rather than a stray last row. */
+  border-top: 1px solid var(--border-light);
+}
+
+/* Scoped under .coupon-composer to outrank the generic
+   `.coupon-composer label { display: block; margin-bottom: 0.4rem }`.
+   Without that specificity the label stayed a block, the flex `gap`
+   never applied, and the box sat jammed against its text with a stray
+   0.4rem hanging underneath. */
+.coupon-composer .coupon-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--text-primary);
+  opacity: 0.85;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+
+.coupon-composer .coupon-check:hover { opacity: 1; }
+
+/* The generic input rule sets width:100%, a bottom border and vertical
+   padding — all wrong for a checkbox, which needs a fixed square box
+   optically centred against the label text. */
+.coupon-composer .coupon-check input[type='checkbox'] {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 15px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  accent-color: var(--primary-color);
+}
+
+.coupon-composer .coupon-check span { display: inline-block; }
+
+.coupon-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+/* Both buttons carry their own margin-top for use outside this row;
+   inside it the container owns the spacing, so they sit on one baseline
+   instead of stepping apart.
+
+   They also arrived at different heights — 42px against 38px, from
+   different vertical padding — which left them 2px out of line even with
+   align-items:center. A shared min-height and padding settles both. */
+.coupon-form-actions .admin-btn-primary,
+.coupon-form-actions .coupon-cancel-btn {
+  margin-top: 0;
+  min-height: 42px;
+  padding-block: 0.75rem;
+}
+
+.coupon-cancel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1rem;
+  margin-top: 1rem;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+
+.coupon-cancel-btn:hover:not(:disabled) { opacity: 1; }
+
+/* The composer grew from five fields to twelve; give it room and let it
+   scroll independently of the table beside it. */
+.coupon-composer form { gap: 1rem; }
+.coupon-composer .form-group input:disabled { opacity: 0.4; cursor: not-allowed; }

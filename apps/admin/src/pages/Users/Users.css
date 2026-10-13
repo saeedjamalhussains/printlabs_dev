@@ -1,0 +1,36 @@
+.users-page .role-select {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.4rem 0.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-weight: 500;
+}
+
+.users-page .role-select:focus {
+  border-color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+}
+
+.users-page .action-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.users-page .btn-delete {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  transition: var(--transition-fast);
+}
+
+.users-page .btn-delete:hover {
+  border-color: var(--danger-color);
+  color: var(--danger-color);
+  background: var(--danger-bg);
+}

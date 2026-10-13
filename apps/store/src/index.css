@@ -1,0 +1,502 @@
+/* Tailwind + the shadcn component layer. Imported first, on purpose:
+   the Tailwind Preflight layer and utilities land in @layer base / @layer
+   utilities, and unlayered CSS always beats layered CSS — so every
+   hand-written rule below and in the per-page stylesheets keeps
+   winning, and adopting Tailwind resets nothing that already worked.
+   The design tokens live in @printlabs/ui, which both this app and the
+   other front-end share, so the palette cannot drift between them.
+
+   @source is required, not optional: the shared components resolve
+   through node_modules via the workspace symlink, and Tailwind does not
+   scan node_modules by default — without this every utility class used
+   inside @printlabs/ui would be absent from the generated stylesheet. */
+@import "tailwindcss";
+@import "@printlabs/ui/theme.css";
+@source "../../shared/packages/ui/src";
+
+/* ── Apple System Typography ──────────────────────────────────────────
+   local() only. The families below are Apple system fonts: on macOS and
+   iOS the browser resolves them locally, and everywhere else the fallback
+   stacks on --font-sans / --font-serif / --font-mono take over.
+
+   These rules used to also list url('/fonts/…'), but no such directory
+   exists. Vite answers an unknown path with index.html, so every page load
+   fetched six "fonts" that were really HTML and the console filled with
+   "OTS parsing error: invalid sfntVersion: 1008821359" — 0x3C21646F, the
+   bytes "<!do". If real font files are ever added, restore the url()
+   sources *and* commit the files together. */
+@font-face {
+  font-family: 'SF Pro';
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  src: local('SF Pro'),
+       local('SFPro-Regular');
+}
+@font-face {
+  font-family: 'New York';
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  src: local('New York'),
+       local('NewYork-Regular');
+}
+@font-face {
+  font-family: 'SF Mono';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: local('SF Mono'),
+       local('SFMono-Regular');
+}
+
+:root {
+  /* ── Typography ───────────────────────────────────────────────────
+     Apple's system typefaces. SF Pro for UI / body, New York for
+     editorial display, SF Mono for code and ids.
+       --font-sans   SF Pro
+       --font-serif  New York
+       --font-mono   SF Mono
+     Each declaration ends with a native system fallback (the same
+     family the OS would pick anyway) so the page renders cleanly
+     before the file loads or if blocked. */
+  --font-sans:  'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-serif: 'New York', 'Iowan Old Style', Charter, Cambria, Georgia, serif;
+  --font-mono:  'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  /* Strict B/W Palette - Light Mode. NO GRAYS.
+     Hierarchy comes from typography (weight, size, letter-spacing) and
+     translucent black/white overlays â€” never from chromatic or gray hex
+     values. */
+  /* Tell the browser to render native form controls (the <select>
+     option panel, date pickers, scrollbar thumbs, etc.) in the matching
+     scheme â€” otherwise they render as bright white when the rest of the
+     app is dark. The variable is flipped in the dark-mode block below. */
+  /* Both schemes are supported, so the browser renders native controls
+     (the select popup, date pickers, scrollbars, spellcheck underlines)
+     to match the system setting on its own. */
+  color-scheme: light dark;
+  --bg-color: #faf8f5;
+  --bg-secondary: #faf8f5;
+  --surface-color: #faf8f5;
+  --primary-color: #000000;
+  --primary-hover: #000000;
+  --accent-color: #000000;
+  --text-primary: #000000;
+  --text-secondary: #000000;
+  --text-muted: #000000;
+  --text-faint: #000000;
+  --border-color: #000000;
+  --border-light: #000000;
+  --danger-color: #c8102e;
+  --danger-bg: transparent;
+  --danger-border: #c8102e;
+  --success-color: #000000;
+  --success-bg: transparent;
+  --overlay-bg: rgba(250, 248, 245, 0.7);
+  --overlay-strong: rgba(250, 248, 245, 0.85);
+  --overlay-solid: rgba(250, 248, 245, 0.95);
+  --overlay-border: #000000;
+  --skeleton-color: rgba(0, 0, 0, 0.04);
+  --dot-pattern: rgba(0, 0, 0, 0.08);
+  --hero-stroke: #000000;
+  --hero-fill: transparent;
+  --detail-bg: #faf8f5;
+  --detail-border: #000000;
+  --detail-border-dark: #000000;
+  --scrollbar-track: #faf8f5;
+  --scrollbar-thumb: #000000;
+  --scrollbar-hover: #000000;
+  --order-success: #000000;
+
+  /* ─── Motion ──────────────────────────────────────────────────────
+     One scale for the whole app. Previously three easing curves
+     (`ease`, and two different cubic-beziers) and eight durations
+     between 0.15s and 0.6s were mixed at random, so no two components
+     moved alike — which is what reads as "unpolished" rather than any
+     single animation being wrong.
+
+     Durations: pick by how far the thing travels, not by importance.
+     A colour swap wants --dur-1; a panel sliding in wants --dur-4. */
+  --dur-1: 120ms;   /* instant feedback: colour, opacity, borders */
+  --dur-2: 200ms;   /* small moves: buttons, icons, table rows */
+  --dur-3: 320ms;   /* cards, dropdowns, accordion panels */
+  --dur-4: 480ms;   /* full-width panels, page and modal entries */
+
+  /* Decelerating. Fast start, soft landing — the default for anything
+     entering or responding to a click. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Gentler cousin for larger travel, where full expo overshoots the
+     eye and looks like it stops short. */
+  --ease-out-soft: cubic-bezier(0.23, 1, 0.32, 1);
+  /* Symmetric, for things that move both ways (toggles, reversible
+     hovers) so the return trip mirrors the outbound. */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Composite shorthands. These name the properties they animate
+     rather than using `all`: `all` also transitions layout properties
+     like width and padding, which forces reflow on every frame and is
+     the main source of stutter on hover. */
+  --transition-fast: color var(--dur-2) var(--ease-out),
+                     background-color var(--dur-2) var(--ease-out),
+                     border-color var(--dur-2) var(--ease-out),
+                     opacity var(--dur-2) var(--ease-out),
+                     transform var(--dur-2) var(--ease-out);
+  --transition-smooth: color var(--dur-3) var(--ease-out),
+                       background-color var(--dur-3) var(--ease-out),
+                       border-color var(--dur-3) var(--ease-out),
+                       opacity var(--dur-3) var(--ease-out),
+                       box-shadow var(--dur-3) var(--ease-out),
+                       transform var(--dur-3) var(--ease-out);
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), 0 1px 8px rgba(0, 0, 0, 0.02);
+}
+
+/* Force color-scheme onto form controls themselves — Chromium on Windows
+   sometimes renders the native <select> dropdown popup using the OS theme
+   instead of the page's inherited color-scheme. */
+select,
+input,
+textarea,
+option {
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  select,
+  input,
+  textarea,
+  option {
+    color-scheme: dark;
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg-color: #000000;
+    --bg-secondary: #000000;
+    --surface-color: #000000;
+    --primary-color: #ffffff;
+    --primary-hover: #ffffff;
+    --accent-color: #ffffff;
+    --text-primary: #ffffff;
+    --text-secondary: #ffffff;
+    --text-muted: #ffffff;
+    --text-faint: #ffffff;
+    --border-color: #ffffff;
+    --border-light: #ffffff;
+    --danger-color: #ff5566;
+    --danger-bg: transparent;
+    --danger-border: #ff5566;
+    --success-color: #ffffff;
+    --success-bg: transparent;
+    --glass-bg: rgba(0, 0, 0, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --overlay-bg: rgba(0, 0, 0, 0.7);
+    --overlay-strong: rgba(0, 0, 0, 0.85);
+    --overlay-solid: rgba(0, 0, 0, 0.95);
+    --overlay-border: #ffffff;
+    --skeleton-color: rgba(255, 255, 255, 0.06);
+    --dot-pattern: rgba(255, 255, 255, 0.1);
+    --hero-stroke: #ffffff;
+    --hero-fill: transparent;
+    --detail-bg: #000000;
+    --detail-border: #ffffff;
+    --detail-border-dark: #ffffff;
+    --scrollbar-track: #000000;
+    --scrollbar-thumb: #ffffff;
+    --scrollbar-hover: #ffffff;
+    --order-success: #ffffff;
+    --box-shadow: none;
+  }
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+html, body, #root, header, footer, nav, .navbar, .logo, .nav-links a, .product-card, .card-info, input, select, textarea {
+  transition: background-color var(--dur-3) var(--ease-out), color var(--dur-3) var(--ease-out), border-color var(--dur-3) var(--ease-out), box-shadow var(--dur-3) var(--ease-out);
+}
+
+html {
+  background-color: var(--bg-color);
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  /* dvh, not vh: on mobile 100vh is the *largest* viewport, so with the
+     address bar on screen a 100vh shell is taller than what can be seen
+     and the last strip of every page sits below the fold. */
+  min-height: 100vh;
+  min-height: 100dvh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+#root {
+  background-color: var(--bg-color);
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ─── Print ─────────────────────────────────────────────────────────
+   The artwork is the product, and a browser print dialog will happily
+   render it full-page at whatever resolution was delivered — or save it
+   straight to PDF, which is a file rather than a printout.
+
+   So printing is not blocked (a page cannot reliably block Ctrl+P, and
+   trying breaks Save-as-PDF for people with a legitimate reason to use
+   it). Instead the artwork is removed from the printed page, while
+   everything a customer might genuinely want on paper — an order, an
+   address, a total — still prints.
+
+   Be clear about what this is worth: it deters casual copying only. A
+   screenshot, devtools, or the image URL itself all bypass it. The real
+   protection is upstream — server/utils/imageQuality.js stores every
+   image at 800px and quality 20, so the full-resolution original is
+   never delivered to a browser in the first place. */
+@media print {
+  img {
+    display: none !important;
+  }
+
+  /* Leave a mark where artwork was, so a printed order still reads as a
+     list of the right things rather than a column of blank gaps. */
+  .card-image::after,
+  .cart-row-img::after,
+  .orders-card-thumb::after,
+  .detail-image::after {
+    content: 'Artwork not printed';
+    display: block;
+    padding: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #000;
+    border: 1px dashed #999;
+  }
+
+  /* Interface chrome has no business on paper. */
+  .navbar,
+  .fabi-container,
+  .shop-sidebar,
+  .shop-search,
+  .shop-load-more,
+  .add-to-cart-btn,
+  .view-btn {
+    display: none !important;
+  }
+
+  /* Print black on white regardless of the theme of the viewer — a dark
+     page prints as a solid block of toner. */
+  body,
+  #root {
+    background: #fff !important;
+    color: #000 !important;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Page gutter. This was six media queries stepping the padding from 4rem
+   down to 1rem, which meant the gutter jumped at each threshold and was
+   wrong everywhere in between. One clamp expresses the actual intent:
+   never tighter than 1rem on the narrowest phone, never wider than 4rem
+   on a large monitor, and proportional to the viewport in between.
+
+   max-width is min() rather than a bare 1800px so the rule also holds on
+   a viewport narrower than the cap without relying on the padding to
+   save it. */
+.container {
+  max-width: min(100%, 1800px);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 4rem);
+}
+
+/* Stark Buttons */
+button, .btn-primary, .btn-outline {
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: var(--transition-smooth);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--bg-color);
+  padding: 1rem 2.5rem;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--accent-color);
+  padding: 0.5rem 0;
+  opacity: 0.7;
+}
+
+.btn-outline:hover {
+  opacity: 1;
+  color: var(--primary-color);
+}
+
+/* Minimalist Inputs */
+input, select, textarea {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 0;
+  color: var(--text-primary);
+  outline: none;
+  width: 100%;
+  transition: var(--transition-smooth);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-bottom-color: var(--primary-color);
+  box-shadow: 0 1px 0 0 var(--primary-color);
+}
+
+/* Pop-in entry animations */
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+  transition: var(--transition-fast);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-hover);
+}
+
+/* Image Placeholder */
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-family: var(--font-serif);
+}
+
+/* Loading State */
+.loading-screen {
+  /* min-height, not height: if a loading message ever wraps at a large
+     text-scaling setting it must be allowed to grow rather than clip. */
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-color);
+  color: var(--text-primary);
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+}
+
+/* ─── Reduced motion ────────────────────────────────────────────────
+   Honour the OS setting globally. What remains after the decorative
+   pass is mostly status motion — spinners, the typing indicator, the
+   skeleton pulse — plus the mobile drawer. This still flattens all of
+   it, since a spinner is exactly the kind of loop that triggers
+   vestibular symptoms.
+
+   Motion is near-eliminated rather than set to 0s: `animation: none`
+   can strand an element on the from-state of a `both` fill, leaving it
+   invisible. A 1ms run reaches the end state immediately instead. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+
+/* ─── No italics ─────────────────────────────────────────────────────
+   Italic has been removed from the product entirely: the italic cuts of
+   the two families are no longer declared, and no rule sets font-style
+   any more.
+
+   These elements are the remaining source of it, because the browser
+   italicises them by default rather than any stylesheet asking for it.
+   <em> keeps its meaning for assistive technology — it is still emphasis
+   to a screen reader — it simply stops being slanted, and the places
+   that used it for a visual distinction carry that with weight or
+   opacity instead.
+
+   font-synthesis-style: none is the backstop: without it a browser asked
+   for an italic face that does not exist will slant the roman one
+   mechanically, which is the artificial oblique this is meant to end. */
+em, i, cite, dfn, var, address, blockquote, q {
+  font-style: normal;
+}
+
+html {
+  font-synthesis-style: none;
+}

@@ -1,0 +1,8 @@
+# Local virtualenv — 240MB+ of platform-specific binaries, rebuilt from
+# requirements.txt in seconds. Never belongs in the repo.
+.venv/
+venv/
+
+# Compiled bytecode, regenerated on every run.
+__pycache__/
+*.pyc

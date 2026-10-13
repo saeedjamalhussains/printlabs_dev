@@ -1,0 +1,178 @@
+/* ── Suggestion rail ───────────────────────────────────────────────────
+   Sits below the poster it belongs to and is deliberately quieter than
+   it: smaller cards, lighter type, no border on the frame until hover.
+   It is a set of onward routes, not a second product page. */
+
+.poster-rail-wrap {
+  position: relative;
+}
+
+.poster-rail {
+  display: flex;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* Native snap: each poster comes to rest at the left edge, without the
+     rail feeling like it is fighting the finger. `proximity` rather than
+     `mandatory` so a short flick is allowed to stop between two cards
+     instead of being yanked onward. */
+  scroll-snap-type: x proximity;
+  scroll-padding-left: 0;
+  /* Keeps a sideways flick inside the rail rather than letting it become
+     a browser back-navigation. */
+  overscroll-behavior-x: contain;
+  padding-bottom: 0.5rem;
+  /* The scrollbar is suppressed because the arrows and the edge fade
+     already say the rail scrolls, and a scrollbar under a row of posters
+     reads as a rendering artefact. The rail stays keyboard-scrollable. */
+  scrollbar-width: none;
+}
+
+.poster-rail::-webkit-scrollbar { display: none; }
+
+.poster-rail:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 4px;
+}
+
+/* Grab affordance for mouse users. */
+.poster-rail.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none; /* snapping mid-drag fights the pointer */
+  scroll-behavior: auto;
+}
+
+/* ── Item sizing ──────────────────────────────────────────────────────
+   The count is never hard-coded. Each poster is a fluid width with a
+   floor and a ceiling, so a phone shows about two, a tablet three or
+   four, and a desktop five or six — and on every one of them the poster
+   stays large enough to actually recognise, which is the thing that
+   matters in a recommendation. */
+.poster-rail-item {
+  flex: 0 0 clamp(9.5rem, 22vw, 13rem);
+  scroll-snap-align: start;
+}
+
+.poster-rail-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: inherit;
+  -webkit-user-drag: none;
+}
+
+/* The reserved box. 3:4 matches the shop card, so the rail reads as the
+   same kind of object, and the height exists before the image does. */
+.poster-rail-frame {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--skeleton-color);
+  border: 1px solid var(--border-color);
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+
+.poster-rail-card:hover .poster-rail-frame,
+.poster-rail-card:focus-visible .poster-rail-frame {
+  border-color: var(--primary-color);
+}
+
+.poster-rail-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* Fades in on load rather than appearing a band at a time. */
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+
+.poster-rail-frame img.is-loaded { opacity: 1; }
+
+.poster-rail-skeleton {
+  position: absolute;
+  inset: 0;
+  background: var(--skeleton-color);
+  animation: poster-rail-pulse 1.6s var(--ease-in-out) infinite;
+}
+
+@keyframes poster-rail-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.poster-rail-skeleton-line {
+  height: 0.6rem;
+  margin-top: 0.6rem;
+  width: 70%;
+  background: var(--skeleton-color);
+  animation: poster-rail-pulse 1.6s var(--ease-in-out) infinite;
+}
+
+.poster-rail-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.poster-rail-title {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  /* Truncates rather than pushing the rail out of alignment. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.poster-rail-price {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  opacity: 0.6;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Controls ─────────────────────────────────────────────────────────
+   Pointer-only. On touch the rail is the control, and a pair of arrows
+   would just be two more things covering posters. */
+.poster-rail-controls {
+  display: none;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .poster-rail-controls { display: flex; }
+}
+
+.poster-rail-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: opacity var(--dur-2) var(--ease-out),
+              background-color var(--dur-2) var(--ease-out);
+}
+
+.poster-rail-arrow:hover:not(:disabled) {
+  background: var(--primary-color);
+  color: var(--bg-color);
+}
+
+/* Disabled rather than hidden: the pair stays in place, so the controls
+   do not shift sideways as you reach the end of the rail. */
+.poster-rail-arrow:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}

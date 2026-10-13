@@ -1,0 +1,85 @@
+.dropdown {
+  position: relative;
+  display: inline-block;
+  min-width: 140px;
+  font-family: var(--font-sans);
+}
+
+.dropdown--disabled { opacity: 0.5; pointer-events: none; }
+
+.dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  padding: 0.4rem 0.65rem;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  cursor: pointer;
+  text-align: left;
+}
+
+.dropdown-trigger--open {
+  border-color: var(--primary-color);
+}
+
+.dropdown-value {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdown-chevron {
+  flex-shrink: 0;
+  transition: transform var(--dur-2) var(--ease-out);
+}
+
+.dropdown-trigger--open .dropdown-chevron { transform: rotate(180deg); }
+
+/* Menu lives in a portal at document.body so an overflow-hidden /
+   overflow-auto ancestor can never clip it. Position is set inline
+   from JS (computed from the trigger's bounding rect). */
+.dropdown-menu {
+  z-index: 5000;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  max-height: 240px;
+  overflow-y: auto;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  font-family: var(--font-sans);
+}
+
+.dropdown-option {
+  padding: 0.55rem 0.75rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dropdown-option:last-child { border-bottom: 0; }
+
+.dropdown-option:hover {
+  background: var(--primary-color);
+  color: var(--bg-color);
+}
+
+.dropdown-option--active {
+  background: var(--primary-color);
+  color: var(--bg-color);
+  font-weight: 700;
+}

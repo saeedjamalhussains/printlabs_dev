@@ -1,0 +1,470 @@
+/* ──────────  AUTH (LOGIN + REGISTER) — EDITORIAL B/W  ──────────
+   Single source for both auth pages. Login.css and Register.css were
+   byte-identical 430-line copies of each other, and roughly half of each
+   styled an avatar/orb UI that no longer exists in either page.
+
+   Sizing is fluid rather than stepped: every dimension that affects
+   legibility is a clamp() driven by viewport width, so the layout scales
+   continuously from a 320px phone to a 4K display instead of jumping at
+   one breakpoint. Media queries are reserved for things a clamp cannot
+   express — reflowing columns, and short landscape screens. */
+
+.auth-page {
+  /* ── Fluid scale. Tune the layout from these six values. ──
+     Each clamp is min / preferred (viewport-relative) / max. */
+  --auth-card-width: clamp(19rem, 92vw, 27.5rem);
+  --auth-pad-x: clamp(1.25rem, 5vw, 2.5rem);
+  --auth-pad-y: clamp(1.75rem, 5vw, 3rem);
+  --auth-page-pad: clamp(1rem, 4vh, 3rem);
+  --auth-gap: clamp(1.15rem, 3.2vw, 1.5rem);
+  --auth-rule-space: clamp(1.5rem, 4vw, 2.5rem);
+
+  /* dvh follows mobile browser chrome as it collapses; vh does not. */
+  min-height: 100dvh;
+  display: flex;
+  padding: var(--auth-page-pad) 0;
+}
+
+.auth-card {
+  width: var(--auth-card-width);
+  /* `margin:auto` centres in both axes but still lets a tall card grow
+     and scroll normally. Flex `align-items:center` would clip its top
+     once the content outgrows the viewport — which the register form
+     does on almost any phone. */
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  padding: var(--auth-pad-y) var(--auth-pad-x);
+  box-shadow: var(--box-shadow);
+}
+
+/* ── Leave the auth screens ──
+   Distinct from `.auth-back`, which already existed and steps the
+   register form from page 2 back to page 1. This one exits the sign-in
+   flow entirely and returns to whatever the visitor was doing. Two
+   controls both labelled "Back" doing different things would be worse
+   than one, so they never appear together — see Register.jsx. */
+.auth-exit {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: clamp(1rem, 3vw, 1.5rem);
+  /* Left padding stays 0 so the arrow lines up with the logo below it;
+     the rest gives a comfortable target without visible chrome. */
+  padding: 0.5rem 0.75rem 0.5rem 0;
+  min-height: 44px;
+  background: none;
+  border: 0;
+  color: var(--primary-color);
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0.65;
+  transition: opacity var(--dur-2) var(--ease-out), gap var(--dur-2) var(--ease-out);
+}
+
+.auth-exit:hover,
+.auth-exit:focus-visible {
+  opacity: 1;
+  gap: 0.6rem;
+}
+
+/* Below the split breakpoint the two panels are transparent to layout —
+   their children become direct children of the card and flow as the
+   single column the phone layout expects. */
+.auth-aside,
+.auth-main { display: contents; }
+
+/* The logo doubles as the way back to the storefront. Both pages render
+   outside the navbar, so without this the auth screens are a dead end. */
+.auth-logo-link {
+  align-self: flex-start;
+  display: block;
+  margin-bottom: clamp(1.25rem, 3.5vw, 2rem);
+  line-height: 0;
+  border-bottom: 0;
+}
+
+.auth-logo {
+  width: clamp(3rem, 9vw, 4.5rem);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  display: block;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+
+.auth-logo-link:hover .auth-logo { opacity: 0.65; }
+
+.auth-eyebrow {
+  font-family: var(--font-sans);
+  font-size: clamp(0.62rem, 1.6vw, 0.7rem);
+  font-weight: 500;
+  /* Wide tracking is elegant on desktop and unreadable on a small phone,
+     so the letter-spacing scales with the type. */
+  letter-spacing: clamp(0.25em, 1vw, 0.4em);
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.auth-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.9rem, 7vw, 3.25rem);
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  line-height: 1.05;
+  color: var(--primary-color);
+  margin: clamp(0.5rem, 2vw, 0.75rem) 0 0.5rem;
+  /* Long words break instead of pushing the card wider. */
+  overflow-wrap: break-word;
+}
+
+.auth-subtitle {
+  font-family: var(--font-serif);
+  font-size: clamp(0.9rem, 2.4vw, 1rem);
+  line-height: 1.5;
+  color: var(--primary-color);
+  opacity: 0.7;
+}
+
+.auth-rule {
+  border: 0;
+  border-top: 1px solid var(--border-color);
+  margin: var(--auth-rule-space) 0;
+}
+
+/* Explains a redirect ("You need an account to ..."). Informational,
+   so it is deliberately quieter than .auth-error — a dashed rule rather
+   than the solid one used for failures. */
+.auth-notice {
+  border: 1px dashed var(--primary-color);
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1.5rem;
+  font-family: var(--font-sans);
+  font-size: clamp(0.75rem, 2vw, 0.8rem);
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+  color: var(--primary-color);
+  opacity: 0.85;
+}
+
+.auth-error {
+  border: 1px solid var(--danger-color, currentColor);
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1.5rem;
+  font-family: var(--font-sans);
+  font-size: clamp(0.75rem, 2vw, 0.8rem);
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+  color: var(--primary-color);
+}
+
+/* ── Form ── */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--auth-gap);
+}
+
+/* Two short inputs share a row once there is room for them. The register
+   form was a single column of nine stacked fields, which read as
+   endless; `auto-fit` collapses it back to one column on narrow cards
+   without needing a width breakpoint. */
+.auth-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--auth-gap);
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.auth-field label {
+  font-family: var(--font-sans);
+  font-size: clamp(0.6rem, 1.5vw, 0.65rem);
+  font-weight: 600;
+  letter-spacing: clamp(0.18em, 0.8vw, 0.3em);
+  text-transform: uppercase;
+  color: var(--text-primary);
+  opacity: 0.7;
+}
+
+.auth-field input {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 0;
+  padding: 0.6rem 0;
+  font-family: var(--font-sans);
+  /* Never below 16px — anything smaller makes iOS Safari zoom on focus,
+     which then leaves the page scrolled sideways. */
+  font-size: max(1rem, 0.95rem);
+  color: var(--primary-color);
+  width: 100%;
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+
+.auth-field input::placeholder {
+  color: var(--text-primary);
+  opacity: 0.35;
+  /* Placeholders are the first thing to overflow on a narrow card. */
+  text-overflow: ellipsis;
+}
+
+.auth-field input:focus {
+  outline: none;
+  border-bottom-color: var(--primary-color);
+  border-bottom-width: 2px;
+  padding-bottom: calc(0.6rem - 1px);
+}
+
+.auth-field.has-error input { border-bottom-color: var(--danger-color, currentColor); }
+
+/* ── Password reveal ── */
+.auth-input-wrap { position: relative; display: flex; align-items: center; }
+.auth-input-wrap input { padding-right: 2.25rem; }
+
+.auth-reveal {
+  position: absolute;
+  right: 0;
+  bottom: 0.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 44px hit target on touch, regardless of the 15px icon inside it. */
+  min-width: 44px;
+  min-height: 44px;
+  background: transparent;
+  border: 0;
+  color: var(--text-primary);
+  opacity: 0.4;
+  cursor: pointer;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+
+.auth-reveal:hover { opacity: 0.9; }
+
+.auth-field-note,
+.auth-field-error {
+  font-family: var(--font-sans);
+  font-size: clamp(0.68rem, 1.8vw, 0.72rem);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.auth-field-note { color: var(--text-primary); opacity: 0.55; }
+.auth-field-error { color: var(--danger-color, currentColor); }
+
+/* ── Submit ── */
+.auth-submit {
+  margin-top: clamp(0.5rem, 2vw, 1rem);
+  padding: clamp(0.9rem, 2.8vw, 1.1rem) 1.25rem;
+  background: var(--primary-color);
+  color: var(--bg-color);
+  border: none;
+  font-family: var(--font-sans);
+  font-size: clamp(0.7rem, 1.8vw, 0.75rem);
+  font-weight: 600;
+  letter-spacing: clamp(0.18em, 0.9vw, 0.3em);
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 44px;
+}
+
+.auth-submit svg { flex-shrink: 0; }
+.auth-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.auth-spinner { animation: auth-spin 0.8s linear infinite; }
+@keyframes auth-spin { to { transform: rotate(360deg); } }
+
+/* ── Footer ── */
+.auth-footer {
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: clamp(0.75rem, 2vw, 0.8rem);
+  line-height: 1.6;
+  color: var(--primary-color);
+  opacity: 0.7;
+}
+
+.auth-footer a {
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--primary-color);
+  border-bottom: 1px solid var(--primary-color);
+  padding-bottom: 1px;
+  margin-left: 0.35rem;
+  /* Keep the link whole when the sentence wraps. */
+  white-space: nowrap;
+}
+
+.auth-back {
+  margin-top: clamp(1.25rem, 3vw, 1.75rem);
+  align-self: center;
+  background: transparent;
+  border: 0;
+  padding: 0.5rem 1rem;
+  min-height: 44px;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+
+.auth-back:hover:not(:disabled) { opacity: 1; }
+.auth-back:disabled { cursor: not-allowed; }
+
+/* ── Step indicator ── */
+.auth-steps {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: clamp(1.25rem, 3.5vw, 2rem);
+}
+
+.auth-step {
+  width: 20px;
+  height: 2px;
+  background: var(--border-color);
+  opacity: 0.35;
+  transition: width var(--dur-3) var(--ease-out), opacity var(--dur-3) var(--ease-out);
+}
+
+.auth-step.active { width: 32px; background: var(--primary-color); opacity: 1; }
+.auth-step.done { background: var(--primary-color); opacity: 0.35; }
+
+/* ─────────────────────────────────────────────────────────────
+   Adaptations the fluid scale above cannot express on its own
+   ───────────────────────────────────────────────────────────── */
+
+/* Phones: let the card span the full width. A bordered box floating in a
+   narrow gutter wastes horizontal space that the form needs. */
+@media (max-width: 34rem) {
+  .auth-page { --auth-card-width: 100%; padding-inline: 0; }
+  .auth-card { border-left: 0; border-right: 0; }
+}
+
+/* ── Landscape split: tablets and desktops ──
+   From here the card becomes a horizontal rectangle — masthead on the
+   left, form on the right. On a wide screen a tall narrow column wastes
+   the axis that actually has room, and pushes the submit button below
+   the fold on the register form. */
+@media (min-width: 48rem) {
+  .auth-page {
+    --auth-card-width: min(94vw, 58rem);
+    --auth-pad-x: clamp(2rem, 4vw, 3.25rem);
+    --auth-pad-y: clamp(2.25rem, 4vw, 3.25rem);
+    --auth-split-gap: clamp(2rem, 4.5vw, 3.5rem);
+  }
+
+  .auth-card {
+    display: grid;
+    /* The form column is the wider of the two — it carries the inputs. */
+    grid-template-columns: 0.82fr 1.18fr;
+    column-gap: var(--auth-split-gap);
+    align-items: stretch;
+  }
+
+  /* Span the full width. Left as a normal grid item it would drop into
+     the masthead column and shove the logo across.
+     `justify-self` is what pins it left here: `align-self` governs the
+     block axis in grid, so it left the button centred in the row. */
+  .auth-exit {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  .auth-aside,
+  .auth-main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  /* Masthead sits optically centred against the form beside it. */
+  .auth-aside {
+    justify-content: center;
+    padding-right: var(--auth-split-gap);
+    border-right: 1px solid var(--border-color);
+  }
+
+  .auth-main { justify-content: center; }
+
+  /* The horizontal rule separated header from form in the stacked
+     layout; the panel border does that job here. */
+  .auth-main .auth-rule { display: none; }
+
+  .auth-title { font-size: clamp(2.25rem, 4.2vw, 3.25rem); }
+
+  /* The masthead column is narrow, so the widest tracking would force
+     "WELCOME BACK" onto two ragged lines. */
+  .auth-eyebrow { letter-spacing: 0.28em; }
+
+  .auth-footer { margin-top: clamp(1.25rem, 2.5vw, 1.75rem); }
+}
+
+/* Large desktops: more generous proportions, still a rectangle. */
+@media (min-width: 90rem) {
+  .auth-page {
+    --auth-card-width: 62rem;
+    --auth-pad-x: 4rem;
+    --auth-pad-y: 4rem;
+  }
+}
+
+/* Short and wide — landscape phones, split-screen windows. Vertical
+   space is the scarce resource here, so the decorative parts give way
+   before the fields do.
+
+   Declared after the split layout deliberately: both can match at once
+   (a landscape phone is wide enough to split but far too short for the
+   full-size masthead), and this one has to win. */
+@media (max-height: 34rem) and (orientation: landscape) {
+  .auth-page {
+    --auth-page-pad: 1rem;
+    --auth-pad-y: 1.5rem;
+    --auth-rule-space: 1rem;
+    --auth-gap: 0.9rem;
+    min-height: auto;
+  }
+  .auth-title { font-size: clamp(1.5rem, 4vw, 2rem); }
+  .auth-logo-link { margin-bottom: 0.75rem; }
+  .auth-logo { width: 2.5rem; }
+  .auth-subtitle { display: none; }
+}
+
+/* Fine pointers don't need 44px touch targets; tighten the reveal button
+   so it sits closer to the input's baseline. */
+@media (pointer: fine) {
+  .auth-reveal { min-width: 32px; min-height: 32px; bottom: 0.4rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-submit svg,
+  .auth-logo,
+  .auth-step { transition: none; }
+  .auth-spinner { animation: none; }
+}
+
+.auth-legal { display: flex; flex-wrap: wrap; justify-content: center; gap: .25rem 1.25rem; margin-top: 1.25rem; }
+.auth-legal a { display: inline-flex; align-items: center; min-height: 44px; font-size: .72rem; text-decoration: underline; text-underline-offset: 4px; }

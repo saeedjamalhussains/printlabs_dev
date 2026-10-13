@@ -1,0 +1,74 @@
+.account-page { padding-top: clamp(1.5rem, 4vw, 3.5rem); padding-bottom: 7rem; }
+.account-topline { display: flex; justify-content: space-between; align-items: center; gap: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.15rem; margin-bottom: 2.75rem; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; }
+.account-topline a { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; }
+.account-layout { display: grid; grid-template-columns: 245px minmax(0, 1fr); gap: clamp(2rem, 6vw, 6rem); align-items: start; }
+.account-sidebar { position: sticky; top: 7rem; min-width: 0; }
+.account-identity { display: flex; gap: .9rem; align-items: center; padding-bottom: 1.7rem; }
+.account-identity > div { min-width: 0; }
+.account-identity p { margin: 0 0 .25rem; font-size: .9rem; font-weight: 600; overflow-wrap: anywhere; }
+.account-identity div > span { font-size: .72rem; opacity: .65; overflow-wrap: anywhere; }
+.account-avatar { width: 44px; height: 44px; flex: 0 0 44px; display: grid; place-items: center; border: 1px solid var(--border-color); border-radius: 50%; font-family: var(--font-serif); font-size: 1rem; }
+.account-nav { display: flex; flex-direction: column; gap: .25rem; }
+.account-nav-link { display: flex; align-items: center; gap: .85rem; min-height: 48px; padding: .7rem .85rem; font-size: .82rem; border: 1px solid transparent; }
+.account-nav-link:hover { border-color: var(--border-color); }
+.account-nav-link.is-active { background: var(--primary-color); color: var(--bg-color); }
+.account-sidebar-bottom { border-top: 1px solid var(--border-color); margin-top: 1.5rem; padding-top: 1.5rem; display: flex; flex-direction: column; }
+.account-sidebar-bottom a { display: flex; align-items: center; justify-content: space-between; min-height: 44px; font-size: .78rem; }
+.account-logout { display: flex; align-items: center; gap: .75rem; margin-top: 1rem; padding: .75rem 0; min-height: 44px; background: none; border: 0; cursor: pointer; font-size: .8rem; color: inherit; }
+.account-main { min-width: 0; }
+.account-eyebrow { text-transform: uppercase; letter-spacing: .16em; font-size: .62rem; font-weight: 600; margin: 0 0 .75rem; }
+.account-heading { margin-bottom: 2.5rem; }
+.account-heading h1 { font-family: var(--font-serif); font-weight: 400; font-size: clamp(2.3rem, 4.5vw, 3.7rem); line-height: 1.08; letter-spacing: -.035em; margin: 0 0 1rem; }
+.account-heading > p:last-child { font-size: .92rem; line-height: 1.6; opacity: .7; max-width: 42rem; }
+.account-panel { border: 1px solid var(--border-color); padding: clamp(1.25rem, 3vw, 2rem); margin-bottom: 1.5rem; }
+.account-panel-heading { display: flex; gap: 1rem; justify-content: space-between; align-items: center; padding-bottom: 1.6rem; margin-bottom: 1.6rem; border-bottom: 1px solid var(--border-color); }
+.account-panel h2, .account-feature-link h2 { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 400; margin: 0; }
+.account-text-button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; padding: .6rem .25rem; min-height: 44px; border: 0; background: none; color: inherit; font-size: .78rem; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; flex-shrink: 0; }
+.account-detail-grid, .account-field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.7rem 2rem; margin: 0; }
+.account-detail-grid dt, .account-field label { display: block; font-size: .65rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .6rem; opacity: .7; }
+.account-detail-grid dd { font-size: .94rem; line-height: 1.6; margin: 0; overflow-wrap: anywhere; white-space: pre-wrap; }
+.account-unset { opacity: .55; font-style: italic; }
+.account-field-wide { grid-column: 1 / -1; }
+.account-field input { width: 100%; min-width: 0; background: transparent; color: inherit; padding: .85rem; font: inherit; font-size: 16px; border: 1px solid var(--border-color); border-radius: 0; }
+.account-field input:focus-visible, .account-page button:focus-visible, .account-page a:focus-visible, .legal-page a:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 4px; }
+.account-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: .75rem; margin-top: 1.75rem; }
+.account-button { min-height: 46px; padding: .8rem 1.2rem; display: inline-flex; align-items: center; justify-content: center; gap: .8rem; border: 1px solid var(--primary-color); background: var(--primary-color); color: var(--bg-color); font: inherit; font-size: .8rem; cursor: pointer; }
+.account-button-quiet { background: transparent; color: var(--primary-color); }
+.account-page button:disabled { opacity: .5; cursor: wait; }
+.account-panel-note { font-size: .75rem; opacity: .65; line-height: 1.6; margin: 1.6rem 0 0; }
+.account-feature-link { display: flex; align-items: center; gap: 1.25rem; border-bottom: 1px solid var(--border-color); padding: 1.5rem 0; }
+.account-feature-link > div { flex: 1; min-width: 0; }
+.account-feature-link p { font-size: .82rem; line-height: 1.6; margin: .45rem 0 0; opacity: .7; overflow-wrap: anywhere; }
+.account-feature-link > svg { flex-shrink: 0; }
+.account-footnote { margin-top: 3rem; font-family: var(--font-serif); font-style: italic; font-size: .83rem; opacity: .6; }
+.account-feedback { border-left: 2px solid var(--primary-color); padding: .85rem 1rem; margin-bottom: 1.5rem; font-size: .85rem; line-height: 1.6; }
+.account-caption, .account-panel > p, .account-loading { font-size: .87rem; line-height: 1.75; }
+.account-data-list { list-style: none; padding: 0; margin: 1.5rem 0; }
+.account-data-list li { display: flex; justify-content: space-between; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--border-color); font-size: .83rem; }
+.account-data-list span { opacity: .65; text-align: right; }
+.account-security-form { max-width: 32rem; }
+.account-security-form .account-field { margin-bottom: 1.3rem; }
+.account-main .my-orders-page { padding: 0; width: 100%; max-width: none; }
+.account-main .my-orders-page > h1 { display: none; }
+@media (max-width: 800px) {
+ .account-layout { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+ .account-sidebar { position: static; }
+ .account-topline { margin-bottom: 1.5rem; }
+ .account-identity { padding-bottom: 1rem; }
+ .account-nav { flex-direction: row; overflow-x: auto; padding: 4px; margin-inline: -4px; }
+ .account-nav-link { flex-shrink: 0; white-space: nowrap; font-size: .76rem; }
+ .account-sidebar-bottom { flex-direction: row; flex-wrap: wrap; gap: .3rem 1rem; margin-top: 1rem; padding-top: .6rem; }
+ .account-sidebar-bottom > span { display: none; }
+ .account-sidebar-bottom a { gap: .4rem; font-size: .7rem; }
+ .account-logout { margin-top: .25rem; }
+ .account-heading { margin-bottom: 1.5rem; }
+}
+@media (max-width: 480px) {
+ .account-topline > span { max-width: 10rem; line-height: 1.6; }
+ .account-topline { font-size: .6rem; }
+ .account-detail-grid, .account-field-grid { grid-template-columns: minmax(0, 1fr); gap: 1.3rem; }
+ .account-panel-heading { flex-wrap: wrap; gap: .5rem; }
+ .account-actions > button { flex: 1; }
+ .account-data-list li { flex-direction: column; gap: .4rem; }
+ .account-data-list span { text-align: left; }
+}

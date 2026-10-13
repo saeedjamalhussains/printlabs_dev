@@ -1,0 +1,233 @@
+/* ─── shadcn/Tailwind theme bridge ──────────────────────────────────────
+   The identity of the storefront lives in the variables in index.css: pure
+   black on #faf8f5 paper, inverted to white on black, with NO GRAYS —
+   every tone that reads as "grey" is really black or white at partial
+   alpha, and hierarchy comes from type weight, size and tracking.
+
+   shadcn components expect a different set of names (--background,
+   --muted-foreground, --ring …) and, out of the box, a rounded grey
+   aesthetic. Rather than let that aesthetic in, this file re-points every
+   shadcn token at the tokens the product already had, and derives the
+   "muted" steps with color-mix() on the existing foreground instead of
+   introducing grey hexes.
+
+   Consequence worth stating plainly: --radius is 0. The product is
+   square-cornered by design, so the default shadcn rounding is switched
+   off globally rather than overridden per component. The two genuinely
+   pill-shaped things in the app use --radius-pill.
+   ------------------------------------------------------------------- */
+
+@theme inline {
+  /* Families — reuse the chains declared in index.css. */
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+
+  /* ── Type scale ───────────────────────────────────────────────────
+     There were 48 distinct font-size values across the two apps. These
+     nine steps cover every one of them, named by role so a component
+     asks for "the label size" rather than guessing 0.7rem vs 0.72rem.
+       micro   0.60  uppercase micro-labels, badges
+       meta    0.65  metadata, table cells, helper text
+       label   0.70  form labels, nav, buttons (the workhorse)
+       caption 0.75  secondary body
+       sm      0.80  body in dense areas
+       base    0.85  default body
+       md      0.95  emphasised body, card titles
+       lg      1.10  section subheads
+       xl      1.50  section heads
+     Display steps stay fluid — they are the editorial voice. */
+  /* Which steps are fluid, and which are not, is a deliberate split.
+
+     The four smallest steps are fixed. They are the uppercase, tracked
+     micro-labels the product is built on — eyebrows, column heads,
+     badges, button text. They are structural rather than read as prose,
+     scaling them with the viewport would make them shrink below
+     legibility on a phone, and their size is part of how the product
+     looks. They stay in rem, so OS and browser text scaling still moves
+     them; what they do not do is track the viewport.
+
+     Body and heading steps are fluid. Headings are what actually eat a
+     small viewport — a fixed 2rem section head on a 375px phone takes a
+     disproportionate bite out of the screen — and body copy benefits
+     from a little more size on a large monitor.
+
+     Every clamp is written as `min, rem + vw, max` so the middle term
+     grows with the viewport but is anchored in rem: a clamp whose
+     preferred value is pure vw stops responding to user text scaling,
+     which silently overrides an accessibility setting. */
+  --text-micro: 0.6rem;
+  --text-meta: 0.65rem;
+  --text-label: 0.7rem;
+  --text-caption: 0.75rem;
+
+  --text-sm:   clamp(0.78rem, 0.76rem + 0.1vw,  0.82rem);
+  --text-base: clamp(0.85rem, 0.82rem + 0.15vw, 0.92rem);
+  --text-md:   clamp(0.92rem, 0.88rem + 0.2vw,  1rem);
+
+  --text-lg:   clamp(1rem,    0.94rem + 0.3vw,  1.15rem);
+  --text-xl:   clamp(1.25rem, 1.1rem  + 0.75vw, 1.6rem);
+  --text-2xl:  clamp(1.5rem,  1.25rem + 1.25vw, 2.1rem);
+  --text-title: clamp(2rem, 4vw, 3rem);
+  --text-display: clamp(2.25rem, 5vw, 4rem);
+
+  /* Reading measure. Long-form text set across a wide monitor is the
+     classic large-screen failure: the line becomes too long for the eye
+     to find the next one. Anything prose-like is capped at this. */
+  --measure: 68ch;
+  --measure-narrow: 52ch;
+
+  /* Tracking. Uppercase serif display type is the signature of this product;
+     it is unreadable without generous tracking, and these are the three
+     values already in use. */
+  --tracking-heading: 0.05em;
+  --tracking-label: 0.15em;
+  --tracking-button: 0.2em;
+
+  /* ── Semantic colour roles ────────────────────────────────────────
+     Mapped onto the existing variables. The muted steps are alpha, not
+     grey: color-mix keeps them exactly on the black/white axis, so they
+     invert correctly with the theme and stay true to "NO GRAYS". */
+  --color-background: var(--bg-color);
+  --color-foreground: var(--text-primary);
+  --color-surface: var(--surface-color);
+  --color-card: var(--surface-color);
+  --color-card-foreground: var(--text-primary);
+  --color-popover: var(--overlay-solid);
+  --color-popover-foreground: var(--text-primary);
+
+  --color-primary: var(--primary-color);
+  --color-primary-foreground: var(--bg-color);
+  --color-secondary: var(--tone-06);
+  --color-secondary-foreground: var(--text-primary);
+  --color-accent: var(--tone-06);
+  --color-accent-foreground: var(--text-primary);
+
+  --color-muted: var(--tone-04);
+  --color-muted-foreground: var(--tone-60);
+
+  --color-border: var(--tone-14);
+  --color-border-strong: var(--border-color);
+  --color-input: var(--tone-24);
+  --color-ring: var(--primary-color);
+
+  --color-destructive: var(--danger-color);
+  --color-destructive-foreground: var(--bg-color);
+  --color-success: var(--success-color);
+  --color-warning: var(--warning-color, var(--text-primary));
+
+  /* Square by design. */
+  --radius: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-pill: 999px;
+
+  /* Motion — reuse the single scale index.css already defines, so
+     the Tailwind duration and ease utilities animate like the rest of the app. */
+  --ease-out: var(--ease-out);
+  --ease-out-soft: var(--ease-out-soft);
+  --ease-in-out: var(--ease-in-out);
+  --animate-duration-1: var(--dur-1);
+  --animate-duration-2: var(--dur-2);
+  --animate-duration-3: var(--dur-3);
+  --animate-duration-4: var(--dur-4);
+}
+
+/* ─── Alpha tone ramp ───────────────────────────────────────────────
+   The one legitimate way to get a "lighter" tone in this design: the
+   foreground colour at reduced alpha. Declared as real custom properties
+   (not inside @theme) so they can be redefined for dark mode, where the
+   axis flips from black to white.
+
+   Naming is the alpha percentage, so --tone-14 is the foreground at 14%.
+   Hairline borders use --tone-14; a full-strength rule uses
+   --border-color, which stays pure black/white as the product intends. */
+:root {
+  --tone-ink: 0 0 0;
+  --tone-02: rgb(0 0 0 / 0.02);
+  --tone-04: rgb(0 0 0 / 0.04);
+  --tone-06: rgb(0 0 0 / 0.06);
+  --tone-08: rgb(0 0 0 / 0.08);
+  --tone-14: rgb(0 0 0 / 0.14);
+  --tone-24: rgb(0 0 0 / 0.24);
+  --tone-40: rgb(0 0 0 / 0.4);
+  --tone-60: rgb(0 0 0 / 0.6);
+  --tone-80: rgb(0 0 0 / 0.8);
+
+  /* ── Spacing scale ─────────────────────────────────────────────────
+     4px base. Page/section rhythm was previously ad-hoc; these are the
+     steps the refreshed components use so vertical rhythm repeats
+     instead of being re-guessed per screen. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tone-ink: 255 255 255;
+    --tone-02: rgb(255 255 255 / 0.02);
+    --tone-04: rgb(255 255 255 / 0.04);
+    --tone-06: rgb(255 255 255 / 0.06);
+    --tone-08: rgb(255 255 255 / 0.08);
+    --tone-14: rgb(255 255 255 / 0.14);
+    --tone-24: rgb(255 255 255 / 0.24);
+    --tone-40: rgb(255 255 255 / 0.4);
+    --tone-60: rgb(255 255 255 / 0.6);
+    --tone-80: rgb(255 255 255 / 0.8);
+  }
+}
+
+/* ─── Focus ─────────────────────────────────────────────────────────
+   One visible focus treatment for the whole app, on the keyboard only.
+   A 2px offset ring in the foreground colour reads on both grounds and
+   never relies on colour alone to signal focus. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* ─── Overlay motion ────────────────────────────────────────────────
+   Enter/exit pairs for the Radix-driven surfaces (dialog, sheet, menu,
+   popover, tooltip). Written here rather than pulled from an animation
+   plugin so the durations and easings are the same --dur-*/--ease-*
+   scale the rest of the app already moves on, and so exits are real
+   animations Radix can wait for instead of instant unmounts.
+
+   Travel is deliberately small — 4px for menus, 8px for dialogs. The
+   motion philosophy of this product is to explain what changed, rather than to
+   arrive with a flourish. The global prefers-reduced-motion block in index.css
+   collapses all of it to 1ms. */
+@keyframes tpl-fade-in    { from { opacity: 0 } to { opacity: 1 } }
+@keyframes tpl-fade-out   { from { opacity: 1 } to { opacity: 0 } }
+@keyframes tpl-scale-in   { from { opacity: 0; transform: translateY(8px) scale(0.98) } to { opacity: 1; transform: none } }
+@keyframes tpl-scale-out  { from { opacity: 1; transform: none } to { opacity: 0; transform: translateY(4px) scale(0.99) } }
+@keyframes tpl-pop-in     { from { opacity: 0; transform: translateY(-4px) } to { opacity: 1; transform: none } }
+@keyframes tpl-pop-out    { from { opacity: 1; transform: none } to { opacity: 0; transform: translateY(-4px) } }
+@keyframes tpl-slide-r-in  { from { transform: translateX(100%) } to { transform: none } }
+@keyframes tpl-slide-r-out { from { transform: none } to { transform: translateX(100%) } }
+@keyframes tpl-slide-l-in  { from { transform: translateX(-100%) } to { transform: none } }
+@keyframes tpl-slide-l-out { from { transform: none } to { transform: translateX(-100%) } }
+@keyframes tpl-slide-b-in  { from { transform: translateY(100%) } to { transform: none } }
+@keyframes tpl-slide-b-out { from { transform: none } to { transform: translateY(100%) } }
+@keyframes tpl-accordion-open  { from { height: 0 } to { height: var(--radix-accordion-content-height) } }
+@keyframes tpl-accordion-close { from { height: var(--radix-accordion-content-height) } to { height: 0 } }
+
+/* The skeleton shimmer. Opacity only — no sliding highlight, which would
+   read as decoration in a design this plain. */
+@keyframes tpl-pulse { 0%, 100% { opacity: 1 } 50% { opacity: 0.45 } }
+@keyframes tpl-spin  { to { transform: rotate(360deg) } }
+
+@utility animate-overlay-in  { animation: tpl-fade-in var(--dur-3) var(--ease-out) }
+@utility animate-overlay-out { animation: tpl-fade-out var(--dur-2) var(--ease-out) }
+@utility animate-dialog-in   { animation: tpl-scale-in var(--dur-3) var(--ease-out) }
+@utility animate-dialog-out  { animation: tpl-scale-out var(--dur-2) var(--ease-out) }
+@utility animate-pop-in      { animation: tpl-pop-in var(--dur-2) var(--ease-out) }
+@utility animate-pop-out     { animation: tpl-pop-out var(--dur-1) var(--ease-out) }
