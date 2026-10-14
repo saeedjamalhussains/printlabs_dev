@@ -26,6 +26,19 @@ class ContractSchemaTests(unittest.TestCase):
             "products": [{"_id": "product-id", "title": "Space Poster", "price": 299}],
         })
 
+    def test_product_schema_accepts_api_product(self):
+        schema = json.loads((SCHEMA_DIRECTORY / "product.schema.json").read_text())
+        Draft7Validator(schema).validate({
+            "_id": "product-id",
+            "title": "Space Poster",
+            "description": "A framed view of the stars.",
+            "price": 299,
+            "category": "Space",
+            "images": [{"url": "https://example.test/poster.webp"}],
+            "stock": 5,
+            "sizes": [{"label": "A3", "priceModifier": 20}],
+        })
+
 
 if __name__ == "__main__":
     unittest.main()

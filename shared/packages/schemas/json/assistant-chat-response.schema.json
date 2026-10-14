@@ -12,9 +12,6 @@
           "_id": {
             "type": "string"
           },
-          "productId": {
-            "type": "string"
-          },
           "title": {
             "type": "string"
           },
@@ -36,10 +33,19 @@
                 "url": {
                   "type": "string"
                 },
+                "variants": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
                 "publicId": {
                   "type": "string"
                 }
               },
+              "required": [
+                "url"
+              ],
               "additionalProperties": true
             }
           },
@@ -56,7 +62,14 @@
                   "type": "string"
                 },
                 "priceModifier": {
-                  "type": "number"
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 }
               },
               "required": [
@@ -64,6 +77,15 @@
               ],
               "additionalProperties": true
             }
+          },
+          "productId": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
           }
         },
         "required": [

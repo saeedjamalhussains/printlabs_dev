@@ -6,6 +6,7 @@ import {
   assistantChatRequestSchema,
   assistantChatResponseSchema,
   chatApiResponseSchema,
+  productSchema,
 } from './index.js';
 
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -14,6 +15,7 @@ const schemas = {
   'assistant-chat-request.schema.json': assistantChatRequestSchema,
   'assistant-chat-response.schema.json': assistantChatResponseSchema,
   'chat-api-response.schema.json': chatApiResponseSchema,
+  'product.schema.json': productSchema,
 };
 
 await mkdir(outputDirectory, { recursive: true });

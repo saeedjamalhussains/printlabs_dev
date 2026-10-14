@@ -1,28 +1,13 @@
 import { z } from 'zod';
+import { assistantProductSchema } from './product.js';
+
+export { assistantProductSchema, productImageSchema, productSchema, productSizeSchema } from './product.js';
 
 export const chatRequestSchema = z.object({
   query: z.string().trim().min(1).max(500),
 });
 
 export const assistantChatRequestSchema = chatRequestSchema;
-
-export const assistantProductSchema = z.object({
-  _id: z.string().optional(),
-  productId: z.string().optional(),
-  title: z.string(),
-  description: z.string().optional(),
-  price: z.number().finite().nonnegative(),
-  category: z.string().optional(),
-  images: z.array(z.object({
-    url: z.string().optional(),
-    publicId: z.string().optional(),
-  }).passthrough()).optional(),
-  stock: z.number().int().nonnegative().optional(),
-  sizes: z.array(z.object({
-    label: z.string(),
-    priceModifier: z.number().finite().optional(),
-  }).passthrough()).optional(),
-}).passthrough();
 
 export const assistantChatResponseSchema = z.object({
   answer: z.string(),
