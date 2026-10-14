@@ -11,7 +11,7 @@ import generateToken from '../../utils/generateToken.js';
 import { asyncHandler } from '../../middleware/asyncHandler.js';
 import AppError from '../../utils/AppError.js';
 import { setAuditChanges } from '../../middleware/auditMiddleware.js';
-import { softDeleteUser } from '../../utils/userService.js';
+import { softDeleteUser } from './userService.js';
 
 export const ERROR_CODES = Object.freeze({
   INVALID_INPUT:       'INVALID_INPUT',

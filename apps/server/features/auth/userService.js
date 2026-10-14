@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import User from '../features/auth/User.js';
+import User from './User.js';
 
 /**
  * Perform a secure soft-delete of a user.

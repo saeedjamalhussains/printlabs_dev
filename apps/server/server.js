@@ -2,7 +2,7 @@ import env from './config/env.js';
 import mongoose from 'mongoose';
 import connectDB from './config/db.js';
 import app from './app.js';
-import { record, close as closeAudit, flushSync } from './utils/auditLog.js';
+import { record, close as closeAudit, flushSync } from './features/audit/auditLog.js';
 
 // 5001, not 5000: on macOS the AirPlay Receiver in Control Center holds
 // port 5000, so a default of 5000 fails on a fresh Mac for a reason that

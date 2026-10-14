@@ -9,7 +9,7 @@ import {
   uploadProductImage,
   removeProductImage,
 } from './productController.js';
-import { upload } from '../../middleware/upload.js';
+import { upload } from '../images/upload.js';
 import { protect, optionalAuth } from '../../middleware/authMiddleware.js';
 import { authorize } from '../../middleware/roleMiddleware.js';
 

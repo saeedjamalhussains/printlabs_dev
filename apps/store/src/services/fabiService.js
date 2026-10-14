@@ -16,7 +16,7 @@ const botMessage = (fields) => ({
  *
  * Checked here as well as on the server so an obvious payment question
  * never costs a round trip. The server checks again because the client
- * cannot be trusted; both read the same rules from paymentGuard.
+ * cannot be trusted; both read the same rules from @printlabs/guards.
  */
 export const getPaymentRefusalResponse = () => botMessage({
   // Kept word-for-word in step with paymentRefusal() in

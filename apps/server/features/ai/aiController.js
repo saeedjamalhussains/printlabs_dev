@@ -3,7 +3,7 @@ import { searchCatalogue } from './productSearch.js';
 import { isPaymentQuery } from '@printlabs/guards';
 import { buildSuggestions } from './suggestions.js';
 import { tokenize } from './productSearch.js';
-import { withSignedImagesAll } from '../../utils/productImages.js';
+import { withSignedImagesAll } from '../images/productImages.js';
 import env from '../../config/env.js';
 import {
   chatRequestSchema,

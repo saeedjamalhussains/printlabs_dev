@@ -14,11 +14,11 @@ import {
   listCloudinaryResources,
   getCloudinaryUsage,
   deleteCloudinaryResource,
-} from './cloudinaryController.js';
+} from '../images/cloudinaryController.js';
 // Order status/refund logic lives with the orders feature; the admin
 // router just exposes it under an /admin path.
 import { refundOrder, updateOrderStatus } from '../orders/orderController.js';
-import { listAuditLog, getAuditStats } from './auditController.js';
+import auditRoutes from '../audit/auditRoutes.js';
 import {
   createNewsletter,
   deleteNewsletter,
@@ -62,8 +62,7 @@ router.post('/newsletter', createNewsletter);
 router.delete('/newsletter/:id', deleteNewsletter);
 
 // Blackbox audit trail (read-only — the log itself is append-only on disk)
-router.get('/audit', listAuditLog);
-router.get('/audit/stats', getAuditStats);
+router.use('/audit', auditRoutes);
 
 // Coupons live in their own feature module, mounted at /api/coupons.
 

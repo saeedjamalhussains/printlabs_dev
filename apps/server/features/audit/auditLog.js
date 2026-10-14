@@ -31,7 +31,7 @@ import fs from 'fs';
 import path from 'path';
 import zlib from 'zlib';
 import { pipeline } from 'stream/promises';
-import env from '../config/env.js';
+import env from '../../config/env.js';
 
 // ─── Configuration ────────────────────────────────────────────────────
 

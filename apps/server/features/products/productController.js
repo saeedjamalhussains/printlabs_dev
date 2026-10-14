@@ -2,12 +2,12 @@ import Product from './Product.js';
 import { asyncHandler } from '../../middleware/asyncHandler.js';
 import AppError from '../../utils/AppError.js';
 import { setAuditChanges } from '../../middleware/auditMiddleware.js';
-import { diff } from '../../utils/auditLog.js';
+import { diff } from '../audit/auditLog.js';
 import { parsePaging, buildPagination, escapeRegex } from '../../utils/pagination.js';
-import { categoryCondition } from './categoryCondition.js';
-import { uploadToCloudinary, deleteFromCloudinary } from '../../utils/cloudinaryUpload.js';
+import { categoryCondition } from './categoryQuery.js';
+import { uploadToCloudinary, deleteFromCloudinary } from '../images/cloudinaryUpload.js';
 import { triggerReindex } from '../ai/aiSync.js';
-import { withSignedImages, withSignedImagesAll } from '../../utils/productImages.js';
+import { withSignedImages, withSignedImagesAll } from '../images/productImages.js';
 
 // Fields a client is permitted to set. Anything else in the request body
 // is ignored â€” previously the whole body was passed to findByIdAndUpdate,

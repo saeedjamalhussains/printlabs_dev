@@ -11,7 +11,7 @@ import fs from 'fs';
 import path from 'path';
 import zlib from 'zlib';
 import { asyncHandler } from '../../middleware/asyncHandler.js';
-import { stats as auditStats, FIELDS } from '../../utils/auditLog.js';
+import { stats as auditStats, FIELDS } from './auditLog.js';
 import env from '../../config/env.js';
 
 const LOG_DIR = env.AUDIT_LOG_DIR || path.join(process.cwd(), 'logs', 'audit');

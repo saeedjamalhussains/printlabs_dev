@@ -15,7 +15,7 @@ import '../config/env.js';
 import mongoose from 'mongoose';
 import connectDB from '../config/db.js';
 import User from '../features/auth/User.js';
-import { record, close as closeAudit } from '../utils/auditLog.js';
+import { record, close as closeAudit } from '../features/audit/auditLog.js';
 
 const parseArgs = () => {
   const args = {};

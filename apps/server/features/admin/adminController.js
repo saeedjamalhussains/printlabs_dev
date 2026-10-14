@@ -4,7 +4,7 @@ import Product from '../products/Product.js';
 import AppError from '../../utils/AppError.js';
 import { asyncHandler } from '../../middleware/asyncHandler.js';
 import { setAuditChanges } from '../../middleware/auditMiddleware.js';
-import { softDeleteUser } from '../../utils/userService.js';
+import { softDeleteUser } from '../auth/userService.js';
 import { parsePaging, buildPagination, escapeRegex } from '../../utils/pagination.js';
 
 // ─── Users ────────────────────────────────────────────────────────────

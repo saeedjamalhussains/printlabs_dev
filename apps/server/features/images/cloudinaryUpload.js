@@ -1,6 +1,6 @@
 import { Readable } from 'stream';
-import cloudinary from '../config/cloudinary.js';
-import { getUploadTransformation } from '../features/images/uploadPresets.js';
+import cloudinary from '../../config/cloudinary.js';
+import { getUploadTransformation } from './uploadPresets.js';
 
 /**
  * Upload a buffer to Cloudinary with an optional quality preset.

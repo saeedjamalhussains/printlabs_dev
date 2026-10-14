@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import './testEnv.js';
 
-const { signedVariants } = await import('../utils/signedImage.js');
-const { withSignedImages } = await import('../utils/productImages.js');
+const { signedVariants } = await import('../features/images/signedImage.js');
+const { withSignedImages } = await import('../features/images/productImages.js');
 
 const PUBLIC_ID = 'the_print_labs/products/test-asset';
 const SIG = /\/s--[A-Za-z0-9_-]+--\//;

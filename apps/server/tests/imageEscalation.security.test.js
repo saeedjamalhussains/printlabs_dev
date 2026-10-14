@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 const [{ signedVariants }, { default: env }] = await Promise.all([
-  import('../utils/signedImage.js'),
+  import('../features/images/signedImage.js'),
   import('../config/env.js'),
 ]);
 

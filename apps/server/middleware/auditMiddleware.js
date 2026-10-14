@@ -12,7 +12,7 @@
  */
 
 import crypto from 'crypto';
-import { record, sanitize } from '../utils/auditLog.js';
+import { record, sanitize } from '../features/audit/auditLog.js';
 
 const MUTATING = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
 

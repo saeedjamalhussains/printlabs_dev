@@ -3,7 +3,7 @@ import CouponRedemption from './CouponRedemption.js';
 import { evaluateCoupon, listRedemptions, reconcileUsage } from './couponService.js';
 import { asyncHandler } from '../../middleware/asyncHandler.js';
 import { setAuditChanges } from '../../middleware/auditMiddleware.js';
-import { diff } from '../../utils/auditLog.js';
+import { diff } from '../audit/auditLog.js';
 import { parsePaging, buildPagination } from '../../utils/pagination.js';
 import AppError from '../../utils/AppError.js';
 
