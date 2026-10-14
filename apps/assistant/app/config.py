@@ -1,4 +1,5 @@
 import os
+import re
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
@@ -112,18 +113,24 @@ def verify_required_settings(settings: "Settings") -> None:
     """
     Stop the process when a credential is missing.
 
-    Starting without these does not fail loudly — the service comes up,
-    accepts traffic, and then errors on the first real request, which is
-    much harder to diagnose than a refusal to boot.
+    Settings can be imported by tests with dummy values, but the FastAPI
+    entry point calls this before constructing the app.
     """
+    required = ("OPENROUTER_API_KEY", "INTERNAL_API_KEY")
     missing = [
         name
-        for name in ("OPENROUTER_API_KEY", "INTERNAL_API_KEY")
+        for name in required
         if not getattr(settings, name, "")
+        or re.search(r"replace[-_ ]?with|your_|example|change[-_ ]?me", getattr(settings, name, ""), re.I)
     ]
     if missing:
         raise RuntimeError(
             "Missing required environment variables: "
             + ", ".join(missing)
             + ". Copy apps/assistant/.env.example to .env and fill them in."
+        )
+    if len(settings.INTERNAL_API_KEY) < 32:
+        raise RuntimeError(
+            "INTERNAL_API_KEY must be at least 32 characters and match "
+            "apps/server/.env."
         )

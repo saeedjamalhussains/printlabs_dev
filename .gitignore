@@ -4,6 +4,7 @@ node_modules/
 # Build output
 dist/
 build/
+.turbo/
 
 # Environment — every clone supplies its own .env.example files
 **/.env

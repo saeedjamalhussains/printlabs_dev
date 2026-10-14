@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import mongoSanitize from 'express-mongo-sanitize';
 import compression from 'compression';
+import env from './config/env.js';
 
 import authRoutes from './features/auth/authRoutes.js';
 import productRoutes from './features/products/productRoutes.js';
@@ -20,8 +21,8 @@ import AppError from './utils/AppError.js';
 
 const app = express();
 
-if (process.env.TRUST_PROXY) {
-  app.set('trust proxy', Number(process.env.TRUST_PROXY) || 1);
+if (env.TRUST_PROXY) {
+  app.set('trust proxy', env.TRUST_PROXY);
 }
 
 app.use(
@@ -37,9 +38,9 @@ app.disable('x-powered-by');
 app.disable('etag');
 
 const allowedOrigins = [
-  process.env.CLIENT_URL,
-  process.env.ADMIN_URL,
-  ...(process.env.NODE_ENV === 'production'
+  env.CLIENT_URL,
+  env.ADMIN_URL,
+  ...(env.NODE_ENV === 'production'
     ? []
     : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175', 'http://localhost:5176']),
 ].filter(Boolean);

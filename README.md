@@ -15,12 +15,13 @@ printlabs_dev/
 │   ├── packages/
 │   │   ├── categories/ Shared category parsing and normalization
 │   │   ├── guards/     Shared payment-topic guardrail
+│   │   ├── schemas/    Zod API contracts and generated JSON Schema
 │   │   └── ui/         Shared UI package for the storefront and admin
 │   ├── config/         Shared config defaults
 │   ├── scripts/        Repo-wide helper scripts
 │   ├── assets/         Brand images and shared assets
-│   └── README.md       Shared-folder overview
 ├── package.json        Root workspace config and shared scripts
+├── turbo.json          Workspace task graph
 ├── README.md           Local setup and repo conventions
 ├── LICENSE             Project license
 └── .gitignore          Ignore local env files and generated output
@@ -31,12 +32,13 @@ The storefront and admin call the API. The API owns MongoDB and product logic. T
 ## Shared packages
 
 - `@printlabs/categories` — shared category parsing and normalization used by the API and admin app.
-- `@printlabs/guards` — the single payment-topic guard used by both the storefront and the assistant.
+- `@printlabs/guards` — the single payment-topic guard used by the storefront and API.
+- `@printlabs/schemas` — API request/response contracts; JSON Schema is generated from Zod for Python validation.
 - `@printlabs/ui` — reusable UI primitives shared by the storefront and admin dashboard.
 
 ## Run locally
 
-Install Node.js 20.19+, npm, and MongoDB 7. The optional assistant also needs Python 3.12+.
+Install Node.js 20.19+, npm, MongoDB 7 at `127.0.0.1:27017`, and Python 3.12+.
 
 From the repo root:
 
@@ -54,6 +56,15 @@ Fill in the environment files before starting the stack:
 - `apps/store/.env` — public storefront config such as the API URL and any non-secret client values.
 - `apps/admin/.env` — admin-only public config such as the API URL.
 - `apps/assistant/.env` — model and internal keys for Fabi.
+
+Generate a 32-character-or-longer random value for `JWT_SECRET` and `INTERNAL_API_KEY`. Use the same internal key in `apps/server/.env` and `apps/assistant/.env`. Set `OPENROUTER_API_KEY` in the assistant env file. The example credentials are placeholders and will stop startup until replaced.
+
+Create Fabi's Python environment before starting the root stack:
+
+```sh
+python3 -m venv apps/assistant/.venv
+apps/assistant/.venv/bin/pip install -r apps/assistant/requirements.txt
+```
 
 Start MongoDB, then run:
 
@@ -90,16 +101,18 @@ Run these from the repo root:
 
 | Command | Purpose |
 |---|---|
-| `npm run dev` | Start the API, storefront, and admin dashboard |
+| `npm run dev` | Start the API, storefront, admin dashboard, and Fabi |
 | `npm run dev:server` | Start just the API |
 | `npm run dev:store` | Start just the storefront |
 | `npm run dev:admin` | Start just the admin dashboard |
 | `npm run build` | Build all apps that define a build step |
 | `npm run lint` | Run workspace lint checks |
 | `npm test` | Run the workspace test suites |
+| `cd apps/assistant && python3 -m unittest discover -s tests` | Check Fabi's generated JSON Schema contracts and startup credential validation |
 | `npm run create-admin` | Create the first admin user |
 | `npm run audit:log` | Read the service audit log |
 | `npm run test:security` | Run the Cloudinary security checks |
+| `npm run generate:schemas` | Regenerate JSON Schema from the Zod contracts |
 
 ## Notes
 

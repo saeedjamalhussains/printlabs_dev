@@ -1,8 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import './testEnv.js';
 
 const { signedVariants } = await import('../utils/signedImage.js');
 const { withSignedImages } = await import('../utils/productImages.js');

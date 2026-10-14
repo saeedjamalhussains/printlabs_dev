@@ -12,12 +12,12 @@
    inside @printlabs/ui would be absent from the generated stylesheet. */
 @import "tailwindcss";
 @import "@printlabs/ui/theme.css";
-@source "../../shared/packages/ui/src";
+@source "../../../shared/packages/ui/src";
 
 /* ── Apple System Typography ──────────────────────────────────────────
    Mirrors the client so admin and storefront stay visually unified.
    Drop the variable font files into /public/fonts/ (see README). */
-/* local() only — see client/src/index.css. There is no /public/fonts
+/* local() only — see apps/store/src/index.css. There is no /public/fonts
    directory, so every url() here fetched index.html and failed to parse
    as a font on each page load. */
 @font-face {

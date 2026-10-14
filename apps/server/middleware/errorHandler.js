@@ -1,4 +1,6 @@
-export const errorHandler = (err, req, res, next) => {
+import env from '../config/env.js';
+
+export const errorHandler = (err, req, res, _next) => {
   let statusCode = err.statusCode || 500;
   let message = err.message || 'Internal Server Error';
 
@@ -35,7 +37,7 @@ export const errorHandler = (err, req, res, next) => {
     console.error(`[errorHandler] 500 (req ${req.id}):`, err);
     // Internal failures must not leak stack details, driver messages or
     // file paths to the caller in production.
-    if (process.env.NODE_ENV === 'production') {
+    if (env.NODE_ENV === 'production') {
       message = 'Something went wrong. Please try again.';
     }
   }
@@ -48,7 +50,7 @@ export const errorHandler = (err, req, res, next) => {
     requestId: req.id,
     ...(err.code && typeof err.code === 'string' ? { code: err.code } : {}),
     ...(err.extra ? { data: err.extra } : {}),
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+    ...(env.NODE_ENV === 'development' && { stack: err.stack }),
   });
 };
 

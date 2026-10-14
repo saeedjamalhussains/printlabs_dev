@@ -6,7 +6,7 @@ import { createContext, useContext } from 'react';
  * mixing components with other exports breaks Fast Refresh, which is why
  * eslint flags it.
  *
- * Mirrors client/src/hooks/useAuth.js; the two apps keep separate auth
+ * Mirrors apps/store/src/hooks/useAuth.js; the two apps keep separate auth
  * because they hold separate tokens.
  */
 export const AuthContext = createContext(null);

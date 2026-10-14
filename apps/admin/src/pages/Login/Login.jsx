@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Loader2, Lock } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
-import logoDark from '../../assets/logo_dark.png';
+import logoDark from '@brand/logo_dark.png';
 import './Login.css';
 
 const Login = () => {

@@ -31,13 +31,14 @@ import fs from 'fs';
 import path from 'path';
 import zlib from 'zlib';
 import { pipeline } from 'stream/promises';
+import env from '../config/env.js';
 
 // ─── Configuration ────────────────────────────────────────────────────
 
-const LOG_DIR = process.env.AUDIT_LOG_DIR || path.join(process.cwd(), 'logs', 'audit');
-const MAX_FILE_BYTES = Number(process.env.AUDIT_MAX_FILE_BYTES) || 5 * 1024 * 1024; // 5MB
-const MAX_FILES = Number(process.env.AUDIT_MAX_FILES) || 30;                        // ~150MB ceiling
-const FLUSH_INTERVAL_MS = Number(process.env.AUDIT_FLUSH_MS) || 500;
+const LOG_DIR = env.AUDIT_LOG_DIR || path.join(process.cwd(), 'logs', 'audit');
+const MAX_FILE_BYTES = env.AUDIT_MAX_FILE_BYTES; // 5MB
+const MAX_FILES = env.AUDIT_MAX_FILES; // ~150MB ceiling
+const FLUSH_INTERVAL_MS = env.AUDIT_FLUSH_MS;
 const MAX_BUFFER_ENTRIES = 200;   // force a flush before the buffer gets large
 const MAX_VALUE_CHARS = 512;      // truncate any single stringified value
 

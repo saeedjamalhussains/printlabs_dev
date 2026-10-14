@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { normalizeCategories } from '../../utils/categories.js';
+import { normalizeCategories } from '@printlabs/categories';
 
 const productSchema = new mongoose.Schema(
   {

@@ -1,7 +1,7 @@
 import { X } from 'lucide-react';
-import fabiDark from '../../assets/fabi_dark.png';
+import fabiDark from '@brand/fabi_dark.png';
 import { ThemedImage } from '@printlabs/ui';
-import fabiLight from '../../assets/fabi_light.png';
+import fabiLight from '@brand/fabi_light.png';
 
 /**
  * Chat header.

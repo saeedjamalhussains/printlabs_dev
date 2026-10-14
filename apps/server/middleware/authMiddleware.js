@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import User from '../features/auth/User.js';
 import AppError from '../utils/AppError.js';
 import { asyncHandler } from './asyncHandler.js';
+import env from '../config/env.js';
 
 export const protect = asyncHandler(async (req, res, next) => {
   let token;
@@ -19,8 +20,8 @@ export const protect = asyncHandler(async (req, res, next) => {
 
   let decoded;
   try {
-    decoded = jwt.verify(token, process.env.JWT_SECRET);
-  } catch (error) {
+    decoded = jwt.verify(token, env.JWT_SECRET);
+  } catch {
     return next(new AppError('Not authorized, token failed', 401));
   }
 
@@ -58,7 +59,7 @@ export const optionalAuth = asyncHandler(async (req, res, next) => {
   if (!token) return next();
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, env.JWT_SECRET);
     const user = await User.findById(decoded.id).select('-password');
     if (
       user &&

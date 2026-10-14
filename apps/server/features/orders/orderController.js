@@ -10,6 +10,7 @@ import { priceOrder, cartFingerprint } from './pricing.js';
 import { toPaise, toRupees } from '../../utils/money.js';
 import Coupon from '../coupons/Coupon.js';
 import { redeemCoupon, releaseRedemption } from '../coupons/couponService.js';
+import env from '../../config/env.js';
 
 /**
  * Razorpay client, constructed on first use.
@@ -22,7 +23,7 @@ import { redeemCoupon, releaseRedemption } from '../coupons/couponService.js';
 let razorpayClient = null;
 const getRazorpay = () => {
   if (razorpayClient) return razorpayClient;
-  const { RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET } = process.env;
+  const { RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET } = env;
   if (!RAZORPAY_KEY_ID || !RAZORPAY_KEY_SECRET) {
     throw new AppError('Payments are not configured on this server', 503);
   }
@@ -136,7 +137,7 @@ export const verifyPayment = asyncHandler(async (req, res, next) => {
 
   // 1. Signature — proves the callback genuinely came from Razorpay.
   const expected = crypto
-    .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+    .createHmac('sha256', env.RAZORPAY_KEY_SECRET)
     .update(`${razorpayOrderId}|${razorpayPaymentId}`)
     .digest('hex');
 
@@ -160,7 +161,7 @@ export const verifyPayment = asyncHandler(async (req, res, next) => {
   let rzpOrder;
   try {
     rzpOrder = await getRazorpay().orders.fetch(razorpayOrderId);
-  } catch (err) {
+  } catch {
     return next(new AppError('Could not verify the payment with Razorpay', 502));
   }
 

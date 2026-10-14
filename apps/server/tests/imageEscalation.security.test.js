@@ -1,10 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-const { signedVariants } = await import('../utils/signedImage.js');
+const [{ signedVariants }, { default: env }] = await Promise.all([
+  import('../utils/signedImage.js'),
+  import('../config/env.js'),
+]);
 
 /**
  * Security regression test: a client must not be able to obtain a
@@ -27,8 +26,7 @@ const { signedVariants } = await import('../utils/signedImage.js');
 
 // A real public id is required; the id below is overridden by
 // TEST_PUBLIC_ID so this does not rot when the seed data changes.
-const PUBLIC_ID =
-  process.env.TEST_PUBLIC_ID || 'the_print_labs/products/bqmdypgd2eqgcki9psyy';
+const PUBLIC_ID = env.TEST_PUBLIC_ID || 'the_print_labs/products/bqmdypgd2eqgcki9psyy';
 
 const status = async (url) => (await fetch(url, { method: 'GET' })).status;
 

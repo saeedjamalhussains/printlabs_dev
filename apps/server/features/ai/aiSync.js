@@ -1,3 +1,5 @@
+import env from '../../config/env.js';
+
 /**
  * aiSync.js — tells the FastAPI AI service to re-index the catalogue when
  * products change.
@@ -12,21 +14,21 @@
  * collapse into a single rebuild shortly after the burst ends.
  */
 
-const AI_SERVICE_URL = process.env.AI_SERVICE_URL || 'http://127.0.0.1:8000';
-const INTERNAL_API_KEY = process.env.INTERNAL_API_KEY || 'printlabs_secret_internal_key_2026';
+const AI_SERVICE_URL = env.AI_SERVICE_URL;
+const INTERNAL_API_KEY = env.INTERNAL_API_KEY;
 
 // How long to wait for the burst to settle before rebuilding. Long enough
 // to absorb a person clicking through several products, short enough that
 // a single edit shows up in the chatbot almost immediately.
-const DEBOUNCE_MS = Number(process.env.AI_REINDEX_DEBOUNCE_MS) || 2000;
+const DEBOUNCE_MS = env.AI_REINDEX_DEBOUNCE_MS;
 
 // Upper bound on a continuous stream of writes (a bulk import), so the
 // index cannot be starved indefinitely by a debounce that keeps resetting.
-const MAX_DELAY_MS = Number(process.env.AI_REINDEX_MAX_DELAY_MS) || 15000;
+const MAX_DELAY_MS = env.AI_REINDEX_MAX_DELAY_MS;
 
 // Abort a re-index request that never answers, so a wedged AI service
 // cannot leave `inFlight` stuck and block every future sync.
-const REQUEST_TIMEOUT_MS = Number(process.env.AI_REINDEX_TIMEOUT_MS) || 60000;
+const REQUEST_TIMEOUT_MS = env.AI_REINDEX_TIMEOUT_MS;
 
 let timer = null;
 let firstQueuedAt = null;

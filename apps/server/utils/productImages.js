@@ -52,7 +52,7 @@ export const withSignedImages = (product, { includePublicId = false } = {}) => {
 
     kept.push({
       // Same field, same meaning, now signed. `full` is the stored 800px
-      // rendition — see server/utils/imageQuality.js — not a master.
+      // rendition — see features/images/uploadPresets.js — not a master.
       url: variants.full,
       variants,
       ...(includePublicId ? { publicId: image.publicId } : {}),

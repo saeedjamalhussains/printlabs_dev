@@ -16,3 +16,4 @@
  * `@printlabs/ui/src/components/button` is not supported.
  */
 export * from './components/index.js';
+export { cn } from './lib/utils.js';

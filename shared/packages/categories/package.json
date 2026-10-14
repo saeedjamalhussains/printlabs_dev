@@ -7,5 +7,8 @@
   "exports": {
     ".": "./src/index.js"
   },
-  "files": ["src"]
+  "files": ["src"],
+  "scripts": {
+    "test": "node --test"
+  }
 }

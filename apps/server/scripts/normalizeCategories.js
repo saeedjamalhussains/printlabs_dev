@@ -10,24 +10,19 @@
  *
  * Safe to run more than once: rows already canonical are skipped.
  *
- *   node server/scripts/normalizeCategories.js          # report only
- *   node server/scripts/normalizeCategories.js --write  # apply
+ *   node apps/server/scripts/normalizeCategories.js          # report only
+ *   node apps/server/scripts/normalizeCategories.js --write  # apply
  */
 
-import 'dotenv/config';
+import env from '../config/env.js';
 import mongoose from 'mongoose';
 import Product from '../features/products/Product.js';
-import { normalizeCategories } from '../utils/categories.js';
+import { normalizeCategories } from '@printlabs/categories';
 
 const apply = process.argv.includes('--write');
 
 const run = async () => {
-  if (!process.env.MONGO_URI) {
-    console.error('MONGO_URI is not set. Run this from the repo root with apps/server/.env present.');
-    process.exit(1);
-  }
-
-  await mongoose.connect(process.env.MONGO_URI);
+  await mongoose.connect(env.MONGO_URI);
   console.log(`Connected. Mode: ${apply ? 'WRITE' : 'dry run (pass --write to apply)'}\n`);
 
   const products = await Product.find({}, 'title category').lean();

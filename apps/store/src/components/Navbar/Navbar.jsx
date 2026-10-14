@@ -6,8 +6,8 @@ import { useLocation } from 'react-router-dom';
 import { transitions } from '@printlabs/ui';
 import { useAuth } from '../../hooks/useAuth';
 import { useCart } from '../../hooks/useCart';
-import logoLight from '../../assets/logo_light.png';
-import logoDark from '../../assets/logo_dark.png';
+import logoLight from '@brand/logo_light.png';
+import logoDark from '@brand/logo_dark.png';
 import { ThemedImage } from '@printlabs/ui';
 import './Navbar.css';
 

@@ -1,5 +1,6 @@
 import api from './api';
 import { isPaymentQuery } from '@printlabs/guards';
+import { chatApiResponseSchema, chatRequestSchema } from '@printlabs/schemas';
 
 export { isPaymentQuery };
 
@@ -19,7 +20,7 @@ const botMessage = (fields) => ({
  */
 export const getPaymentRefusalResponse = () => botMessage({
   // Kept word-for-word in step with paymentRefusal() in
-  // server/features/ai/aiController.js. The client answers first to save
+  // apps/server/features/ai/aiController.js. The client answers first to save
   // a round trip and the server answers again for anything that slips
   // past, so a customer must not get two different refusals depending on
   // which layer caught it.
@@ -51,10 +52,14 @@ export const processUserQuery = async (queryText) => {
     return getPaymentRefusalResponse();
   }
 
+  const request = chatRequestSchema.safeParse({ query: queryText });
+  if (!request.success) {
+    return botMessage({ text: 'Could you shorten that question and try again?' });
+  }
+
   try {
-    const { data } = await api.post('/chat', { query: queryText });
-    if (data?.data) return data.data;
-    throw new Error('Malformed response');
+    const { data } = await api.post('/chat', request.data);
+    return chatApiResponseSchema.parse(data).data;
   } catch (error) {
     // A 401 means the session ended mid-conversation.
     if (error?.response?.status === 401) {

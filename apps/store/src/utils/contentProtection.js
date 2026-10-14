@@ -13,7 +13,7 @@
  * worth mistaking for protection.
  *
  * The protection that actually holds is upstream and already in place:
- * server/utils/imageQuality.js stores every upload at 800px and quality
+ * apps/server/features/images/uploadPresets.js stores every upload at 800px and quality
  * 20, so the full-resolution original is never delivered to a browser.
  * If more is needed, it belongs on the delivery side (a watermark, or
  * signed expiring Cloudinary URLs), not here.

@@ -35,7 +35,7 @@
 //      the downscaled rungs use q_auto:eco — cheaper than q_auto, and the
 //      artefacts shrink along with the pixels.
 
-/** The widest the stored asset can be — see server/utils/imageQuality.js. */
+/** The widest the stored asset can be — see apps/server/features/images/uploadPresets.js. */
 const STORED_MAX_WIDTH = 800;
 
 /**

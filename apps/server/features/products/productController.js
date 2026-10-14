@@ -4,7 +4,7 @@ import AppError from '../../utils/AppError.js';
 import { setAuditChanges } from '../../middleware/auditMiddleware.js';
 import { diff } from '../../utils/auditLog.js';
 import { parsePaging, buildPagination, escapeRegex } from '../../utils/pagination.js';
-import { categoryCondition } from '../../utils/categories.js';
+import { categoryCondition } from './categoryCondition.js';
 import { uploadToCloudinary, deleteFromCloudinary } from '../../utils/cloudinaryUpload.js';
 import { triggerReindex } from '../ai/aiSync.js';
 import { withSignedImages, withSignedImagesAll } from '../../utils/productImages.js';

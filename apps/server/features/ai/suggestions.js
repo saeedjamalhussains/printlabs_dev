@@ -1,5 +1,5 @@
 import Product from '../products/Product.js';
-import { splitCategories } from '../../utils/categories.js';
+import { splitCategories } from '@printlabs/categories';
 
 /**
  * Follow-up suggestions, rebuilt after every answer.

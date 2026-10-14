@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import env from '../config/env.js';
 
 // The JSON Web Token (JWT) embeds the user's `tokenVersion`. The authentication
 // middleware compares it against the current database value. Any mismatch (for
@@ -7,8 +8,8 @@ import jwt from 'jsonwebtoken';
 const generateToken = (user) => {
   return jwt.sign(
     { id: user._id, v: user.tokenVersion ?? 0 },
-    process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+    env.JWT_SECRET,
+    { expiresIn: env.JWT_EXPIRES_IN }
   );
 };
 

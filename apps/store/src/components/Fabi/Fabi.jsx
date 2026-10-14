@@ -7,9 +7,9 @@ import FabiInput from './FabiInput';
 import { processUserQuery } from '../../services/fabiService';
 import { useAuth } from '../../hooks/useAuth';
 import { useRequireAuth } from '../../hooks/useRequireAuth';
-import fabiDark from '../../assets/fabi_dark.png';
+import fabiDark from '@brand/fabi_dark.png';
 import { ThemedImage } from '@printlabs/ui';
-import fabiLight from '../../assets/fabi_light.png';
+import fabiLight from '@brand/fabi_light.png';
 import './Fabi.css';
 
 // Minimum time the typing indicator stays up, so it does not flash on a

@@ -76,7 +76,7 @@ export const signedVariants = (publicId) => {
   }
 
   // The stored rendition, which is already only 800px at q20 — see
-  // server/utils/imageQuality.js. Signed and offered as the top rung
+  // features/images/uploadPresets.js. Signed and offered as the top rung
   // because re-encoding at that size costs more bytes than it saves.
   out.full = variant(publicId, []);
 

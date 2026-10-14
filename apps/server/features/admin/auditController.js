@@ -12,8 +12,9 @@ import path from 'path';
 import zlib from 'zlib';
 import { asyncHandler } from '../../middleware/asyncHandler.js';
 import { stats as auditStats, FIELDS } from '../../utils/auditLog.js';
+import env from '../../config/env.js';
 
-const LOG_DIR = process.env.AUDIT_LOG_DIR || path.join(process.cwd(), 'logs', 'audit');
+const LOG_DIR = env.AUDIT_LOG_DIR || path.join(process.cwd(), 'logs', 'audit');
 const TAIL_BYTES = 4 * 1024 * 1024; // never hold more than 4MB of log in memory
 const MAX_LIMIT = 500;
 

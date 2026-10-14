@@ -12,7 +12,7 @@
    inside @printlabs/ui would be absent from the generated stylesheet. */
 @import "tailwindcss";
 @import "@printlabs/ui/theme.css";
-@source "../../shared/packages/ui/src";
+@source "../../../shared/packages/ui/src";
 
 /* ── Apple System Typography ──────────────────────────────────────────
    local() only. The families below are Apple system fonts: on macOS and
@@ -277,7 +277,7 @@ img {
 
    Be clear about what this is worth: it deters casual copying only. A
    screenshot, devtools, or the image URL itself all bypass it. The real
-   protection is upstream — server/utils/imageQuality.js stores every
+  protection is upstream — apps/server/features/images/uploadPresets.js stores every
    image at 800px and quality 20, so the full-resolution original is
    never delivered to a browser in the first place. */
 @media print {

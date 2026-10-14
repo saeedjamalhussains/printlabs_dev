@@ -11,7 +11,7 @@
  * password reset, when one is supplied) instead of failing.
  */
 
-import 'dotenv/config';
+import '../config/env.js';
 import mongoose from 'mongoose';
 import connectDB from '../config/db.js';
 import User from '../features/auth/User.js';

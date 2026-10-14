@@ -12,8 +12,8 @@ import {
 } from 'lucide-react';
 import log from '../../utils/logger';
 import { useAuth } from '../../hooks/useAuth';
-import logoDark from '../../assets/logo_dark.png';
-import logoLight from '../../assets/logo_light.png';
+import logoDark from '@brand/logo_dark.png';
+import logoLight from '@brand/logo_light.png';
 import { ThemedImage } from '@printlabs/ui';
 import './Sidebar.css';
 

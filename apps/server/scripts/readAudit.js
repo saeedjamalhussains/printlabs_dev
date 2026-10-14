@@ -12,13 +12,13 @@
  * all at once.
  */
 
-import 'dotenv/config';
+import env from '../config/env.js';
 import fs from 'fs';
 import path from 'path';
 import zlib from 'zlib';
 import readline from 'readline';
 
-const LOG_DIR = process.env.AUDIT_LOG_DIR || path.join(process.cwd(), 'logs', 'audit');
+const LOG_DIR = env.AUDIT_LOG_DIR || path.join(process.cwd(), 'logs', 'audit');
 
 const parseArgs = () => {
   const args = {};

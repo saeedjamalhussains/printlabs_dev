@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
+import env from './env.js';
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI, {
+    const conn = await mongoose.connect(env.MONGO_URI, {
       // ── Memory & Connection Optimization ──
       maxPoolSize: 10,          // Max concurrent connections (default 100 is wasteful)
       minPoolSize: 2,           // Keep 2 connections warm
@@ -35,7 +36,7 @@ const connectDB = async () => {
       '  • Your IP is not in the Atlas allowlist. Atlas → Network Access →\n' +
       '    Add IP Address → "Add Current IP Address". A new machine or a\n' +
       '    changed home IP needs re-adding.\n' +
-      '  • MONGO_URI in apps/server/.env still holds the placeholder, or the\n' +
+      '  • MONGO_URI in apps/server/.env is incorrect, or the\n' +
       '    password contains characters that need percent-encoding.\n' +
       '  • You are offline, or a VPN/firewall is blocking outbound 27017.\n\n' +
       'The API has not started. Any frontend will show "Network Error"\n' +

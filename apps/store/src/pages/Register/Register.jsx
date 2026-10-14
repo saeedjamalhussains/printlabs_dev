@@ -4,9 +4,9 @@ import { ArrowLeft, ArrowRight, Loader2 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import PasswordField from '../../components/PasswordField/PasswordField';
 import { useAuthBack } from '../../hooks/useAuthBack';
-import logoLight from '../../assets/logo_light.png';
+import logoLight from '@brand/logo_light.png';
 import { ThemedImage } from '@printlabs/ui';
-import logoDark from '../../assets/logo_dark.png';
+import logoDark from '@brand/logo_dark.png';
 import '../../styles/auth.css';
 import { markAuthenticatedEntry } from '../../utils/entryTransition';
 

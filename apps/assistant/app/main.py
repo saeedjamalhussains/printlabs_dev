@@ -1,17 +1,34 @@
 import asyncio
+import json
 import logging
 import secrets
 from contextlib import asynccontextmanager
+from pathlib import Path
 from fastapi import Depends, FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from app.config import settings
+from jsonschema import Draft7Validator
+from app.config import settings, verify_required_settings
 from app.services.indexer import sync_catalog
 from app.services.rag import process_rag_pipeline
 from app.services.trends import current_trends, refresh_trends, trends_refresh_loop
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("fabi_main")
+verify_required_settings(settings)
+
+SCHEMA_DIRECTORY = Path(__file__).resolve().parents[3] / "shared" / "packages" / "schemas" / "json"
+
+
+def load_contract_validator(filename: str) -> Draft7Validator:
+    schema_path = SCHEMA_DIRECTORY / filename
+    with schema_path.open(encoding="utf-8") as schema_file:
+        schema = json.load(schema_file)
+    Draft7Validator.check_schema(schema)
+    return Draft7Validator(schema)
+
+
+CHAT_REQUEST_VALIDATOR = load_contract_validator("assistant-chat-request.schema.json")
+CHAT_RESPONSE_VALIDATOR = load_contract_validator("assistant-chat-response.schema.json")
 
 
 def require_internal_key(x_internal_api_key: str = Header(None)) -> None:
@@ -23,14 +40,10 @@ def require_internal_key(x_internal_api_key: str = Header(None)) -> None:
     than a normal missing auth check would: every /chat call spends
     OpenRouter credits, so an open endpoint is a billable one.
 
-    Setting INTERNAL_API_KEY to an empty string disables the check — an
-    explicit opt-out for local work, rather than the old behaviour of
-    being permanently off whatever the config said.
+    Startup validation guarantees the key is configured before the app
+    accepts requests.
     """
     expected = settings.INTERNAL_API_KEY
-    if not expected:
-        return
-
     # compare_digest keeps the comparison constant-time, so the key
     # cannot be recovered a character at a time by timing responses.
     if not x_internal_api_key or not secrets.compare_digest(x_internal_api_key, expected):
@@ -114,36 +127,22 @@ if settings.ALLOWED_ORIGINS:
         allow_headers=["Content-Type", "X-Internal-API-Key"],
     )
 
-# Roughly a long paragraph. Real product questions are far shorter.
-MAX_QUERY_CHARS = 500
-
-
-class ChatRequest(BaseModel):
-    query: str
-
-class ChatResponse(BaseModel):
-    answer: str
-    products: list[dict]
-
 @app.get("/health")
 def health_check():
     return {"status": "ok", "service": "printlabs-ai-service"}
 
-@app.post("/api/v1/chat", response_model=ChatResponse, dependencies=[Depends(require_internal_key)])
-async def chat_endpoint(payload: ChatRequest):
-    query = (payload.query or "").strip()
-    if not query:
-        raise HTTPException(status_code=400, detail="Query cannot be empty.")
+@app.post("/api/v1/chat", dependencies=[Depends(require_internal_key)])
+async def chat_endpoint(payload: dict):
+    query = payload.get("query")
+    normalized_payload = {**payload, "query": query.strip()} if isinstance(query, str) else payload
+    if not CHAT_REQUEST_VALIDATOR.is_valid(normalized_payload):
+        raise HTTPException(status_code=422, detail="Request does not match the shared chat schema.")
 
-    # Bound the prompt. Without a cap a caller can paste an arbitrarily
-    # long body straight into the LLM request and drive up token cost.
-    if len(query) > MAX_QUERY_CHARS:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Query is too long (max {MAX_QUERY_CHARS} characters).",
-        )
-
-    return await process_rag_pipeline(query)
+    result = await process_rag_pipeline(normalized_payload["query"])
+    if not CHAT_RESPONSE_VALIDATOR.is_valid(result):
+        logger.error("Fabi generated a response that does not match the shared chat schema.")
+        raise HTTPException(status_code=500, detail="Assistant response did not match its contract.")
+    return result
 
 
 @app.post("/api/v1/reindex", dependencies=[Depends(require_internal_key)])

@@ -6,7 +6,7 @@ import AppError from '../../utils/AppError.js';
 
 // @desc    List Cloudinary resources (admin)
 // @route   GET /api/admin/cloudinary
-export const listCloudinaryResources = asyncHandler(async (req, res, next) => {
+export const listCloudinaryResources = asyncHandler(async (req, res, _next) => {
   const { next_cursor, prefix = 'the_print_labs/' } = req.query;
 
   const result = await cloudinary.api.resources({
@@ -38,7 +38,7 @@ export const listCloudinaryResources = asyncHandler(async (req, res, next) => {
 
 // @desc    Cloudinary usage stats (admin)
 // @route   GET /api/admin/cloudinary/usage
-export const getCloudinaryUsage = asyncHandler(async (req, res, next) => {
+export const getCloudinaryUsage = asyncHandler(async (req, res, _next) => {
   try {
     const usage = await cloudinary.api.usage();
 

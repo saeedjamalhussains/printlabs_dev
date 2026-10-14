@@ -4,6 +4,12 @@ import { isPaymentQuery } from '@printlabs/guards';
 import { buildSuggestions } from './suggestions.js';
 import { tokenize } from './productSearch.js';
 import { withSignedImagesAll } from '../../utils/productImages.js';
+import env from '../../config/env.js';
+import {
+  chatRequestSchema,
+  chatApiResponseSchema,
+  assistantChatResponseSchema,
+} from '@printlabs/schemas';
 
 
 /**
@@ -34,29 +40,33 @@ const paymentRefusal = () => botMessage({
 const MAX_SUGGESTIONS = 4;
 
 // Give up on the AI service after this and answer from MongoDB instead.
-const AI_TIMEOUT_MS = Number(process.env.AI_TIMEOUT_MS) || 15000;
+const AI_TIMEOUT_MS = env.AI_TIMEOUT_MS;
 
 // Mirrors the storefront card projection — the chat widget shows a card
 // per product, so it needs no more than this.
 const SUGGESTION_FIELDS = 'title price category images stock sizes';
 
 export const chatWithAssistant = asyncHandler(async (req, res) => {
-  const { query } = req.body;
+  const request = chatRequestSchema.safeParse(req.body);
 
-  if (!query || !query.trim()) {
+  if (!request.success) {
     return res.status(400).json({
       success: false,
-      message: 'Query text is required.'
+      message: 'A non-empty query of at most 500 characters is required.'
     });
   }
+  const { query } = request.data;
 
   // 1. Strict Payment Check Guardrail
   if (isPaymentQuery(query)) {
-    return res.status(200).json({ success: true, data: paymentRefusal() });
+    return res.status(200).json(chatApiResponseSchema.parse({
+      success: true,
+      data: paymentRefusal(),
+    }));
   }
 
-  const aiServiceUrl = process.env.AI_SERVICE_URL || 'http://127.0.0.1:8000';
-  const internalApiKey = process.env.INTERNAL_API_KEY || 'printlabs_secret_internal_key_2026';
+  const aiServiceUrl = env.AI_SERVICE_URL;
+  const internalApiKey = env.INTERNAL_API_KEY;
 
   try {
     // 2. Call FastAPI RAG Microservice
@@ -80,9 +90,9 @@ export const chatWithAssistant = asyncHandler(async (req, res) => {
     });
 
     if (response.ok) {
-      const result = await response.json();
+      const result = assistantChatResponseSchema.parse(await response.json());
       const products = result.products || [];
-      return res.status(200).json({
+      return res.status(200).json(chatApiResponseSchema.parse({
         success: true,
         data: botMessage({
           text: result.answer,
@@ -91,7 +101,7 @@ export const chatWithAssistant = asyncHandler(async (req, res) => {
           products: withSignedImagesAll(products),
           suggestions: await buildSuggestions({ products, terms: tokenize(query) }),
         }),
-      });
+      }));
     }
     console.warn(`AI microservice returned ${response.status}; using MongoDB fallback.`);
   } catch (err) {
@@ -113,7 +123,7 @@ export const chatWithAssistant = asyncHandler(async (req, res) => {
   // as though the whole phrase was matched, which it was not.
   const searchedFor = terms.length ? terms.join(', ') : query;
 
-  return res.status(200).json({
+  return res.status(200).json(chatApiResponseSchema.parse({
     success: true,
     data: botMessage({
       // Plain and human. The trailing-colon "Found 3 posters for x:"
@@ -125,5 +135,5 @@ export const chatWithAssistant = asyncHandler(async (req, res) => {
       products: withSignedImagesAll(products),
       suggestions: await buildSuggestions({ products, terms }),
     }),
-  });
+  }));
 });

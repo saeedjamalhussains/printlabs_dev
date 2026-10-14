@@ -1,6 +1,7 @@
 import rateLimit from 'express-rate-limit';
+import env from '../config/env.js';
 
-const isProd = process.env.NODE_ENV === 'production';
+const isProd = env.NODE_ENV === 'production';
 
 // In development we bypass rate limiting entirely — it's noisy when you
 // reload pages, retry logins, or run integration tests against the live
