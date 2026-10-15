@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Trash2, Tag, Power, Pencil } from 'lucide-react';
 import api from '../../services/adminApi';
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
@@ -22,7 +22,7 @@ const Coupons = () => {
     setTimeout(() => setFeedback(null), 5000);
   };
 
-  const fetchCoupons = async (targetPage = page) => {
+  const fetchCoupons = useCallback(async (targetPage) => {
     try {
       const { data } = await api.get('/coupons', { params: { page: targetPage } });
       setCoupons(data?.data?.coupons || []);
@@ -32,12 +32,12 @@ const Coupons = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- data fetch, not a cascading render
     fetchCoupons(page);
-  }, [page]);
+  }, [fetchCoupons, page]);
 
   const handleSubmit = async (payload) => {
     setPosting(true);

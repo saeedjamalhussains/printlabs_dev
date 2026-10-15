@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from 'react';
+import { useCallback, useState, useEffect, Fragment } from 'react';
 import { ShoppingCart, ChevronDown, ChevronUp, RotateCcw } from 'lucide-react';
 import api from '../../services/adminApi';
 import Dropdown from '../../components/Dropdown/Dropdown';
@@ -66,7 +66,7 @@ const Orders = () => {
   const [pagination, setPagination] = useState(null);
   const [page, setPage] = useState(1);
 
-  const fetchOrders = async (targetPage = page) => {
+  const fetchOrders = useCallback(async (targetPage) => {
     try {
       const { data } = await api.get('/orders', { params: { page: targetPage } });
       setOrders(data.data.orders);
@@ -76,10 +76,10 @@ const Orders = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // eslint-disable-next-line react-hooks/set-state-in-effect -- initial data fetch
-  useEffect(() => { fetchOrders(page); }, [page]);
+  useEffect(() => { fetchOrders(page); }, [fetchOrders, page]);
 
   const handleStatusChange = async (orderId, newStatus) => {
     const prev = orders.find((o) => o._id === orderId)?.orderStatus;

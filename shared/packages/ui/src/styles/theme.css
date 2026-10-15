@@ -197,8 +197,7 @@
 /* ─── Overlay motion ────────────────────────────────────────────────
    Enter/exit pairs for the Radix-driven surfaces (dialog, sheet, menu,
    popover, tooltip). Written here rather than pulled from an animation
-   plugin so the durations and easings are the same --dur-*/--ease-*
-   scale the rest of the app already moves on, and so exits are real
+   plugin so the durations and easings match the rest of the app, and so exits are real
    animations Radix can wait for instead of instant unmounts.
 
    Travel is deliberately small — 4px for menus, 8px for dialogs. The

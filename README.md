@@ -78,11 +78,11 @@ npm run dev
 ```
 
 | Application | Address |
-|---|---|
-| Store | http://localhost:5173 |
-| Admin | http://localhost:5174 |
-| API | http://localhost:5001 |
-| Assistant | http://localhost:8100 |
+| --- | --- |
+| Store | <http://localhost:5173> |
+| Admin | <http://localhost:5174> |
+| API | <http://localhost:5001> |
+| Assistant | <http://localhost:8100> |
 
 Create your first admin account with `npm run create-admin`, then add products through the admin app.
 
@@ -104,7 +104,7 @@ Before starting, set `OPENROUTER_API_KEY` and use the same `INTERNAL_API_KEY` as
 Run these from the repo root:
 
 | Command | Purpose |
-|---|---|
+| --- | --- |
 | `npm run dev` | Start the API, storefront, admin dashboard, and Fabi |
 | `npm run dev:server` | Start just the API |
 | `npm run dev:store` | Start just the storefront |

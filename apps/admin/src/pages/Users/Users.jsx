@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { Users as UsersIcon, Shield, ShieldOff, Trash2 } from 'lucide-react';
 import api from '../../services/adminApi';
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
@@ -16,7 +16,7 @@ const Users = () => {
   const [pagination, setPagination] = useState(null);
   const [page, setPage] = useState(1);
 
-  const fetchUsers = async (targetPage = page) => {
+  const fetchUsers = useCallback(async (targetPage) => {
     try {
       const { data } = await api.get('/admin/users', { params: { page: targetPage } });
       setUsers(data.data.users);
@@ -26,10 +26,10 @@ const Users = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // eslint-disable-next-line react-hooks/set-state-in-effect -- initial data fetch, not a cascading render
-  useEffect(() => { fetchUsers(page); }, [page]);
+  useEffect(() => { fetchUsers(page); }, [fetchUsers, page]);
 
   const handleRoleChange = async (userId, newRole) => {
     const prev = users.find((u) => u._id === userId)?.role;

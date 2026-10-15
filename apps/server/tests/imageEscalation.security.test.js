@@ -24,18 +24,21 @@ const [{ signedVariants }, { default: env }] = await Promise.all([
  * Run with: npm run test:security --prefix server
  */
 
-// A real public id is required; the id below is overridden by
-// TEST_PUBLIC_ID so this does not rot when the seed data changes.
-const PUBLIC_ID = env.TEST_PUBLIC_ID || 'the_print_labs/products/bqmdypgd2eqgcki9psyy';
+// These checks require a live Cloudinary asset; do not silently fall back
+// to a fixture that may have been deleted from the account.
+const PUBLIC_ID = env.TEST_PUBLIC_ID;
+const liveTest = (name, fn) => test(name, {
+  skip: !PUBLIC_ID && 'Set TEST_PUBLIC_ID to a real Cloudinary public id to run live security checks.',
+}, fn);
 
 const status = async (url) => (await fetch(url, { method: 'GET' })).status;
 
-test('the signed derivative the UI uses is served', async () => {
+liveTest('the signed derivative the UI uses is served', async () => {
   const { w400 } = signedVariants(PUBLIC_ID);
   assert.equal(await status(w400), 200, 'the legitimate signed URL must work');
 });
 
-test('widening the transformation is rejected', async () => {
+liveTest('widening the transformation is rejected', async () => {
   const { w400 } = signedVariants(PUBLIC_ID);
   // The attack: keep the signature, ask for five times the pixels.
   const escalated = w400.replace('w_400', 'w_2000');
@@ -49,7 +52,7 @@ test('widening the transformation is rejected', async () => {
   );
 });
 
-test('raising the quality is rejected', async () => {
+liveTest('raising the quality is rejected', async () => {
   const { w400 } = signedVariants(PUBLIC_ID);
   const escalated = w400.replace('q_auto:eco', 'q_auto:best');
 
@@ -60,7 +63,7 @@ test('raising the quality is rejected', async () => {
   );
 });
 
-test('a forged signature is rejected', async () => {
+liveTest('a forged signature is rejected', async () => {
   const { w400 } = signedVariants(PUBLIC_ID);
   const forged = w400.replace(/\/s--[^/]*--\//, '/s--AAAAAAAA--/');
 

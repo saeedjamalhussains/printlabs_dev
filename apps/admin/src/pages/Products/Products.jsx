@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { Plus, Pencil, Trash2, Upload, X, Package, PackagePlus, Power } from 'lucide-react';
 import api from '../../services/adminApi';
 import Modal from '../../components/Modal/Modal';
@@ -44,7 +44,7 @@ const Products = () => {
     setTimeout(() => setFeedback(null), 5000);
   };
 
-  const fetchProducts = async (targetPage = page) => {
+  const fetchProducts = useCallback(async (targetPage) => {
     try {
       // includeInactive is admin-only and returns deactivated products
       // too, which the dashboard needs in order to manage them.
@@ -58,10 +58,10 @@ const Products = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // eslint-disable-next-line react-hooks/set-state-in-effect -- initial data fetch
-  useEffect(() => { fetchProducts(page); }, [page]);
+  useEffect(() => { fetchProducts(page); }, [fetchProducts, page]);
 
   const openCreate = () => {
     log.action('Open create-product modal');

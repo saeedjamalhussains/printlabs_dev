@@ -49,11 +49,9 @@ api.interceptors.response.use(
       onUnauthorized?.();
     }
 
-    // No `response` at all means the request never reached the API —
-    // axios reports this as a bare "Network Error" with no indication of
-    // where it tried to go. In development, say so, because the usual
-    // cause is a missing .env or a server that is not running.
-    if (import.meta.env.DEV && !error.response) {
+    // Canceled requests also have no response; don't misreport React
+    // Strict Mode's development-only effect cleanup as an API outage.
+    if (import.meta.env.DEV && !error.response && !axios.isCancel(error)) {
       console.error(
         `[api] Could not reach ${api.defaults.baseURL}${url}\n` +
         '  • Is the API running?  npm run dev:server  (expect "Server running on port 5001")\n' +
