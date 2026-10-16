@@ -47,29 +47,22 @@
      looks. They stay in rem, so OS and browser text scaling still moves
      them; what they do not do is track the viewport.
 
-     Body and heading steps are fluid. Headings are what actually eat a
-     small viewport — a fixed 2rem section head on a 375px phone takes a
-     disproportionate bite out of the screen — and body copy benefits
-     from a little more size on a large monitor.
-
-     Every clamp is written as `min, rem + vw, max` so the middle term
-     grows with the viewport but is anchored in rem: a clamp whose
-     preferred value is pure vw stops responding to user text scaling,
-     which silently overrides an accessibility setting. */
+   All type steps are fixed in rem. Viewport changes layout and whitespace,
+   not the size of words; users can still scale everything through browser
+   text settings. */
   --text-micro: 0.6rem;
   --text-meta: 0.65rem;
   --text-label: 0.7rem;
   --text-caption: 0.75rem;
 
-  --text-sm:   clamp(0.78rem, 0.76rem + 0.1vw,  0.82rem);
-  --text-base: clamp(0.85rem, 0.82rem + 0.15vw, 0.92rem);
-  --text-md:   clamp(0.92rem, 0.88rem + 0.2vw,  1rem);
-
-  --text-lg:   clamp(1rem,    0.94rem + 0.3vw,  1.15rem);
-  --text-xl:   clamp(1.25rem, 1.1rem  + 0.75vw, 1.6rem);
-  --text-2xl:  clamp(1.5rem,  1.25rem + 1.25vw, 2.1rem);
-  --text-title: clamp(2rem, 4vw, 3rem);
-  --text-display: clamp(2.25rem, 5vw, 4rem);
+   --text-sm: 0.8rem;
+   --text-base: 0.85rem;
+   --text-md: 0.95rem;
+   --text-lg: 1.1rem;
+   --text-xl: 1.5rem;
+   --text-2xl: 2rem;
+   --text-title: 2rem;
+   --text-display: 3rem;
 
   /* Reading measure. Long-form text set across a wide monitor is the
      classic large-screen failure: the line becomes too long for the eye
@@ -144,6 +137,28 @@
    Hairline borders use --tone-14; a full-strength rule uses
    --border-color, which stays pure black/white as the product intends. */
 :root {
+   --type-micro: 0.6rem;
+   --type-meta: 0.65rem;
+   --type-label: 0.7rem;
+   --type-caption: 0.75rem;
+   --type-small: 0.8rem;
+   --type-compact: 0.85rem;
+   --type-base: 0.9rem;
+   --type-emphasis: 0.95rem;
+   --type-unit: 1rem;
+   --type-section: 1.1rem;
+   --type-heading: 1.5rem;
+   --type-page-large: 2rem;
+
+   --type-page-title: 1.75rem;
+   --type-section-title: 1.125rem;
+   --type-display: 3rem;
+   --type-intro: 1.125rem;
+   --type-body: var(--type-base);
+   --type-label: 0.7rem;
+   --layout-content-max: 100rem;
+   --layout-page-gutter: clamp(1rem, 3vw, 2.75rem);
+
   --tone-ink: 0 0 0;
   --tone-02: rgb(0 0 0 / 0.02);
   --tone-04: rgb(0 0 0 / 0.04);
@@ -170,6 +185,18 @@
   --space-9: 6rem;
 }
 
+@media (max-width: 48rem) {
+   :root {
+      --type-page-title: 1.5rem;
+      --type-section-title: 1rem;
+      --type-heading: 1.25rem;
+      --type-page-large: 1.75rem;
+      --type-display: 2.25rem;
+      --type-intro: 1rem;
+      --layout-page-gutter: 1rem;
+   }
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --tone-ink: 255 255 255;
@@ -192,6 +219,11 @@
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
+}
+
+.ui-page-title {
+   font-size: var(--type-page-title);
+   line-height: 1.15;
 }
 
 /* ─── Overlay motion ────────────────────────────────────────────────

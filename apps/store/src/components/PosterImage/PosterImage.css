@@ -58,7 +58,7 @@
   color: var(--text-primary);
   opacity: 0.45;
   font-family: var(--font-sans);
-  font-size: 0.55rem;
+  font-size: var(--type-micro);
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }

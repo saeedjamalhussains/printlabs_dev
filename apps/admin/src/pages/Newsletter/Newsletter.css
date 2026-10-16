@@ -10,7 +10,7 @@
 .newsletter-composer-title,
 .newsletter-list-title {
   font-family: var(--font-serif);
-  font-size: 1.1rem;
+  font-size: var(--type-section);
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -26,7 +26,7 @@
   border-bottom: 1px solid var(--border-color);
   padding: 0.5rem 0;
   font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-size: var(--type-emphasis);
   color: var(--primary-color);
   outline: none;
   resize: vertical;
@@ -46,7 +46,7 @@
 
 .newsletter-composer-count {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: var(--type-meta);
   letter-spacing: 0.2em;
   color: var(--text-muted);
   opacity: 0.6;
@@ -55,7 +55,7 @@
 .newsletter-feedback {
   margin: 0.75rem 0 0;
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
@@ -85,7 +85,7 @@
 
 .newsletter-item-date {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: var(--type-meta);
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -94,7 +94,7 @@
 
 .newsletter-item-heading {
   font-family: var(--font-serif);
-  font-size: 1.15rem;
+  font-size: var(--type-section);
   font-weight: 700;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -104,7 +104,7 @@
 
 .newsletter-item-body {
   font-family: var(--font-serif);
-  font-size: 0.95rem;
+  font-size: var(--type-emphasis);
   line-height: 1.55;
   color: var(--primary-color);
   margin: 0;

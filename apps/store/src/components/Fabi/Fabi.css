@@ -112,7 +112,7 @@
      joined up the way the mark does. */
   letter-spacing: 0.01em;
   text-transform: none;
-  font-size: 1.05rem;
+  font-size: var(--type-section);
   color: var(--text-primary);
   margin: 0;
 }
@@ -174,7 +174,7 @@
 
 .fabi-welcome-content h4 {
   font-family: var(--font-serif);
-  font-size: 0.85rem;
+  font-size: var(--type-compact);
   font-weight: 700;
   letter-spacing: 0.05em;
   margin-bottom: 0.25rem;
@@ -182,7 +182,7 @@
 }
 
 .fabi-welcome-content p {
-  font-size: 0.78rem;
+  font-size: var(--type-small);
   line-height: 1.45;
   color: var(--text-secondary);
 }
@@ -194,7 +194,7 @@
   margin-top: 0.6rem;
   padding-top: 0.5rem;
   border-top: 1px dashed var(--border-color);
-  font-size: 0.68rem;
+  font-size: var(--type-label);
   color: var(--text-muted);
   opacity: 0.85;
 }
@@ -208,7 +208,7 @@
 
 .fabi-prompts-label {
   font-family: var(--font-sans);
-  font-size: 0.68rem;
+  font-size: var(--type-label);
   letter-spacing: 0.08em;
   color: var(--text-muted);
   /* Was an uppercase serif "SUGGESTED QUESTIONS" heading — a section
@@ -223,7 +223,7 @@
 
 .fabi-chip-btn {
   font-family: var(--font-sans);
-  font-size: 0.74rem;
+  font-size: var(--type-caption);
   font-weight: 500;
   padding: 0.45rem 0.85rem;
   background-color: transparent;
@@ -272,14 +272,14 @@
 .fabi-message-bubble {
   padding: 0.85rem 1.05rem;
   border-radius: 12px;
-  font-size: 0.82rem;
+  font-size: var(--type-compact);
   line-height: 1.6;
 }
 
 /* The scope note under the greeting. */
 .fabi-message-note {
   margin-top: 0.6rem;
-  font-size: 0.72rem;
+  font-size: var(--type-label);
   line-height: 1.5;
   color: var(--text-muted);
 }
@@ -301,7 +301,7 @@
 }
 
 .fabi-message-time {
-  font-size: 0.62rem;
+  font-size: var(--type-meta);
   color: var(--text-muted);
   margin-top: 0.25rem;
   padding: 0 0.2rem;
@@ -324,7 +324,7 @@
   color: var(--bg-color);
   border-radius: 6px;
   font-family: var(--font-serif);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -379,7 +379,7 @@
   align-items: center;
   justify-content: center;
   font-family: var(--font-serif);
-  font-size: 0.65rem;
+  font-size: var(--type-meta);
   letter-spacing: 0.1em;
   color: var(--text-muted);
 }
@@ -393,7 +393,7 @@
 
 .fabi-mini-card-title {
   font-family: var(--font-sans);
-  font-size: 0.72rem;
+  font-size: var(--type-label);
   font-weight: 600;
   color: var(--text-primary);
   white-space: nowrap;
@@ -408,14 +408,14 @@
 }
 
 .fabi-mini-card-price {
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 700;
   color: var(--text-primary);
 }
 
 .fabi-mini-card-action {
   font-family: var(--font-serif);
-  font-size: 0.6rem;
+  font-size: var(--type-micro);
   font-weight: 700;
   letter-spacing: 0.05em;
   display: flex;
@@ -471,7 +471,7 @@
   border: none;
   border-bottom: 1px solid var(--border-color);
   padding: 0.5rem 0;
-  font-size: 0.82rem;
+  font-size: var(--type-compact);
   color: var(--text-primary);
   outline: none;
   border-radius: 0;

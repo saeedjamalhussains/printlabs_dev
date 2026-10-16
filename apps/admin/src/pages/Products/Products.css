@@ -61,7 +61,7 @@
 .stock-note {
   display: block;
   white-space: nowrap;
-  font-size: 0.68rem;
+  font-size: var(--type-label);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -74,7 +74,7 @@
   padding: 0.7rem 1rem;
   border-radius: 6px;
   margin-bottom: 1rem;
-  font-size: 0.85rem;
+  font-size: var(--type-compact);
   border: 1px solid transparent;
 }
 
@@ -116,7 +116,7 @@
 .restock-product {
   margin: 0.35rem 0 1.25rem;
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: var(--type-base);
 }
 
 .restock-modes {
@@ -133,7 +133,7 @@
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: var(--type-compact);
 }
 
 /* Filled, not just outlined. An outline-only selected state was
@@ -165,7 +165,7 @@
   background: transparent;
   color: var(--text-primary);
   cursor: pointer;
-  font-size: 0.78rem;
+  font-size: var(--type-small);
   font-variant-numeric: tabular-nums;
 }
 
@@ -180,12 +180,12 @@
   padding: 0.85rem 1rem;
   border: 1px solid var(--border-color);
   border-radius: 6px;
-  font-size: 0.85rem;
+  font-size: var(--type-compact);
   color: var(--text-muted);
 }
 
 .restock-summary strong {
-  font-size: 1.15rem;
+  font-size: var(--type-section);
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
 }
@@ -196,7 +196,7 @@
 
 .restock-hint {
   margin: 0.85rem 0 0;
-  font-size: 0.8rem;
+  font-size: var(--type-small);
   line-height: 1.5;
   color: var(--text-muted);
 }

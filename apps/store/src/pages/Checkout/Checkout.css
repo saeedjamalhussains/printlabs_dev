@@ -15,7 +15,7 @@
 
 .checkout-eyebrow {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 500;
   letter-spacing: 0.4em;
   text-transform: uppercase;
@@ -24,7 +24,7 @@
 
 .checkout-title {
   font-family: var(--font-serif);
-  font-size: clamp(2.25rem, 5vw, 4rem);
+  font-size: var(--type-page-title);
   font-weight: 700;
   letter-spacing: 0.01em;
   line-height: 1;
@@ -35,7 +35,7 @@
 
 .checkout-subtitle {
   font-family: var(--font-serif);
-  font-size: 1.1rem;
+  font-size: var(--type-section);
   color: var(--primary-color);
 }
 
@@ -50,7 +50,7 @@
   padding: 1rem 1.25rem;
   margin-bottom: 2rem;
   font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-size: var(--type-small);
   letter-spacing: 0.05em;
   color: var(--primary-color);
 }
@@ -72,7 +72,7 @@
 
 .checkout-form-label {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 600;
   letter-spacing: 0.4em;
   text-transform: uppercase;
@@ -93,7 +93,7 @@
 
 .checkout-field label {
   font-family: var(--font-sans);
-  font-size: 0.65rem;
+  font-size: var(--type-meta);
   font-weight: 500;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -108,7 +108,7 @@
   border-bottom: 1px solid var(--border-color);
   padding: 0.6rem 0;
   font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-size: var(--type-emphasis);
   color: var(--primary-color);
   width: 100%;
   resize: none;
@@ -128,7 +128,7 @@
   color: var(--bg-color);
   border: none;
   font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-size: var(--type-small);
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -164,7 +164,7 @@
 
 .checkout-review-label {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 600;
   letter-spacing: 0.4em;
   text-transform: uppercase;
@@ -187,7 +187,7 @@
   gap: 1rem;
   align-items: baseline;
   font-family: var(--font-sans);
-  font-size: 0.85rem;
+  font-size: var(--type-compact);
   color: var(--primary-color);
 }
 
@@ -218,7 +218,7 @@
   justify-content: space-between;
   align-items: baseline;
   font-family: var(--font-serif);
-  font-size: 1.5rem;
+  font-size: var(--type-heading);
   font-weight: 700;
   color: var(--primary-color);
 }
@@ -241,7 +241,7 @@
   background: transparent;
   padding: 0.65rem 0.85rem;
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: var(--type-caption);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--primary-color);
@@ -264,7 +264,7 @@
   color: var(--bg-color);
   padding: 0 1.25rem;
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 600;
   letter-spacing: 0.25em;
   text-transform: uppercase;
@@ -291,7 +291,7 @@
 }
 
 .cca-text {
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   letter-spacing: 0.12em;
   color: var(--primary-color);
   opacity: 0.85;
@@ -307,7 +307,7 @@
   border: 0;
   color: var(--primary-color);
   font-family: var(--font-sans);
-  font-size: 0.65rem;
+  font-size: var(--type-meta);
   font-weight: 600;
   letter-spacing: 0.2em;
   cursor: pointer;
@@ -320,7 +320,7 @@
 }
 
 .checkout-coupon-error {
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   letter-spacing: 0.05em;
   color: var(--primary-color);
   opacity: 0.8;
@@ -333,7 +333,7 @@
   justify-content: space-between;
   align-items: baseline;
   font-family: var(--font-sans);
-  font-size: 0.85rem;
+  font-size: var(--type-compact);
   letter-spacing: 0.08em;
   color: var(--primary-color);
   opacity: 0.75;

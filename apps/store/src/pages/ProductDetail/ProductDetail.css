@@ -9,7 +9,7 @@
   padding: 8rem 0;
   text-align: center;
   font-family: var(--font-serif);
-  font-size: 1.5rem;
+  font-size: var(--type-heading);
   color: var(--primary-color);
 }
 
@@ -21,7 +21,7 @@
   border: none;
   padding: 0;
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 600;
   letter-spacing: 0.35em;
   text-transform: uppercase;
@@ -65,7 +65,7 @@
 
 .detail-category {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 500;
   letter-spacing: 0.4em;
   text-transform: uppercase;
@@ -75,7 +75,7 @@
 
 .detail-title {
   font-family: var(--font-serif);
-  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-size: var(--type-page-title);
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: 0.005em;
@@ -86,7 +86,7 @@
 
 .detail-price {
   font-family: var(--font-serif);
-  font-size: 1.5rem;
+  font-size: var(--type-heading);
   font-weight: 400;
   color: var(--primary-color);
   margin: 0;
@@ -100,7 +100,7 @@
 
 .detail-description {
   font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-size: var(--type-emphasis);
   line-height: 1.7;
   color: var(--text-primary);
   margin: 0;
@@ -123,7 +123,7 @@
 
 .detail-qty-label {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 600;
   letter-spacing: 0.35em;
   text-transform: uppercase;
@@ -157,13 +157,13 @@
   min-width: 2.5rem;
   text-align: center;
   font-family: var(--font-sans);
-  font-size: 0.9rem;
+  font-size: var(--type-base);
   font-weight: 600;
 }
 
 .detail-stock {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--text-primary);
@@ -177,7 +177,7 @@
   color: var(--bg-color);
   border: none;
   font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-size: var(--type-small);
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -203,7 +203,7 @@
   align-items: center;
   gap: 0.75rem;
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 500;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -234,7 +234,7 @@
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 600;
   letter-spacing: 0.25em;
   text-transform: uppercase;
@@ -259,7 +259,7 @@
    scale, and left as a single line with no supporting sentence. */
 .detail-suggestions-head {
   font-family: var(--font-sans);
-  font-size: clamp(0.7rem, 0.65rem + 0.2vw, 0.8rem);
+  font-size: var(--type-label);
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;

@@ -42,7 +42,7 @@
   font-family: var(--font-sans);
   /* Tracking eases off as the viewport narrows instead of stepping at a
      breakpoint, so the phrase fits without losing the letterspaced look. */
-  font-size: clamp(0.6rem, 0.55rem + 0.25vw, 0.7rem);
+  font-size: var(--type-label);
   font-weight: 500;
   letter-spacing: clamp(0.2em, 0.12em + 0.4vw, 0.4em);
   text-transform: uppercase;
@@ -61,7 +61,7 @@
 .hero-quote {
   font-family: var(--font-serif);
   font-weight: 400;
-  font-size: clamp(2rem, 5.5vw, 4.5rem);
+  font-size: var(--type-display);
   line-height: 1.1;
   color: var(--primary-color);
   letter-spacing: 0.005em;
@@ -75,7 +75,7 @@
   margin-right: clamp(0.5rem, 6vw, 4rem);
   font-family: var(--font-sans);
   font-style: normal;
-  font-size: 0.75rem;
+  font-size: var(--type-caption);
   font-weight: 600;
   letter-spacing: 0.35em;
   text-transform: uppercase;
@@ -90,7 +90,7 @@
   padding: 0.85rem 0;
   border-bottom: 1px solid var(--primary-color);
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 600;
   letter-spacing: 0.35em;
   text-transform: uppercase;
@@ -136,7 +136,7 @@
 
 .featured-title {
   font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-size: var(--type-section-title);
   font-weight: 700;
   letter-spacing: 0.02em;
   line-height: 1;
@@ -147,7 +147,7 @@
 
 .featured-subtitle {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 500;
   letter-spacing: 0.25em;
   text-transform: uppercase;
@@ -160,7 +160,7 @@
   align-items: center;
   gap: 0.6rem;
   font-family: var(--font-sans);
-  font-size: 0.65rem;
+  font-size: var(--type-meta);
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -183,7 +183,7 @@
 
 .featured-empty {
   font-family: var(--font-serif);
-  font-size: 1.1rem;
+  font-size: var(--type-section);
   text-align: center;
   padding: 2.5rem 0;
   color: var(--primary-color);
@@ -250,7 +250,7 @@
 
 .closing-eyebrow {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 500;
   letter-spacing: 0.4em;
   text-transform: uppercase;
@@ -259,7 +259,7 @@
 
 .closing-title {
   font-family: var(--font-serif);
-  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-size: var(--type-page-title);
   font-weight: 700;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -296,7 +296,7 @@
   .hero { padding: 2rem 1.25rem; min-height: 56svh; }
   .hero-eyebrow { gap: 0.5rem; margin-bottom: 1.5rem; }
   .hero-quote-author { margin-right: 0.5rem; }
-  .hero-cta { margin-top: 2rem; font-size: 0.65rem; }
+  .hero-cta { margin-top: 2rem; font-size: var(--type-meta); }
 
   .featured-header { padding: 1.25rem; }
   .featured-body   { padding: 1.25rem; }

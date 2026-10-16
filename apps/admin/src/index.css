@@ -233,13 +233,14 @@ html {
 
 body {
   font-family: var(--font-sans);
+  font-size: var(--type-body);
   background-color: var(--bg-color);
   color: var(--text-primary);
   /* See the storefront index.css: 100vh is the largest mobile viewport,
      so a 100vh shell hides its last strip behind the address bar. */
   min-height: 100vh;
   min-height: 100dvh;
-  line-height: 1.6;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -264,7 +265,7 @@ button, .btn-primary, .btn-outline, .btn-danger {
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  font-size: 0.65rem;
+  font-size: var(--type-meta);
   transition: var(--transition-smooth);
   display: inline-flex;
   align-items: center;
@@ -305,7 +306,7 @@ button, .btn-primary, .btn-outline, .btn-danger {
 
 .btn-sm {
   padding: 0.55rem 1rem;
-  font-size: 0.55rem;
+  font-size: var(--type-micro);
   letter-spacing: 0.25em;
 }
 
@@ -332,7 +333,7 @@ input, select, textarea {
   width: 100%;
   transition: var(--transition-smooth);
   font-family: var(--font-sans);
-  font-size: 0.9rem;
+  font-size: var(--type-base);
 }
 
 input:focus, select:focus, textarea:focus {
@@ -395,8 +396,10 @@ input:focus, select:focus, textarea:focus {
 }
 
 .admin-content {
-  padding: 2rem 4rem;
-  max-width: none;
+  width: 100%;
+  max-width: var(--layout-content-max);
+  margin-inline: auto;
+  padding: 2rem var(--layout-page-gutter);
 }
 
 @media (max-width: 1200px) {
@@ -421,7 +424,7 @@ input:focus, select:focus, textarea:focus {
   background: var(--bg-color);
   color: var(--text-primary);
   font-family: var(--font-serif);
-  font-size: 2rem;
+  font-size: var(--type-page-large);
   letter-spacing: 0.5em;
   text-transform: uppercase;
 }
@@ -457,7 +460,7 @@ input:focus, select:focus, textarea:focus {
 
 .admin-table th {
   font-family: var(--font-sans);
-  font-size: 0.6rem;
+  font-size: var(--type-micro);
   /* 0.35em of tracking on a column head is most of its width. It holds
      the letterspaced look on a roomy screen and gives the space back to
      the data on a narrow one. */
@@ -474,7 +477,7 @@ input:focus, select:focus, textarea:focus {
 .admin-table td {
   border-bottom: 1px solid var(--border-color);
   font-family: var(--font-sans);
-  font-size: 0.85rem;
+  font-size: var(--type-compact);
   color: var(--primary-color);
   vertical-align: middle;
 }
@@ -488,7 +491,7 @@ input:focus, select:focus, textarea:focus {
   display: inline-flex;
   align-items: center;
   padding: 0.25rem 0.75rem;
-  font-size: 0.65rem;
+  font-size: var(--type-meta);
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -517,10 +520,10 @@ input:focus, select:focus, textarea:focus {
 
 .page-header h1 {
   font-family: var(--font-serif);
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: var(--type-page-title);
   font-weight: 700;
   letter-spacing: 0.01em;
-  line-height: 1;
+  line-height: 1.15;
   text-transform: uppercase;
   color: var(--primary-color);
   margin: 0;
@@ -544,7 +547,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .form-group label {
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -610,7 +613,7 @@ input:focus, select:focus, textarea:focus {
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  font-size: 1.1rem;
+  font-size: var(--type-section);
   margin-bottom: 0.5rem;
   padding-right: 2.5rem;
 }
@@ -622,7 +625,7 @@ input:focus, select:focus, textarea:focus {
 .modal-description {
   color: var(--text-muted);
   opacity: 0.7;
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   line-height: 1.6;
   margin-bottom: 1.5rem;
 }
@@ -656,7 +659,7 @@ input:focus, select:focus, textarea:focus {
 
 .confirm-message {
   color: var(--text-muted);
-  font-size: 0.85rem;
+  font-size: var(--type-compact);
   line-height: 1.6;
   margin-bottom: 2rem;
 }
@@ -717,7 +720,7 @@ input:focus, select:focus, textarea:focus {
   background: var(--primary-color);
   color: var(--bg-color);
   border: none;
-  font-size: 0.6rem;
+  font-size: var(--type-micro);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -807,7 +810,7 @@ input:focus, select:focus, textarea:focus {
 .admin-route-loading {
   padding: 3rem 1rem;
   text-align: center;
-  font-size: 0.85rem;
+  font-size: var(--type-compact);
   color: var(--text-muted);
   opacity: 0.7;
 }
@@ -855,7 +858,7 @@ input:focus, select:focus, textarea:focus {
    are read character by character and compared against another screen. */
 .cell-id {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: var(--type-caption);
   white-space: nowrap;
 }
 
@@ -863,7 +866,7 @@ input:focus, select:focus, textarea:focus {
    the value above it, and allowed to truncate rather than widen the
    column. */
 .cell-sub {
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   color: var(--text-muted);
   opacity: 0.65;
   overflow: hidden;

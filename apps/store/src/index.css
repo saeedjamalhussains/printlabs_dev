@@ -239,8 +239,10 @@ body {
 
 body {
   font-family: var(--font-sans);
+  font-size: var(--type-body);
   background-color: var(--bg-color);
   color: var(--text-primary);
+  line-height: 1.55;
   /* dvh, not vh: on mobile 100vh is the *largest* viewport, so with the
      address bar on screen a 100vh shell is taller than what can be seen
      and the last strip of every page sits below the fold. */
@@ -295,7 +297,7 @@ img {
     display: block;
     padding: 0.5rem;
     font-family: var(--font-sans);
-    font-size: 0.6rem;
+    font-size: var(--type-micro);
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: #000;
@@ -329,6 +331,11 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
 }
 
+main h1 {
+  font-size: var(--type-page-title);
+  line-height: 1.15;
+}
+
 /* Page gutter. This was six media queries stepping the padding from 4rem
    down to 1rem, which meant the gutter jumped at each threshold and was
    wrong everywhere in between. One clamp expresses the actual intent:
@@ -339,9 +346,9 @@ h1, h2, h3, h4, h5, h6 {
    a viewport narrower than the cap without relying on the padding to
    save it. */
 .container {
-  max-width: min(100%, 1800px);
+  max-width: min(100%, var(--layout-content-max));
   margin-inline: auto;
-  padding-inline: clamp(1rem, 4vw, 4rem);
+  padding-inline: var(--layout-page-gutter);
 }
 
 /* Stark Buttons */
@@ -357,7 +364,7 @@ button, .btn-primary, .btn-outline {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
+  font-size: var(--type-small);
 }
 
 .btn-primary {
@@ -430,7 +437,7 @@ input:focus, select:focus, textarea:focus {
   justify-content: center;
   background: var(--bg-secondary);
   color: var(--text-muted);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   font-family: var(--font-serif);
@@ -448,7 +455,7 @@ input:focus, select:focus, textarea:focus {
   background: var(--bg-color);
   color: var(--text-primary);
   font-family: var(--font-serif);
-  font-size: 2rem;
+  font-size: var(--type-page-large);
   letter-spacing: 0.5em;
   text-transform: uppercase;
 }

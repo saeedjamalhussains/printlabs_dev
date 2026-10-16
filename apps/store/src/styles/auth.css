@@ -60,7 +60,7 @@
   border: 0;
   color: var(--primary-color);
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   cursor: pointer;
@@ -103,7 +103,7 @@
 
 .auth-eyebrow {
   font-family: var(--font-sans);
-  font-size: clamp(0.62rem, 1.6vw, 0.7rem);
+  font-size: var(--type-label);
   font-weight: 500;
   /* Wide tracking is elegant on desktop and unreadable on a small phone,
      so the letter-spacing scales with the type. */
@@ -114,7 +114,7 @@
 
 .auth-title {
   font-family: var(--font-serif);
-  font-size: clamp(1.9rem, 7vw, 3.25rem);
+  font-size: var(--type-page-title);
   font-weight: 400;
   letter-spacing: 0.005em;
   line-height: 1.05;
@@ -126,7 +126,7 @@
 
 .auth-subtitle {
   font-family: var(--font-serif);
-  font-size: clamp(0.9rem, 2.4vw, 1rem);
+  font-size: var(--type-body);
   line-height: 1.5;
   color: var(--primary-color);
   opacity: 0.7;
@@ -146,7 +146,7 @@
   padding: 0.9rem 1.1rem;
   margin-bottom: 1.5rem;
   font-family: var(--font-sans);
-  font-size: clamp(0.75rem, 2vw, 0.8rem);
+  font-size: var(--type-body);
   line-height: 1.5;
   letter-spacing: 0.03em;
   color: var(--primary-color);
@@ -158,7 +158,7 @@
   padding: 0.9rem 1.1rem;
   margin-bottom: 1.5rem;
   font-family: var(--font-sans);
-  font-size: clamp(0.75rem, 2vw, 0.8rem);
+  font-size: var(--type-body);
   line-height: 1.5;
   letter-spacing: 0.03em;
   color: var(--primary-color);
@@ -190,7 +190,7 @@
 
 .auth-field label {
   font-family: var(--font-sans);
-  font-size: clamp(0.6rem, 1.5vw, 0.65rem);
+  font-size: var(--type-label);
   font-weight: 600;
   letter-spacing: clamp(0.18em, 0.8vw, 0.3em);
   text-transform: uppercase;
@@ -256,7 +256,7 @@
 .auth-field-note,
 .auth-field-error {
   font-family: var(--font-sans);
-  font-size: clamp(0.68rem, 1.8vw, 0.72rem);
+  font-size: var(--type-caption);
   line-height: 1.4;
   letter-spacing: 0.02em;
   margin: 0;
@@ -273,7 +273,7 @@
   color: var(--bg-color);
   border: none;
   font-family: var(--font-sans);
-  font-size: clamp(0.7rem, 1.8vw, 0.75rem);
+  font-size: var(--type-label);
   font-weight: 600;
   letter-spacing: clamp(0.18em, 0.9vw, 0.3em);
   text-transform: uppercase;
@@ -296,7 +296,7 @@
   margin-top: clamp(1.5rem, 4vw, 2.5rem);
   text-align: center;
   font-family: var(--font-sans);
-  font-size: clamp(0.75rem, 2vw, 0.8rem);
+  font-size: var(--type-body);
   line-height: 1.6;
   color: var(--primary-color);
   opacity: 0.7;
@@ -321,7 +321,7 @@
   padding: 0.5rem 1rem;
   min-height: 44px;
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -414,7 +414,6 @@
      layout; the panel border does that job here. */
   .auth-main .auth-rule { display: none; }
 
-  .auth-title { font-size: clamp(2.25rem, 4.2vw, 3.25rem); }
 
   /* The masthead column is narrow, so the widest tracking would force
      "WELCOME BACK" onto two ragged lines. */
@@ -447,7 +446,6 @@
     --auth-gap: 0.9rem;
     min-height: auto;
   }
-  .auth-title { font-size: clamp(1.5rem, 4vw, 2rem); }
   .auth-logo-link { margin-bottom: 0.75rem; }
   .auth-logo { width: 2.5rem; }
   .auth-subtitle { display: none; }
@@ -467,4 +465,4 @@
 }
 
 .auth-legal { display: flex; flex-wrap: wrap; justify-content: center; gap: .25rem 1.25rem; margin-top: 1.25rem; }
-.auth-legal a { display: inline-flex; align-items: center; min-height: 44px; font-size: .72rem; text-decoration: underline; text-underline-offset: 4px; }
+.auth-legal a { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--type-label); text-decoration: underline; text-underline-offset: 4px; }

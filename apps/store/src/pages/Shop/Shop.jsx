@@ -159,7 +159,11 @@ const Shop = () => {
 
   return (
     <div className="shop-page container">
-
+      <header className="shop-header">
+        <p className="shop-eyebrow">All prints</p>
+        <h1 className="shop-title">The Collection</h1>
+        <p className="shop-subtitle">Search and filter every print.</p>
+      </header>
 
       <div className="shop-body">
         <aside className={`shop-sidebar ${filtersOpen ? 'is-open' : ''}`}>

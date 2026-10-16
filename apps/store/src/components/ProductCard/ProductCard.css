@@ -48,7 +48,7 @@
   align-items: center;
   justify-content: center;
   font-family: var(--font-sans);
-  font-size: 0.65rem;
+  font-size: var(--type-meta);
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--primary-color);
@@ -68,7 +68,7 @@
 
 .card-info h3 {
   font-family: var(--font-sans);
-  font-size: 0.85rem;
+  font-size: var(--type-compact);
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -92,7 +92,7 @@
 
 .price {
   font-family: var(--font-sans);
-  font-size: 0.85rem;
+  font-size: var(--type-compact);
   font-weight: 500;
   letter-spacing: 0.1em;
   color: var(--primary-color);
@@ -103,7 +103,7 @@
   border: 0;
   padding: 0.35rem 0;
   font-family: var(--font-sans);
-  font-size: 0.6rem;
+  font-size: var(--type-micro);
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -142,7 +142,7 @@
 
 .view-btn {
   font-family: var(--font-sans);
-  font-size: 0.65rem;
+  font-size: var(--type-meta);
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;

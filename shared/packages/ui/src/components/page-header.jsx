@@ -34,7 +34,7 @@ const PageHeader = ({
       )}
 
       <div className="flex flex-wrap items-baseline gap-3">
-        <h1 className="font-serif text-xl font-bold uppercase tracking-heading">{title}</h1>
+        <h1 className="ui-page-title font-serif font-bold uppercase tracking-heading">{title}</h1>
         {count != null && (
           <span className="font-sans text-meta text-muted-foreground [font-variant-numeric:tabular-nums]">
             {count}

@@ -9,7 +9,7 @@
   padding: 8rem 0;
   text-align: center;
   font-family: var(--font-serif);
-  font-size: 1.5rem;
+  font-size: var(--type-heading);
   color: var(--primary-color);
 }
 
@@ -23,7 +23,7 @@
 
 .orders-eyebrow {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 500;
   letter-spacing: 0.4em;
   text-transform: uppercase;
@@ -32,7 +32,7 @@
 
 .orders-title {
   font-family: var(--font-serif);
-  font-size: clamp(2.25rem, 5vw, 4rem);
+  font-size: var(--type-page-title);
   font-weight: 700;
   letter-spacing: 0.01em;
   line-height: 1;
@@ -43,7 +43,7 @@
 
 .orders-subtitle {
   font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-size: var(--type-small);
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--text-primary);
@@ -76,7 +76,7 @@
 
 .orders-card-date {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 600;
   letter-spacing: 0.35em;
   text-transform: uppercase;
@@ -85,7 +85,7 @@
 
 .orders-card-id {
   font-family: var(--font-sans);
-  font-size: 0.65rem;
+  font-size: var(--type-meta);
   letter-spacing: 0.25em;
   color: var(--text-primary);
   opacity: 0.55;
@@ -94,7 +94,7 @@
 
 .orders-card-status {
   font-family: var(--font-sans);
-  font-size: 0.65rem;
+  font-size: var(--type-meta);
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -130,7 +130,7 @@
   align-items: center;
   justify-content: center;
   font-family: var(--font-sans);
-  font-size: 0.6rem;
+  font-size: var(--type-micro);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-primary);
@@ -141,7 +141,7 @@
 
 .orders-card-item-title {
   font-family: var(--font-serif);
-  font-size: 1rem;
+  font-size: var(--type-unit);
   font-weight: 700;
   letter-spacing: 0.01em;
   color: var(--primary-color);
@@ -152,7 +152,7 @@
 
 .orders-card-item-qty {
   font-family: var(--font-sans);
-  font-size: 0.65rem;
+  font-size: var(--type-meta);
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--text-primary);
@@ -162,7 +162,7 @@
 
 .orders-card-item-price {
   font-family: var(--font-serif);
-  font-size: 0.95rem;
+  font-size: var(--type-emphasis);
   color: var(--primary-color);
 }
 
@@ -179,7 +179,7 @@
 
 .orders-card-address {
   font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-size: var(--type-small);
   line-height: 1.6;
   color: var(--primary-color);
   max-width: 60%;
@@ -188,7 +188,7 @@
 .orders-card-address span,
 .orders-card-total span {
   display: block;
-  font-size: 0.6rem;
+  font-size: var(--type-micro);
   font-weight: 600;
   letter-spacing: 0.35em;
   text-transform: uppercase;
@@ -199,7 +199,7 @@
 .orders-card-total {
   text-align: right;
   font-family: var(--font-serif);
-  font-size: 1.75rem;
+  font-size: var(--type-page-title);
   font-weight: 700;
   color: var(--primary-color);
 }
@@ -221,7 +221,7 @@
   background: transparent;
   border: 1px solid var(--danger-color);
   font-family: var(--font-sans);
-  font-size: 0.6rem;
+  font-size: var(--type-micro);
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -250,7 +250,7 @@
   border: 1px solid var(--border-color);
   background: transparent;
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: var(--type-caption);
   letter-spacing: 0.05em;
   color: var(--primary-color);
 }
@@ -272,7 +272,7 @@
 
 .orders-empty-title {
   font-family: var(--font-serif);
-  font-size: 1.5rem;
+  font-size: var(--type-heading);
   color: var(--primary-color);
   margin: 0;
 }
@@ -285,7 +285,7 @@
   padding: 0.85rem 0;
   border-bottom: 1px solid var(--primary-color);
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   font-weight: 600;
   letter-spacing: 0.35em;
   text-transform: uppercase;
@@ -316,7 +316,7 @@
   background: transparent;
   border: 1px solid var(--border-color);
   font-family: var(--font-sans);
-  font-size: 0.72rem;
+  font-size: var(--type-label);
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;

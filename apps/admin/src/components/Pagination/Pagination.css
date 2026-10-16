@@ -13,7 +13,7 @@
 .admin-pagination-page {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-muted);

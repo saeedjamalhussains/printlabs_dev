@@ -43,7 +43,7 @@
 
 .cloudinary-id {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   letter-spacing: 0.05em;
   color: var(--text-primary);
   white-space: nowrap;
@@ -55,7 +55,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  font-size: 0.65rem;
+  font-size: var(--type-meta);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -76,6 +76,6 @@
 .cloudinary-actions .btn-outline,
 .cloudinary-actions .btn-danger {
   padding: 0.4rem 0.75rem;
-  font-size: 0.65rem;
+  font-size: var(--type-meta);
   flex: 1;
 }
